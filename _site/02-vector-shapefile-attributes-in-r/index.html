@@ -1,0 +1,972 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2020-01-14 15:49:42 -0500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/dc/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/dc/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/dc/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/dc/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/dc/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/dc/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/dc/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/dc/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="Data Carpentry - Introduction to Geospatial Raster and Vector Data with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/dc/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/dc/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/dc/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/dc/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/dc/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Introduction to Geospatial Raster and Vector Data with R: Explore and Plot by Shapefile Attributes</title>
+  </head>
+  <body>
+
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body pre-alpha">
+    This lesson is still being designed and assembled (Pre-Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://datacarpentry.org" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/dc-icon-black.svg" alt="Data Carpentry logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../01-vector-open-shapefile-in-r/index.html">Open and Plot Shapefiles in R</a></li>
+            
+            <li><a href="../02-vector-shapefile-attributes-in-r/index.html">Explore and Plot by Shapefile Attributes</a></li>
+            
+            <li><a href="../03-vector-csv-to-shapefile-in-r/index.html">Convert from .csv to a Shapefile in R</a></li>
+            
+            <li><a href="../04-raster-structure/index.html">Intro to Raster Data in R</a></li>
+            
+            <li><a href="../05-vector-raster-integration/index.html">Manipulate Raster Data in R</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            <li><a href="../discuss/index.html">Discussion</a></li>
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/02-vector-shapefile-attributes-in-r.Rmd">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../01-vector-open-shapefile-in-r/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">Introduction to Geospatial Raster and Vector Data with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../03-vector-csv-to-shapefile-in-r/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Explore and Plot by Shapefile Attributes</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 40 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How can I compute on the attributes of a spatial object?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Query attributes of a spatial object.</p>
+</li>
+	
+	<li><p>Subset spatial objects using specific attribute values.</p>
+</li>
+	
+	<li><p>Plot a shapefile, colored by unique attribute values.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Loading required package: sp
+</code></pre></div></div>
+
+<blockquote class="prereq">
+  <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
+  <p>See the <a href="">lesson homepage</a> for detailed information about the software,
+data, and other prerequisites you will need to work through the examples in this episode.</p>
+</blockquote>
+
+<p>This episode continues our discussion of shapefile attributes and 
+covers how to work with shapefile attributes in R. It covers how
+to identify and query shapefile
+attributes, as well as how to subset shapefiles by specific attribute values.
+Finally, we will learn how to plot a shapefile according to a set of attribute
+values.</p>
+
+<h2 id="load-the-data">Load the Data</h2>
+<p>We will continue using the <code class="highlighter-rouge">sf</code>, <code class="highlighter-rouge">raster</code> and <code class="highlighter-rouge">ggplot2</code> packages in this episode. Make sure that you have these packages loaded. We will
+continue to work with the three shapefiles that we loaded in the
+<a href="/06-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode.</p>
+
+<h2 id="query-shapefile-metadata">Query Shapefile Metadata</h2>
+
+<p>As we discussed in the
+<a href="/06-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode,
+we can view metadata associated with an R object using:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">st_geometry_type()</code> - The type of vector data stored in the object.</li>
+  <li><code class="highlighter-rouge">nrow()</code> - The number of features in the object</li>
+  <li><code class="highlighter-rouge">st_bbox()</code> - The spatial extent (geographic area covered by) 
+of the object.</li>
+  <li><code class="highlighter-rouge">st_crs()</code> - The CRS (spatial projection) of the data.</li>
+</ul>
+
+<p>We started to explore our <code class="highlighter-rouge">point_HARV</code> object in the previous episode.
+To see a summary of all of the metadata associated with our <code class="highlighter-rouge">point_HARV</code> object, we can view the object with <code class="highlighter-rouge">View(point_HARV)</code> or print a summary of the object itself to the console.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Simple feature collection with 11 features and 8 fields
+geometry type:  POLYGON
+dimension:      XY
+bbox:           xmin: 292076.1 ymin: 4582052 xmax: 675959 ymax: 4751574
+epsg (SRID):    NA
+proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
+First 10 features:
+   OBJECTID  NAME     SQ_KM  HECTARES      ACRES MGMTUNIT Shape_Leng Shape_Area
+1         1 Mich.  323.4672  32346.73   79928.76      MU1   1.996955 0.03514546
+2         2  OE-5 1764.0675 176406.75  435901.07      MU5   2.665866 0.19481404
+3         3  OE-1 1565.6603 156566.03  386874.66      MU1   1.931562 0.16991382
+4         4   O-1 1975.1655 197516.55  488063.40      MU1   4.927572 0.21340517
+5         5  OE-2 3556.8141 355681.41  878888.76      MU2   3.153808 0.38810201
+6         6   O-2 4532.7467 453274.67 1120041.71      MU2   3.820894 0.48906958
+7         7  OE-3 3383.3656 338336.56  836029.63      MU3   2.594871 0.37061446
+8         8   O-3 2740.7223 274072.23  677232.49      MU3   2.490809 0.29805226
+9         9  OE-4 2507.6910 250769.10  619650.44      MU4   3.720807 0.27520295
+10       10 Penn. 1969.0486 196904.86  486551.90      MU4   2.717525 0.21485187
+                         geometry
+1  POLYGON ((324940.2 4647311,...
+2  POLYGON ((670839.7 4751554,...
+3  POLYGON ((322074.6 4656546,...
+4  POLYGON ((295773.4 4622956,...
+5  POLYGON ((374929.3 4640631,...
+6  POLYGON ((371024 4584031, 3...
+7  POLYGON ((445085.4 4702716,...
+8  POLYGON ((476645.9 4623456,...
+9  POLYGON ((587978.5 4741264,...
+10 POLYGON ((539843.7 4647691,...
+</code></pre></div></div>
+
+<p>We can use the <code class="highlighter-rouge">ncol</code> function to count the number of attributes associated with a spatial object too. Note that the geometry is just another column and counts towards the total.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 9
+</code></pre></div></div>
+
+<p>We can view the individual name of each attribute using the
+<code class="highlighter-rouge">names()</code> function in R:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "OBJECTID"   "NAME"       "SQ_KM"      "HECTARES"   "ACRES"     
+[6] "MGMTUNIT"   "Shape_Leng" "Shape_Area" "geometry"  
+</code></pre></div></div>
+
+<p>We could also view just the first 6 rows
+of attribute values using the <code class="highlighter-rouge">head()</code> function to get a preview of the data:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">head</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Simple feature collection with 6 features and 8 fields
+geometry type:  POLYGON
+dimension:      XY
+bbox:           xmin: 292076.1 ymin: 4582052 xmax: 670839.7 ymax: 4751574
+epsg (SRID):    NA
+proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
+  OBJECTID  NAME     SQ_KM  HECTARES      ACRES MGMTUNIT Shape_Leng Shape_Area
+1        1 Mich.  323.4672  32346.73   79928.76      MU1   1.996955 0.03514546
+2        2  OE-5 1764.0675 176406.75  435901.07      MU5   2.665866 0.19481404
+3        3  OE-1 1565.6603 156566.03  386874.66      MU1   1.931562 0.16991382
+4        4   O-1 1975.1655 197516.55  488063.40      MU1   4.927572 0.21340517
+5        5  OE-2 3556.8141 355681.41  878888.76      MU2   3.153808 0.38810201
+6        6   O-2 4532.7467 453274.67 1120041.71      MU2   3.820894 0.48906958
+                        geometry
+1 POLYGON ((324940.2 4647311,...
+2 POLYGON ((670839.7 4751554,...
+3 POLYGON ((322074.6 4656546,...
+4 POLYGON ((295773.4 4622956,...
+5 POLYGON ((374929.3 4640631,...
+6 POLYGON ((371024 4584031, 3...
+</code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-attributes-for-different-spatial-classes">Challenge: Attributes for Different Spatial Classes</h2>
+
+  <p>Explore the attributes associated with the <code class="highlighter-rouge">point_HARV</code> and <code class="highlighter-rouge">aoi_boundary_HARV</code> spatial objects.</p>
+
+  <ol>
+    <li>How many attributes does each have?</li>
+    <li>Who owns the site in the <code class="highlighter-rouge">point_HARV</code> data object?</li>
+    <li>
+      <p>Which of the following is NOT an attribute of the <code class="highlighter-rouge">point_HARV</code> data object?</p>
+
+      <p>A) Latitude      B) County     C) Country</p>
+    </li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="answers">Answers</h2>
+    <p>1) To find the number of attributes, we use the <code class="highlighter-rouge">ncol()</code> function:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in ncol(point_HARV): object 'point_HARV' not found
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">aoi_boundary_HARV</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in ncol(aoi_boundary_HARV): object 'aoi_boundary_HARV' not found
+</code></pre></div>    </div>
+    <p>2) Ownership information is in a column named <code class="highlighter-rouge">Ownership</code>:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">point_HARV</span><span class="o">$</span><span class="n">Ownership</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'point_HARV' not found
+</code></pre></div>    </div>
+    <p>3) To see a list of all of the attributes, we can use the
+<code class="highlighter-rouge">names()</code> function:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'point_HARV' not found
+</code></pre></div>    </div>
+    <p>“Country” is not an attribute of this object.</p>
+  </blockquote>
+</blockquote>
+
+<h2 id="explore-values-within-one-attribute">Explore Values within One Attribute</h2>
+<p>We can explore individual values stored within a particular attribute.
+Comparing attributes to a spreadsheet or a data frame, this is similar
+to exploring values in a column. We did this with the <code class="highlighter-rouge">gapminder</code> dataframe in <a href="https://datacarpentry.org/r-intro-geospatial/05-data-subsetting/index.html">an earlier lesson</a>. For spatial objects, we can use the same syntax: <code class="highlighter-rouge">objectName$attributeName</code>.</p>
+
+<p>We can see the contents of the <code class="highlighter-rouge">MGMTUNIT</code> field of our lines shapefile:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [1] MU1 MU5 MU1 MU1 MU2 MU2 MU3 MU3 MU4 MU4 MU5
+Levels: MU1 MU2 MU3 MU4 MU5
+</code></pre></div></div>
+
+<p>To see only unique values within the <code class="highlighter-rouge">MGMTUNIT</code> field, we can use the
+<code class="highlighter-rouge">levels()</code> function for extracting the possible values of a
+categorical variable. The special term for categorical variables
+within R is factor. We worked with factors a little bit in <a href="https://datacarpentry.org/r-intro-geospatial/03-data-structures-part1/index.html">an earlier lesson</a>.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "MU1" "MU2" "MU3" "MU4" "MU5"
+</code></pre></div></div>
+
+<h3 id="subset-shapefiles">Subset Shapefiles</h3>
+<p>We can use the <code class="highlighter-rouge">filter()</code> function from <code class="highlighter-rouge">dplyr</code> that we worked with in <a href="https://datacarpentry.org/r-intro-geospatial/06-dplyr">an earlier lesson</a> to select a subset of features
+from a spatial object in R, just like with data frames.</p>
+
+<p>For example, we might be interested only in features that are of <code class="highlighter-rouge">MGMTUNIT</code> “footpath”. Once we subset out this data, we can use it as input to other code so that that code only operates on the footpath lines.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zone_1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"MU1"</span><span class="p">)</span><span class="w">
+</span><span class="n">nrow</span><span class="p">(</span><span class="n">zone_1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 3
+</code></pre></div></div>
+
+<p>Our subsetting operation reduces the <code class="highlighter-rouge">features</code> count to 2. This means
+that only two feature lines in our spatial object have the attribute
+<code class="highlighter-rouge">MGMTUNIT == footpath</code>. We can plot only the footpath lines:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-plot-subset-shapefile-1.png" title="plot of chunk plot-subset-shapefile" alt="plot of chunk plot-subset-shapefile" width="612" style="display: block; margin: auto;" /></p>
+
+<p>There are two features in our footpaths subset. Why does the plot look like
+there is only one feature? Let’s adjust the colors used in our plot. If we have
+2 features in our vector object, we can plot each using a unique color by
+assigning a column name to the color aesthetic (<code class="highlighter-rouge">color =</code>). We use the syntax
+<code class="highlighter-rouge">aes(color = )</code> to do this. We can also alter the default line thickness by
+using the <code class="highlighter-rouge">size =</code> parameter, as the default value of 0.5 can be hard to see.
+Note that size is placed outside of the <code class="highlighter-rouge">aes()</code> function, as we are not
+connecting line thickness to a data variable.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_1</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">OBJECTID</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Polygon ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-plot-subset-shapefile-unique-colors-1.png" title="plot of chunk plot-subset-shapefile-unique-colors" alt="plot of chunk plot-subset-shapefile-unique-colors" width="612" style="display: block; margin: auto;" /></p>
+
+<p>Now, we see that there are in fact two features in our plot!</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-subset-spatial-line-objects-part-1">Challenge: Subset Spatial Line Objects Part 1</h2>
+
+  <p>Subset out all <code class="highlighter-rouge">boardwalk</code> from the lines layer and plot it.</p>
+
+  <blockquote class="solution">
+    <h2 id="answers-1">Answers</h2>
+
+    <p>First we will save an object with only the boardwalk lines:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boardwalk_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"boardwalk"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+    <p>Let’s check how many features there are in this subset:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nrow</span><span class="p">(</span><span class="n">boardwalk_HARV</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0
+</code></pre></div>    </div>
+    <p>Now let’s plot that data:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">boardwalk_HARV</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Boardwalks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p><img src="../fig/rmd-07-harv-boardwalk-map-1.png" title="plot of chunk harv-boardwalk-map" alt="plot of chunk harv-boardwalk-map" width="612" style="display: block; margin: auto;" /></p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-subset-spatial-line-objects-part-2">Challenge: Subset Spatial Line Objects Part 2</h2>
+
+  <p>Subset out all <code class="highlighter-rouge">stone wall</code> features from the lines layer and plot it. For each plot, color each feature using a unique color.</p>
+
+  <blockquote class="solution">
+    <h2 id="answer">Answer</h2>
+
+    <p>First we will save an object with only the stone wall lines
+and check the number of features:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stoneWall_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"stone wall"</span><span class="p">)</span><span class="w">
+</span><span class="n">nrow</span><span class="p">(</span><span class="n">stoneWall_HARV</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0
+</code></pre></div>    </div>
+    <p>Now we can plot the data:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stoneWall_HARV</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">OBJECTID</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wall ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Stonewalls"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p><img src="../fig/rmd-07-harv-stone-wall-map-1.png" title="plot of chunk harv-stone-wall-map" alt="plot of chunk harv-stone-wall-map" width="612" style="display: block; margin: auto;" /></p>
+  </blockquote>
+</blockquote>
+
+<h2 id="customize-plots">Customize Plots</h2>
+
+<p>In the examples above, <code class="highlighter-rouge">ggplot()</code> automatically selected colors for
+each line based on a default color order. If we don’t like those
+default colors, we can create a vector of colors - one for each
+feature. To create this vector we can use the following syntax:</p>
+
+<p><code class="highlighter-rouge">c("color_one", "color_two", "color_three")[object$factor]</code></p>
+
+<p>Note in the above example we have</p>
+
+<ol>
+  <li>a vector of colors - one for each factor value (unique attribute value)</li>
+  <li>the attribute itself (<code class="highlighter-rouge">[object$factor]</code>) of class factor.</li>
+</ol>
+
+<p>First we will check how many unique levels our factor has:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "MU1" "MU2" "MU3" "MU4" "MU5"
+</code></pre></div></div>
+
+<p>Then we can create a pallet of four colors, one for each
+feature in our vector object.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">road_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can tell <code class="highlighter-rouge">ggplot</code> to use these colors when we plot the data.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Unit ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-harv-paths-map-1.png" title="plot of chunk harv-paths-map" alt="plot of chunk harv-paths-map" width="612" style="display: block; margin: auto;" /></p>
+
+<h3 id="adjust-line-width">Adjust Line Width</h3>
+<p>We adjusted line width universally earlier. If we want a unique line width for each factor level or attribute category
+in our spatial object, we can use the same syntax that we used for colors, above.</p>
+
+<p>We already know that we have four different <code class="highlighter-rouge">MGMTUNIT</code> levels in the erie_zones object, so we will set four different line widths.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">line_widths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can use those line widths when we plot the data.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_size_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line_widths</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Line width varies"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-harv-paths-map-wide-1.png" title="plot of chunk harv-paths-map-wide" alt="plot of chunk harv-paths-map-wide" width="612" style="display: block; margin: auto;" /></p>
+
+<p>Note that we could also use <code class="highlighter-rouge">aes(size = MGMTUNIT)</code> to tie the line thickness to the MGMTUNIT variable, so long as we had been careful to set factor levels appropriately. ggplot prints a warning when you do this, because it is not considered a good practice to plot non-spatial data this way.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-plot-line-width-by-attribute">Challenge: Plot Line Width by Attribute</h2>
+
+  <p>In the example above, we set the line widths to be 1, 2, 3, and 4.
+Because R orders factor levels alphabetically by default,
+this gave us a plot where woods roads (the last factor level)
+were the thickest and boardwalks were the thinnest.</p>
+
+  <p>Let’s create another plot where we show the different line types
+with the following thicknesses:</p>
+
+  <ol>
+    <li>woods road size = 6</li>
+    <li>boardwalks size = 1</li>
+    <li>footpath size = 3</li>
+    <li>stone wall size = 2</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="answers-2">Answers</h2>
+
+    <p>First we need to look at the levels of our factor to see
+what order the road types are in:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "MU1" "MU2" "MU3" "MU4" "MU5"
+</code></pre></div>    </div>
+
+    <p>We then can create our <code class="highlighter-rouge">line_width</code> vector setting each of the
+levels to the desired thickness.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">line_width</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>Now we can create our plot.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_size_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line_width</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Line width varies"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Insufficient values in manual scale. 5 needed but only 4 provided.
+</code></pre></div>    </div>
+
+    <p><img src="../fig/rmd-07-harv-path-line-types-1.png" title="plot of chunk harv-path-line-types" alt="plot of chunk harv-path-line-types" width="612" style="display: block; margin: auto;" /></p>
+  </blockquote>
+</blockquote>
+
+<h3 id="add-plot-legend">Add Plot Legend</h3>
+
+<p>We can add a legend to our plot too. When we add a legend, we use the following
+elements to specify labels and colors:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">bottomright</code>: We specify the location of our legend by using a default
+keyword. We could also use <code class="highlighter-rouge">top</code>, <code class="highlighter-rouge">topright</code>, etc.</li>
+  <li><code class="highlighter-rouge">levels(objectName$attributeName)</code>: Label the legend elements using the
+categories of levels in an attribute (e.g., levels(erie_zones$MGMTUNIT) means use
+the levels boardwalk, footpath, etc).</li>
+  <li><code class="highlighter-rouge">fill =</code>: apply unique colors to the boxes in our legend. <code class="highlighter-rouge">palette()</code> is
+the default set of colors that R applies to all plots.</li>
+</ul>
+
+<p>Let’s add a legend to our plot. We will use the <code class="highlighter-rouge">road_colors</code> object
+that we created above to color the legend. We can customize the
+appearance of our legend by manually setting different parameters.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
+          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Default Legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" /></p>
+
+<p>We can change the appearance of our legend by manually setting different parameters.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">legend.text</code>: change the font size</li>
+  <li><code class="highlighter-rouge">legend.box.background</code>: add an outline box</li>
+</ul>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
+          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Modified Legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-modify-legend-plot-1.png" title="plot of chunk modify-legend-plot" alt="plot of chunk modify-legend-plot" width="612" style="display: block; margin: auto;" /></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w"> </span><span class="s2">"rosybrown"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
+          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Pretty Colors"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-07-plot-different-colors-1.png" title="plot of chunk plot-different-colors" alt="plot of chunk plot-different-colors" width="612" style="display: block; margin: auto;" /></p>
+
+<blockquote class="callout">
+  <h2 id="data-tip">Data Tip</h2>
+  <p>You can modify the default R color palette
+using the palette method. For example <code class="highlighter-rouge">palette(rainbow(6))</code> or
+<code class="highlighter-rouge">palette(terrain.colors(6))</code>. You can reset the palette colors using
+<code class="highlighter-rouge">palette("default")</code>!</p>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-plot-lines-by-attribute">Challenge: Plot Lines by Attribute</h2>
+
+  <p>Create a plot that emphasizes only roads where bicycles and horses are allowed.
+To emphasize this, make the lines where bicycles are not allowed THINNER than
+the roads where bicycles are allowed.
+NOTE: this attribute information is located in the <code class="highlighter-rouge">erie_zones$BicyclesHo</code>
+attribute.</p>
+
+  <p>Be sure to add a title and legend to your map. You might consider a color
+palette that has all bike/horse-friendly roads displayed in a bright color. All
+other lines can be black.</p>
+
+  <blockquote class="solution">
+    <h2 id="answers-3">Answers</h2>
+
+    <p>First we need to make sure that the <code class="highlighter-rouge">BicyclesHo</code> attribute is a
+factor and check how many levels it has.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">class</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "NULL"
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NULL
+</code></pre></div>    </div>
+
+    <p>Next, we will create a new object <code class="highlighter-rouge">lines_removeNA</code> that removes missing values.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lines_removeNA</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">[</span><span class="n">na.omit</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">),]</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>In our plot, we will set colors so that only the allowed roads
+are magenta, and we will set line width so that the first
+factor level is thicker than the others.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines_removeNA</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BicyclesHo</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads Where Bikes and Horses Are Allowed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in FUN(X[[i]], ...): object 'BicyclesHo' not found
+</code></pre></div>    </div>
+
+    <p><img src="../fig/rmd-07-harv-paths-bike-horses-1.png" title="plot of chunk harv-paths-bike-horses" alt="plot of chunk harv-paths-bike-horses" width="612" style="display: block; margin: auto;" /></p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-plot-polygon-by-attribute">Challenge: Plot Polygon by Attribute</h2>
+
+  <ol>
+    <li>Create a map of the state boundaries in the United States using the data
+located in your downloaded data folder: <code class="highlighter-rouge">NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014</code>.
+Apply a fill color to each state using its <code class="highlighter-rouge">region</code> value. Add a legend.</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="answers-4">Answers</h2>
+    <p>First we read in the data and check how many levels there are
+in the <code class="highlighter-rouge">region</code> column:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state_boundary_US</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
+</span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Cannot open "data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp"; The file doesn't seem to exist.
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">state_boundary_US</span><span class="o">$</span><span class="n">region</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in levels(state_boundary_US$region): object 'state_boundary_US' not found
+</code></pre></div>    </div>
+    <p>Next we set a color vector with that many items:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"purple"</span><span class="p">,</span><span class="w"> </span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"yellow"</span><span class="p">,</span><span class="w"> </span><span class="s2">"brown"</span><span class="p">,</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+    <p>Now we can create our plot:</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state_boundary_US</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">region</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Contiguous U.S. State Boundaries"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'state_boundary_US' not found
+</code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Spatial objects in <code class="highlighter-rouge">sf</code> are similar to standard data frames and can be manipulated using the same functions.</p>
+</li>
+    
+    <li><p>Almost any feature of a plot can be customized using the various functions and options in the <code class="highlighter-rouge">ggplot2</code> package.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../01-vector-open-shapefile-in-r/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../03-vector-csv-to-shapefile-in-r/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 copyright" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2020
+	by <a href="https://carpentries.org/">The Carpentries</a>
+        <br>
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2016–2018
+	by <a href="https://datacarpentry.org">Data Carpentry</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/02-vector-shapefile-attributes-in-r.Rmd">Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION">Cite</a>
+	/
+	<a href="mailto:stachel2@msu.edu">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,760 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2020-01-14 15:49:42 -0500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/dc/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/dc/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/dc/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/dc/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/dc/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/dc/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/dc/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/dc/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="Data Carpentry - Introduction to Geospatial Raster and Vector Data with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/dc/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/dc/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/dc/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/dc/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/dc/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Introduction to Geospatial Raster and Vector Data with R: Manipulate Raster Data in R</title>
+  </head>
+  <body>
+
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body pre-alpha">
+    This lesson is still being designed and assembled (Pre-Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://datacarpentry.org" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/dc-icon-black.svg" alt="Data Carpentry logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../01-vector-open-shapefile-in-r/index.html">Open and Plot Shapefiles in R</a></li>
+            
+            <li><a href="../02-vector-shapefile-attributes-in-r/index.html">Explore and Plot by Shapefile Attributes</a></li>
+            
+            <li><a href="../03-vector-csv-to-shapefile-in-r/index.html">Convert from .csv to a Shapefile in R</a></li>
+            
+            <li><a href="../04-raster-structure/index.html">Intro to Raster Data in R</a></li>
+            
+            <li><a href="../05-vector-raster-integration/index.html">Manipulate Raster Data in R</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            <li><a href="../discuss/index.html">Discussion</a></li>
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/05-vector-raster-integration.Rmd">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../04-raster-structure/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">Introduction to Geospatial Raster and Vector Data with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Manipulate Raster Data in R</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 40 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How can I crop raster objects to vector objects, and extract the summary of raster pixels?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Crop a raster to the extent of a vector layer.</p>
+</li>
+	
+	<li><p>Extract values from a raster that correspond to a vector file overlay.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Loading required package: sp
+</code></pre></div></div>
+
+<blockquote class="prereq">
+  <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
+
+  <p>See the <a href="">lesson homepage</a> for detailed information about the software,
+data, and other prerequisites you will need to work through the examples in this episode.</p>
+</blockquote>
+
+<p>This episode explains how to crop a raster using the extent of a vector
+shapefile. We will also cover how to extract values from a raster that occur
+within a set of polygons, or in a buffer (surrounding) region around a set of
+points.</p>
+
+<h2 id="crop-a-raster-to-vector-extent">Crop a Raster to Vector Extent</h2>
+
+<p>We often work with spatial layers that have different spatial extents. The
+spatial extent of a shapefile or R spatial object represents the geographic
+“edge” or location that is the furthest north, south east and west. Thus is
+represents the overall geographic coverage of the spatial object.</p>
+
+<p><img src="../images/dc-spatial-vector/spatial_extent.png" alt="Extent illustration" /> Image Source: National
+Ecological Observatory Network (NEON)</p>
+
+<p>The graphic below illustrates the extent of several of the spatial layers that
+we have worked with in this workshop:</p>
+
+<ul>
+  <li>Area of interest (AOI) – blue</li>
+  <li>Roads and trails – purple</li>
+  <li>Vegetation plot locations (marked with white dots)– black</li>
+  <li>A canopy height model (CHM) in GeoTIFF format – green</li>
+</ul>
+
+<p><img src="../fig/rmd-11-compare-data-extents-1.png" title="plot of chunk compare-data-extents" alt="plot of chunk compare-data-extents" width="612" style="display: block; margin: auto;" /></p>
+
+<p>Frequent use cases of cropping a raster file include reducing file size and
+creating maps. Sometimes we have a raster file that is much larger than our
+study area or area of interest. It is often more efficient to crop the
+raster to the extent of our study area to reduce file sizes as we process
+our data. Cropping a raster can also be useful when creating pretty maps so
+that the raster layer matches the extent of the desired vector layers.</p>
+
+<h2 id="crop-a-raster-using-vector-extent">Crop a Raster Using Vector Extent</h2>
+
+<p>We can use the <code class="highlighter-rouge">crop()</code> function to crop a raster to the extent of another
+spatial object. To do this, we need to specify the raster to be cropped and the
+spatial object that will be used to crop the raster. R will use the <code class="highlighter-rouge">extent</code> of
+the spatial object as the cropping boundary.</p>
+
+<p>To illustrate this, we will crop the Canopy Height Model (CHM) to only include the area of interest (AOI). Let’s start by plotting the full extent of the CHM data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use <code class="highlighter-rouge">fill = NA</code> to make the area transparent.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_raster</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg_df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Bathymetry"</span><span class="p">,</span><span class="w"> </span><span class="n">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terrain.colors</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-11-crop-by-vector-extent-1.png" title="plot of chunk crop-by-vector-extent" alt="plot of chunk crop-by-vector-extent" width="612" style="display: block; margin: auto;" /></p>
+
+<p>Now that we have visualized the area of the CHM we want to subset, we can
+perform the cropping operation. We are going to create a new object with only
+the portion of the CHM data that falls within the boundaries of the AOI. The function <code class="highlighter-rouge">crop()</code> is from the raster package and doesn’t know how to deal with <code class="highlighter-rouge">sf</code> objects. Therefore, we first need to convert <code class="highlighter-rouge">erie_outline</code> from a <code class="highlighter-rouge">sf</code> object to “Spatial” object.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_lld_agg_Cropped</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="s2">"Spatial"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now we can plot the cropped CHM data, along with a boundary box showing the full
+CHM extent. However, remember, since this is raster data, we need to convert to
+a data frame in order to plot using <code class="highlighter-rouge">ggplot</code>. To get the boundary box from CHM,
+the <code class="highlighter-rouge">st_bbox()</code> will extract the 4 corners of the rectangle that encompass all
+the features contained in this object. The <code class="highlighter-rouge">st_as_sfc()</code> converts these 4
+coordinates into a polygon that we can plot:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_lld_agg_Cropped_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">erie_lld_agg_Cropped</span><span class="p">,</span><span class="w"> </span><span class="n">xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st_as_sfc</span><span class="p">(</span><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_lld_agg</span><span class="p">)),</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w">
+          </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
+  </span><span class="n">geom_raster</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg_Cropped_df</span><span class="p">,</span><span class="w">
+              </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Canopy Height"</span><span class="p">,</span><span class="w"> </span><span class="n">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terrain.colors</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-11-show-cropped-area-1.png" title="plot of chunk show-cropped-area" alt="plot of chunk show-cropped-area" width="612" style="display: block; margin: auto;" /></p>
+
+<p>The plot above shows that the full CHM extent (plotted in green) is much larger
+than the resulting cropped raster. Our new cropped CHM now has the same extent
+as the <code class="highlighter-rouge">erie_outline</code> object that was used as a crop extent (blue border
+below).</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_raster</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg_Cropped_df</span><span class="p">,</span><span class="w">
+              </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Canopy Height"</span><span class="p">,</span><span class="w"> </span><span class="n">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terrain.colors</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-11-view-crop-extent-1.png" title="plot of chunk view-crop-extent" alt="plot of chunk view-crop-extent" width="612" style="display: block; margin: auto;" /></p>
+
+<p>We can look at the extent of all of our other objects for this field site.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_lld_agg</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   xmin    ymin    xmax    ymax 
+ 245701 4536578  754369 4767088 
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_lld_agg_Cropped</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   xmin    ymin    xmax    ymax 
+ 285721 4580238  682057 4753028 
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     xmin      ymin      xmax      ymax 
+ 285728.3 4580281.1  682178.4 4752964.4 
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">fish_locations</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     xmin      ymin      xmax      ymax 
+ 319537.0 4609584.5  439213.4 4679545.8 
+</code></pre></div></div>
+
+<p>Our plot location extent is not the largest but is larger than the AOI Boundary.
+It would be nice to see our vegetation plot locations plotted on top of the
+Canopy Height Model information.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-crop-to-vector-points-extent">Challenge: Crop to Vector Points Extent</h2>
+
+  <ol>
+    <li>Crop the Canopy Height Model to the extent of the study plot locations.</li>
+    <li>Plot the vegetation plot location points on top of the Canopy Height Model.</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="answers">Answers</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CHM_plots_HARVcrop</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as</span><span class="p">(</span><span class="n">fish_locations</span><span class="p">,</span><span class="w"> </span><span class="s2">"Spatial"</span><span class="p">))</span><span class="w">
+
+</span><span class="n">CHM_plots_HARVcrop_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">CHM_plots_HARVcrop</span><span class="p">,</span><span class="w"> </span><span class="n">xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_raster</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CHM_plots_HARVcrop_df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HARV_chmCrop</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Canopy Height"</span><span class="p">,</span><span class="w"> </span><span class="n">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terrain.colors</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fish_locations</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in FUN(X[[i]], ...): object 'HARV_chmCrop' not found
+</code></pre></div>    </div>
+
+    <p><img src="../fig/rmd-11-challenge-code-crop-raster-points-1.png" title="plot of chunk challenge-code-crop-raster-points" alt="plot of chunk challenge-code-crop-raster-points" width="612" style="display: block; margin: auto;" /></p>
+  </blockquote>
+</blockquote>
+
+<p>In the plot above, created in the challenge, all the vegetation plot locations
+(black dots) appear on the Canopy Height Model raster layer except for one. One is
+situated on the blank space to the left of the map. Why?</p>
+
+<p>A modification of the first figure in this episode is below, showing the
+relative extents of all the spatial objects. Notice that the extent for our
+vegetation plot layer (black) extends further west than the extent of our CHM
+raster (bright green). The <code class="highlighter-rouge">crop()</code> function will make a raster extent smaller, it
+will not expand the extent in areas where there are no data. Thus, the extent of our
+vegetation plot layer will still extend further west than the extent of our
+(cropped) raster data (dark green).</p>
+
+<p><img src="../fig/rmd-11-repeat-compare-data-extents-1.png" title="plot of chunk repeat-compare-data-extents" alt="plot of chunk repeat-compare-data-extents" width="612" style="display: block; margin: auto;" /></p>
+
+<h2 id="define-an-extent">Define an Extent</h2>
+
+<p>So far, we have used a shapefile to crop the extent of a raster dataset.
+Alternatively, we can also the <code class="highlighter-rouge">extent()</code> function to define an extent to be
+used as a cropping boundary. This creates a new object of class extent. Here we
+will provide the <code class="highlighter-rouge">extent()</code> function our xmin, xmax, ymin, and ymax (in that
+order).</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_extent</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extent</span><span class="p">(</span><span class="m">285729</span><span class="p">,</span><span class="w"> </span><span class="m">385729</span><span class="p">,</span><span class="w"> </span><span class="m">4580282</span><span class="p">,</span><span class="w"> </span><span class="m">4752964</span><span class="p">)</span><span class="w">
+</span><span class="nf">class</span><span class="p">(</span><span class="n">new_extent</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Extent"
+attr(,"package")
+[1] "raster"
+</code></pre></div></div>
+
+<blockquote class="callout">
+  <h2 id="data-tip">Data Tip</h2>
+
+  <p>The extent can be created from a numeric vector (as shown above), a matrix, or
+a list. For more details see the <code class="highlighter-rouge">extent()</code> function help file
+(<code class="highlighter-rouge">?raster::extent</code>).</p>
+</blockquote>
+
+<p>Once we have defined our new extent, we can use the <code class="highlighter-rouge">crop()</code> function to crop
+our raster to this extent object.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_lld_agg_manual_cropped</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_extent</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>To plot this data using <code class="highlighter-rouge">ggplot()</code> we need to convert it to a dataframe.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_lld_agg_manual_cropped_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">erie_lld_agg_manual_cropped</span><span class="p">,</span><span class="w"> 
+                                                </span><span class="n">xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now we can plot this cropped data. We will show the AOI boundary on the same plot for scale.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_raster</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg_manual_cropped_df</span><span class="p">,</span><span class="w">
+              </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Canopy Height"</span><span class="p">,</span><span class="w"> </span><span class="n">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terrain.colors</span><span class="p">(</span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../fig/rmd-11-show-manual-crop-area-1.png" title="plot of chunk show-manual-crop-area" alt="plot of chunk show-manual-crop-area" width="612" style="display: block; margin: auto;" /></p>
+
+<h2 id="extract-raster-pixels-values-using-vector-polygons">Extract Raster Pixels Values Using Vector Polygons</h2>
+
+<p>Often we want to extract values from a raster layer for particular locations -
+for example, Lake Erie management zones that we are sampling. We can extract all pixel values within 20m of our x,y point of interest. These can then be summarized into some value of interest (e.g. mean, maximum, total).</p>
+
+<p><img src="../images//BufferSquare.png" alt="Extract raster information using a polygon boundary. From https://www.neonscience.org/sites/default/files/images/spatialData/BufferSquare.png" /></p>
+
+<p>To do this in R, we use the <code class="highlighter-rouge">extract()</code> function. The <code class="highlighter-rouge">extract()</code> function
+requires:</p>
+
+<ul>
+  <li>The raster that we wish to extract values from,</li>
+  <li>The vector layer containing the polygons that we wish to use as a boundary or
+boundaries,</li>
+  <li>we can tell it to store the output values in a data frame using
+<code class="highlighter-rouge">df = TRUE</code>. (This is optional, the default is to return a list, NOT a data frame.) .</li>
+</ul>
+
+<p>We will begin by extracting all bathymetry pixel values located within our
+<code class="highlighter-rouge">erie_outline</code> polygon.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_bathy</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extract</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w">
+                       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="s2">"Spatial"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="n">str</span><span class="p">(</span><span class="n">erie_bathy</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'data.frame':	253082 obs. of  2 variables:
+ $ ID          : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ erie_lld_agg: num  -1.933 -2.968 -2.79 -3.23 0.333 ...
+</code></pre></div></div>
+
+<p>When we use the <code class="highlighter-rouge">extract()</code> function, R extracts the value for each pixel located
+within the boundary of the polygon being used to perform the extraction - in
+this case the <code class="highlighter-rouge">erie_outline</code> object (a single polygon). Here, the
+function extracted values from 18,450 pixels.</p>
+
+<p>We can create a histogram of tree height values within the boundary to better
+understand the structure or height distribution of trees at our site. We will
+use the column <code class="highlighter-rouge">layer</code> from our data frame as our x values, as this column
+represents the tree heights for each pixel.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_bathy</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Histogram of CHM Height Values (m)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">"Tree Height"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Frequency of Pixels"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre></div></div>
+
+<p><img src="../fig/rmd-11-view-extract-histogram-1.png" title="plot of chunk view-extract-histogram" alt="plot of chunk view-extract-histogram" width="612" style="display: block; margin: auto;" /></p>
+
+<p>We can also use the
+<code class="highlighter-rouge">summary()</code> function to view descriptive statistics including min, max, and mean
+height values. These values help us better understand vegetation at our field
+site.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">erie_bathy</span><span class="o">$</span><span class="n">erie_lld_agg</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ -62.48  -21.50  -18.62  -17.94  -11.58   37.32 
+</code></pre></div></div>
+
+<h2 id="summarize-extracted-raster-values">Summarize Extracted Raster Values</h2>
+
+<p>We often want to extract summary values from a raster. We can tell R the type
+of summary statistic we are interested in using the <code class="highlighter-rouge">fun =</code> argument. Let’s extract
+a mean height value for our AOI. Because we are extracting only a single number, we will
+not use the <code class="highlighter-rouge">df = TRUE</code> argument.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean_erie_bathy_AOI</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extract</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w">
+                              </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="s2">"Spatial"</span><span class="p">),</span><span class="w">
+                              </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mean_erie_bathy_AOI</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          [,1]
+[1,] -17.93646
+</code></pre></div></div>
+
+<p>It appears that the mean height value, extracted from our LiDAR data derived
+canopy height model is 22.43 meters.</p>
+
+<h2 id="extract-data-using-xy-locations">Extract Data using x,y Locations</h2>
+
+<p>We can also extract pixel values from a raster by defining a buffer or area
+surrounding individual point locations using the <code class="highlighter-rouge">extract()</code> function. To do this
+we define the summary argument (<code class="highlighter-rouge">fun = mean</code>) and the buffer distance (<code class="highlighter-rouge">buffer = 20</code>)
+which represents the radius of a circular region around each point. By default, the units of the
+buffer are the same units as the data’s CRS. All pixels that are touched by the buffer region are included in the extract.</p>
+
+<p><img src="../images/BufferCircular.png" alt="Extract raster information using a buffer region. From: https://www.neonscience.org/sites/default/files/images/spatialData/BufferCircular.png" /></p>
+
+<p>Source: National Ecological Observatory Network (NEON).</p>
+
+<p>Let’s put this into practice by figuring out the mean tree height in the
+20m around the tower location (<code class="highlighter-rouge">point_HARV</code>). Because we are extracting only a single number, we
+will not use the <code class="highlighter-rouge">df = TRUE</code> argument.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean_erie_zone1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extract</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_lld_agg</span><span class="p">,</span><span class="w">
+                           </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">[</span><span class="m">1</span><span class="p">,],</span><span class="w"> </span><span class="s2">"Spatial"</span><span class="p">),</span><span class="w">
+                           </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mean_erie_zone1</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          [,1]
+[1,] -3.633091
+</code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-extract-raster-height-values-for-plot-locations">Challenge: Extract Raster Height Values For Plot Locations</h2>
+
+  <p>1) Use the plot locations object (<code class="highlighter-rouge">fish_locations</code>)
+to extract an average tree height for the
+area within 20m of each vegetation plot location in the study area. Because there are 
+multiple plot locations, there will be multiple averages returned, so the <code class="highlighter-rouge">df = TRUE</code> 
+argument should be used.</p>
+
+  <p>2) Create a plot showing the mean tree height of each area.</p>
+
+  <blockquote class="solution">
+    <h2 id="answers-1">Answers</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># extract data at each plot location</span><span class="w">
+</span><span class="c1"># mean_erie_bathy_plots_HARV &lt;- extract(x = erie_lld_agg,</span><span class="w">
+</span><span class="c1">#                                y = as(fish_locations, "Spatial"),</span><span class="w">
+</span><span class="c1">#                               buffer=20,</span><span class="w">
+</span><span class="c1">#                               fun = mean,</span><span class="w">
+</span><span class="c1">#                               df = TRUE)</span><span class="w">
+
+</span><span class="c1"># view data</span><span class="w">
+</span><span class="c1"># mean_erie_bathy_plots_HARV</span><span class="w">
+
+</span><span class="c1"># plot data</span><span class="w">
+</span><span class="c1"># ggplot(data = mean_erie_bathy_plots_HARV, aes(ID, HARV_chmCrop)) + </span><span class="w">
+</span><span class="c1">#  geom_col() + </span><span class="w">
+</span><span class="c1">#  ggtitle("Mean Tree Height at each Plot") + </span><span class="w">
+</span><span class="c1">#  xlab("Plot ID") + </span><span class="w">
+</span><span class="c1">#  ylab("Tree Height (m)")</span><span class="w">
+</span></code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Use the <code class="highlighter-rouge">crop()</code> function to crop a raster object.</p>
+</li>
+    
+    <li><p>Use the <code class="highlighter-rouge">extract()</code> function to extract pixels from a raster object that fall within a particular extent boundary.</p>
+</li>
+    
+    <li><p>Use the <code class="highlighter-rouge">extent()</code> function to define an extent.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../04-raster-structure/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 copyright" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2020
+	by <a href="https://carpentries.org/">The Carpentries</a>
+        <br>
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2016–2018
+	by <a href="https://datacarpentry.org">Data Carpentry</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/05-vector-raster-integration.Rmd">Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION">Cite</a>
+	/
+	<a href="mailto:stachel2@msu.edu">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

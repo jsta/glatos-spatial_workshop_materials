@@ -8,7 +8,7 @@ if(!file.exists("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")){
   # setwd("_episodes_rmd")
   DSM_HARV <-
     raster("data/Lake_Erie_bathymetry (raster)/erie_lld.tif")
-  DSM_HARV <- aggregate(DSM_HARV)
+  DSM_HARV <- aggregate(DSM_HARV, fact = 4)
   DSM_HARV <- raster::projectRaster(DSM_HARV, crs = sf::st_crs(26917)$proj4string)
   writeRaster(DSM_HARV, "data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif",
               overwrite = TRUE)

@@ -15,10 +15,10 @@ keypoints:
 source: Rmd
 ---
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 source("../bin/chunk-options.R")
 source("../setup.R")
-knitr_fig_path("06-")
+knitr_fig_path("01-")
 ```
 
 ```{r load-libraries, echo = FALSE, results='hide', warning = FALSE, message = FALSE}
@@ -140,7 +140,7 @@ We're going to customize our boundary plot by setting the size, color, and fill
 for our plot. When plotting `sf` objects with `ggplot2`, you do not need to use 
 the `coord_sf()` coordinate system.
 
-```{r plot-shapefile}
+```{r plot-shapefile, fig.height=5.5}
 library(ggplot2)
 
 ggplot() + 

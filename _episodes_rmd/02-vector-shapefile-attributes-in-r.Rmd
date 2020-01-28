@@ -14,10 +14,10 @@ keypoints:
 source: Rmd
 ---
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 source("../bin/chunk-options.R")
 source("../setup.R")
-knitr_fig_path("07-")
+knitr_fig_path("02-")
 ```
 
 ```{r load-libraries, echo=FALSE, results='hide', message=FALSE}
@@ -43,20 +43,19 @@ erie_outline <- st_read(
 
 This episode continues our discussion of shapefile attributes and 
 covers how to work with shapefile attributes in R. It covers how
-to identify and query shapefile
-attributes, as well as how to subset shapefiles by specific attribute values.
-Finally, we will learn how to plot a shapefile according to a set of attribute
-values.
+to identify and query shapefile attributes, as well as how to subset shapefiles 
+by specific attribute values. Finally, we will learn how to plot a shapefile 
+according to a set of attribute values.
 
 ## Load the Data
 We will continue using the `sf`, `raster` and `ggplot2` packages in this episode. Make sure that you have these packages loaded. We will
 continue to work with the three shapefiles that we loaded in the
-[Open and Plot Shapefiles in R]({{site.baseurl}}/06-vector-open-shapefile-in-r/) episode.
+[Open and Plot Shapefiles in R]({{site.baseurl}}/01-vector-open-shapefile-in-r/) episode.
 
 ## Query Shapefile Metadata
 
 As we discussed in the
-[Open and Plot Shapefiles in R]({{site.baseurl}}/06-vector-open-shapefile-in-r/) episode,
+[Open and Plot Shapefiles in R]({{site.baseurl}}/01-vector-open-shapefile-in-r/) episode,
 we can view metadata associated with an R object using:
 
 * `st_geometry_type()` - The type of vector data stored in the object.
@@ -65,8 +64,14 @@ we can view metadata associated with an R object using:
 of the object.
 * `st_crs()` - The CRS (spatial projection) of the data.
 
-We started to explore our `point_HARV` object in the previous episode.
-To see a summary of all of the metadata associated with our `point_HARV` object, we can view the object with `View(point_HARV)` or print a summary of the object itself to the console.
+We started to explore our `erie_outline` object in the previous episode. Here, we will look at a more complex object representing Lake Erie management zones.
+
+```{r Import-Shapefile}
+erie_zones <- st_read(
+  "data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp")
+```
+
+To see a summary of all of the metadata associated with our `erie_zones` object, we can view the object with `View(erie_zones)` or print a summary of the object itself to the console.
 
 ```{r view-object}
 erie_zones
@@ -94,40 +99,34 @@ head(erie_zones)
 
 > ## Challenge: Attributes for Different Spatial Classes
 >
-> Explore the attributes associated with the `point_HARV` and `aoi_boundary_HARV` spatial objects.
+> Explore the attributes associated with the `erie_zones` spatial object.
 >
-> 1. How many attributes does each have?
-> 2. Who owns the site in the `point_HARV` data object?
-> 3. Which of the following is NOT an attribute of the `point_HARV` data object?
+> 1. How many attributes does it have?
+> 2. Which of the following is NOT an attribute of the `erie_outline` data object?
 >
->     A) Latitude      B) County     C) Country
+>     A) NAME      B) MGMTUNIT     C) MGMTZONE
 >
 > > ## Answers
 > > 1) To find the number of attributes, we use the `ncol()` function: 
 > > 
 > > ```{r}
-> > ncol(point_HARV)
-> > ncol(aoi_boundary_HARV)
+> > ncol(erie_zones)
 > > ```
-> > 2) Ownership information is in a column named `Ownership`: 
-> > ```{r}
-> > point_HARV$Ownership
-> > ```
-> > 3) To see a list of all of the attributes, we can use the
+> > 2) To see a list of all of the attributes, we can use the
 > > `names()` function: 
 > > ```{r}
-> > names(point_HARV)
+> > names(erie_zones)
 > > ```
-> > "Country" is not an attribute of this object. 
+> > "MGMTZONE" is not an attribute of this object. 
 > {: .solution}
 {: .challenge}
 
 ## Explore Values within One Attribute
 We can explore individual values stored within a particular attribute.
 Comparing attributes to a spreadsheet or a data frame, this is similar
-to exploring values in a column. We did this with the `gapminder` dataframe in [an earlier lesson](https://datacarpentry.org/r-intro-geospatial/05-data-subsetting/index.html). For spatial objects, we can use the same syntax: `objectName$attributeName`.
+to exploring values in a column. For spatial objects, we can use the syntax: `objectName$attributeName`.
 
-We can see the contents of the `MGMTUNIT` field of our lines shapefile:
+We can see the contents of the `MGMTUNIT` field of our vector object:
 
 ```{r explore-attribute-values }
 erie_zones$MGMTUNIT
@@ -136,36 +135,36 @@ erie_zones$MGMTUNIT
 To see only unique values within the `MGMTUNIT` field, we can use the
 `levels()` function for extracting the possible values of a
 categorical variable. The special term for categorical variables
-within R is factor. We worked with factors a little bit in [an earlier lesson](https://datacarpentry.org/r-intro-geospatial/03-data-structures-part1/index.html).
+within R is factor.
 
 ```{r explor-attribute-values-factor }
 levels(erie_zones$MGMTUNIT)
 ```
 
 ### Subset Shapefiles
-We can use the `filter()` function from `dplyr` that we worked with in [an earlier lesson](https://datacarpentry.org/r-intro-geospatial/06-dplyr) to select a subset of features
+We can use the `filter()` function from `dplyr` to select a subset of features
 from a spatial object in R, just like with data frames.
 
-For example, we might be interested only in features that are of `MGMTUNIT` "footpath". Once we subset out this data, we can use it as input to other code so that that code only operates on the footpath lines.
+For example, we might be interested only in features that are of `MGMTUNIT` "MU5". Once we subset out this data, we can use it as input to other code so  that code only operates on the MU5 management zones.
 
 ```{r Subsetting-shapefiles}
-zone_1 <- erie_zones %>% 
-  filter(MGMTUNIT == "MU1")
-nrow(zone_1)
+zone_5 <- erie_zones %>% 
+  dplyr::filter(MGMTUNIT == "MU5")
+nrow(zone_5)
 ```
 
 Our subsetting operation reduces the `features` count to 2. This means
-that only two feature lines in our spatial object have the attribute
-`MGMTUNIT == footpath`. We can plot only the footpath lines:
+that only two feature polygons in our spatial object have the attribute
+`MGMTUNIT == MU5`. We can plot only these polygons:
 
 ```{r plot-subset-shapefile}
 ggplot() + 
-  geom_sf(data = zone_1) +
-  ggtitle("Walleye Management Units", subtitle = "Zone 1") + 
+  geom_sf(data = zone_5) +
+  ggtitle("Walleye Management Units", subtitle = "Zone 5") + 
   coord_sf()
 ```
 
-There are two features in our footpaths subset. Why does the plot look like
+There are two features in our subset. Why does the plot look like
 there is only one feature? Let's adjust the colors used in our plot. If we have
 2 features in our vector object, we can plot each using a unique color by
 assigning a column name to the color aesthetic (`color =`). We use the syntax
@@ -176,34 +175,34 @@ connecting line thickness to a data variable.
 
 ```{r plot-subset-shapefile-unique-colors }
 ggplot() + 
-  geom_sf(data = zone_1, aes(color = factor(OBJECTID)), size = 1.5) +
+  geom_sf(data = zone_5, aes(color = factor(OBJECTID)), size = 1.5) +
   labs(color = 'Polygon ID') +
-  ggtitle("Walleye Management Units", subtitle = "Zone 1") + 
+  ggtitle("Walleye Management Units", subtitle = "Zone 5") + 
   coord_sf()
 ```
 
 Now, we see that there are in fact two features in our plot!
 
-> ## Challenge: Subset Spatial Line Objects Part 1
+> ## Challenge: Subset Spatial Objects Part 1
 > 
-> Subset out all `boardwalk` from the lines layer and plot it.
+> Subset out all `erie_zones` that have an area greater than 3000 square kilometers and plot it.
 >
 > > ## Answers
 > > 
-> > First we will save an object with only the boardwalk lines:
+> > First we will filter our object by the SQ_KM attribute:
 > > ```{r}
-> > boardwalk_HARV <- erie_zones %>% 
-> >   filter(MGMTUNIT == "boardwalk")
+> > erie_zones_big <- erie_zones %>% 
+> >   dplyr::filter(SQ_KM > 3000)
 > > ```
 > > Let's check how many features there are in this subset: 
 > > ```{r}
-> > nrow(boardwalk_HARV)
+> > nrow(erie_zones_big)
 > > ```
 > > Now let's plot that data: 
 > > ```{r harv-boardwalk-map}
 > > ggplot() + 
-> >   geom_sf(data = boardwalk_HARV, size = 1.5) +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Boardwalks") + 
+> >   geom_sf(data = erie_zones_big, size = 1.5) +
+> >   ggtitle("Big Management Zones") + 
 > >   coord_sf()
 > > ```
 > {: .solution}
@@ -257,7 +256,7 @@ Then we can create a pallet of four colors, one for each
 feature in our vector object.
 
 ```{r}
-road_colors <- c("blue", "green", "navy", "purple", "orange")
+zone_colors <- c("blue", "green", "navy", "purple", "orange")
 ```
 
 We can tell `ggplot` to use these colors when we plot the data.
@@ -265,9 +264,9 @@ We can tell `ggplot` to use these colors when we plot the data.
 ```{r harv-paths-map}
 ggplot() +
   geom_sf(data = erie_zones, aes(color = MGMTUNIT)) + 
-  scale_color_manual(values = road_colors) +
+  scale_color_manual(values = zone_colors) +
   labs(color = 'Unit ID') +
-  ggtitle("Walleye Management Units", subtitle = "Roads & Trails") + 
+  ggtitle("Walleye Management Units", subtitle = "colored by zone") + 
   coord_sf()
 ```
 
@@ -275,7 +274,7 @@ ggplot() +
 We adjusted line width universally earlier. If we want a unique line width for each factor level or attribute category
 in our spatial object, we can use the same syntax that we used for colors, above.
 
-We already know that we have four different `MGMTUNIT` levels in the erie_zones object, so we will set four different line widths.
+We already know that we have five different `MGMTUNIT` levels in the erie_zones object, so we will set five different line widths.
 
 ```{r line-width-unique }
 line_widths <- c(1, 2, 3, 4, 5)
@@ -286,29 +285,28 @@ We can use those line widths when we plot the data.
 ```{r harv-paths-map-wide}
 ggplot() +
   geom_sf(data = erie_zones, aes(color = MGMTUNIT, size = MGMTUNIT)) + 
-  scale_color_manual(values = road_colors) +
-  labs(color = 'Road Type') +
+  scale_color_manual(values = zone_colors) +
+  labs(color = 'Unit ID') +
   scale_size_manual(values = line_widths) +
-  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
+  ggtitle("Walleye Management Units", subtitle = "line width varies by zone") + 
   coord_sf()
 ```
-
-Note that we could also use `aes(size = MGMTUNIT)` to tie the line thickness to the MGMTUNIT variable, so long as we had been careful to set factor levels appropriately. ggplot prints a warning when you do this, because it is not considered a good practice to plot non-spatial data this way.
 
 > ## Challenge: Plot Line Width by Attribute
 > 
 > In the example above, we set the line widths to be 1, 2, 3, and 4.
 > Because R orders factor levels alphabetically by default,
-> this gave us a plot where woods roads (the last factor level)
-> were the thickest and boardwalks were the thinnest.
+> this gave us a plot where zone 5 (the last factor level)
+> was the thickest and zone 1 was the thinnest.
 >
 > Let's create another plot where we show the different line types
 > with the following thicknesses:
 >
-> 1. woods road size = 6
-> 2. boardwalks size = 1
-> 3. footpath size = 3
-> 4. stone wall size = 2
+> 1. zone 1 = 6
+> 2. zone 2 = 1
+> 3. zone 3 = 3
+> 4. zone 4 = 2
+> 5. zone 5 = 1
 > 
 > > ## Answers
 > > 
@@ -323,7 +321,7 @@ Note that we could also use `aes(size = MGMTUNIT)` to tie the line thickness to 
 > > levels to the desired thickness.
 > >
 > > ```{r}
-> > line_width <- c(1, 3, 2, 6)
+> > line_width <- c(6, 1, 3, 2, 1)
 > > ```
 > >
 > > Now we can create our plot.
@@ -332,7 +330,7 @@ Note that we could also use `aes(size = MGMTUNIT)` to tie the line thickness to 
 > > ggplot() +
 > >   geom_sf(data = erie_zones, aes(size = MGMTUNIT)) +
 > >   scale_size_manual(values = line_width) +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
+> >   ggtitle("Walleye Management Units", subtitle = "line width varies by zone manually") +  
 > >   coord_sf()
 > > ```
 > {: .solution}
@@ -352,17 +350,16 @@ the levels boardwalk, footpath, etc).
 * `fill =`: apply unique colors to the boxes in our legend. `palette()` is
 the default set of colors that R applies to all plots.
 
-Let's add a legend to our plot. We will use the `road_colors` object
+Let's add a legend to our plot. We will use the `zone_colors` object
 that we created above to color the legend. We can customize the
 appearance of our legend by manually setting different parameters.
 
 ```{r add-legend-to-plot }
 ggplot() + 
   geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = road_colors) +
-  labs(color = 'Road Type') + 
-  ggtitle("NEON Harvard Forest Field Site", 
-          subtitle = "Roads & Trails - Default Legend") + 
+  scale_color_manual(values = zone_colors) +
+  labs(color = 'Zone ID') + 
+  ggtitle("Walleye Management Units", subtitle = "default legend") +  
   coord_sf()
 ```
 
@@ -374,12 +371,11 @@ We can change the appearance of our legend by manually setting different paramet
 ```{r modify-legend-plot }
 ggplot() + 
   geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = road_colors) + 
-  labs(color = 'Road Type') +
+  scale_color_manual(values = zone_colors) + 
+  labs(color = 'Zone ID') +
   theme(legend.text = element_text(size = 20), 
         legend.box.background = element_rect(size = 1)) + 
-  ggtitle("NEON Harvard Forest Field Site", 
-          subtitle = "Roads & Trails - Modified Legend") +
+  ggtitle("Walleye Management Units", subtitle = "modified legend") +  
   coord_sf()
 ```
 
@@ -389,11 +385,10 @@ new_colors <- c("springgreen", "blue", "magenta", "orange", "rosybrown")
 ggplot() + 
   geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) + 
   scale_color_manual(values = new_colors) +
-  labs(color = 'Road Type') +
+  labs(color = 'Zone ID') +
   theme(legend.text = element_text(size = 20), 
         legend.box.background = element_rect(size = 1)) + 
-  ggtitle("NEON Harvard Forest Field Site", 
-          subtitle = "Roads & Trails - Pretty Colors") +
+  ggtitle("Walleye Management Units", subtitle = "pretty colors") +  
   coord_sf()
 ```
 

@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-01-14 15:49:42 -0500">
+    <meta http-equiv="last-modified" content="2020-01-29 09:25:07 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -266,9 +266,6 @@
 
 </blockquote>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Loading required package: sp
-</code></pre></div></div>
-
 <blockquote class="prereq">
   <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
   <p>See the <a href="">lesson homepage</a> for detailed information about the software,
@@ -277,20 +274,19 @@ data, and other prerequisites you will need to work through the examples in this
 
 <p>This episode continues our discussion of shapefile attributes and 
 covers how to work with shapefile attributes in R. It covers how
-to identify and query shapefile
-attributes, as well as how to subset shapefiles by specific attribute values.
-Finally, we will learn how to plot a shapefile according to a set of attribute
-values.</p>
+to identify and query shapefile attributes, as well as how to subset shapefiles 
+by specific attribute values. Finally, we will learn how to plot a shapefile 
+according to a set of attribute values.</p>
 
 <h2 id="load-the-data">Load the Data</h2>
 <p>We will continue using the <code class="highlighter-rouge">sf</code>, <code class="highlighter-rouge">raster</code> and <code class="highlighter-rouge">ggplot2</code> packages in this episode. Make sure that you have these packages loaded. We will
 continue to work with the three shapefiles that we loaded in the
-<a href="/06-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode.</p>
+<a href="/01-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode.</p>
 
 <h2 id="query-shapefile-metadata">Query Shapefile Metadata</h2>
 
 <p>As we discussed in the
-<a href="/06-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode,
+<a href="/01-vector-open-shapefile-in-r/">Open and Plot Shapefiles in R</a> episode,
 we can view metadata associated with an R object using:</p>
 
 <ul>
@@ -301,8 +297,22 @@ of the object.</li>
   <li><code class="highlighter-rouge">st_crs()</code> - The CRS (spatial projection) of the data.</li>
 </ul>
 
-<p>We started to explore our <code class="highlighter-rouge">point_HARV</code> object in the previous episode.
-To see a summary of all of the metadata associated with our <code class="highlighter-rouge">point_HARV</code> object, we can view the object with <code class="highlighter-rouge">View(point_HARV)</code> or print a summary of the object itself to the console.</p>
+<p>We started to explore our <code class="highlighter-rouge">erie_outline</code> object in the previous episode. Here, we will look at a more complex object representing Lake Erie management zones.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `Lake_Erie_Walleye_Management_Units_utm' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp' using driver `ESRI Shapefile'
+Simple feature collection with 11 features and 8 fields
+geometry type:  POLYGON
+dimension:      XY
+bbox:           xmin: 292076.1 ymin: 4582052 xmax: 675959 ymax: 4751574
+epsg (SRID):    NA
+proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
+</code></pre></div></div>
+
+<p>To see a summary of all of the metadata associated with our <code class="highlighter-rouge">erie_zones</code> object, we can view the object with <code class="highlighter-rouge">View(erie_zones)</code> or print a summary of the object itself to the console.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="w">
 </span></code></pre></div></div>
@@ -387,15 +397,14 @@ proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
 <blockquote class="challenge">
   <h2 id="challenge-attributes-for-different-spatial-classes">Challenge: Attributes for Different Spatial Classes</h2>
 
-  <p>Explore the attributes associated with the <code class="highlighter-rouge">point_HARV</code> and <code class="highlighter-rouge">aoi_boundary_HARV</code> spatial objects.</p>
+  <p>Explore the attributes associated with the <code class="highlighter-rouge">erie_zones</code> spatial object.</p>
 
   <ol>
-    <li>How many attributes does each have?</li>
-    <li>Who owns the site in the <code class="highlighter-rouge">point_HARV</code> data object?</li>
+    <li>How many attributes does it have?</li>
     <li>
-      <p>Which of the following is NOT an attribute of the <code class="highlighter-rouge">point_HARV</code> data object?</p>
+      <p>Which of the following is NOT an attribute of the <code class="highlighter-rouge">erie_outline</code> data object?</p>
 
-      <p>A) Latitude      B) County     C) Country</p>
+      <p>A) NAME      B) MGMTUNIT     C) MGMTZONE</p>
     </li>
   </ol>
 
@@ -403,42 +412,30 @@ proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
     <h2 id="answers">Answers</h2>
     <p>1) To find the number of attributes, we use the <code class="highlighter-rouge">ncol()</code> function:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in ncol(point_HARV): object 'point_HARV' not found
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 9
 </code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ncol</span><span class="p">(</span><span class="n">aoi_boundary_HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in ncol(aoi_boundary_HARV): object 'aoi_boundary_HARV' not found
-</code></pre></div>    </div>
-    <p>2) Ownership information is in a column named <code class="highlighter-rouge">Ownership</code>:</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">point_HARV</span><span class="o">$</span><span class="n">Ownership</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'point_HARV' not found
-</code></pre></div>    </div>
-    <p>3) To see a list of all of the attributes, we can use the
+    <p>2) To see a list of all of the attributes, we can use the
 <code class="highlighter-rouge">names()</code> function:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">erie_zones</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'point_HARV' not found
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "OBJECTID"   "NAME"       "SQ_KM"      "HECTARES"   "ACRES"     
+[6] "MGMTUNIT"   "Shape_Leng" "Shape_Area" "geometry"  
 </code></pre></div>    </div>
-    <p>“Country” is not an attribute of this object.</p>
+    <p>“MGMTZONE” is not an attribute of this object.</p>
   </blockquote>
 </blockquote>
 
 <h2 id="explore-values-within-one-attribute">Explore Values within One Attribute</h2>
 <p>We can explore individual values stored within a particular attribute.
 Comparing attributes to a spreadsheet or a data frame, this is similar
-to exploring values in a column. We did this with the <code class="highlighter-rouge">gapminder</code> dataframe in <a href="https://datacarpentry.org/r-intro-geospatial/05-data-subsetting/index.html">an earlier lesson</a>. For spatial objects, we can use the same syntax: <code class="highlighter-rouge">objectName$attributeName</code>.</p>
+to exploring values in a column. For spatial objects, we can use the syntax: <code class="highlighter-rouge">objectName$attributeName</code>.</p>
 
-<p>We can see the contents of the <code class="highlighter-rouge">MGMTUNIT</code> field of our lines shapefile:</p>
+<p>We can see the contents of the <code class="highlighter-rouge">MGMTUNIT</code> field of our vector object:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="w">
 </span></code></pre></div></div>
@@ -450,7 +447,7 @@ Levels: MU1 MU2 MU3 MU4 MU5
 <p>To see only unique values within the <code class="highlighter-rouge">MGMTUNIT</code> field, we can use the
 <code class="highlighter-rouge">levels()</code> function for extracting the possible values of a
 categorical variable. The special term for categorical variables
-within R is factor. We worked with factors a little bit in <a href="https://datacarpentry.org/r-intro-geospatial/03-data-structures-part1/index.html">an earlier lesson</a>.</p>
+within R is factor.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">MGMTUNIT</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
@@ -459,32 +456,32 @@ within R is factor. We worked with factors a little bit in <a href="https://data
 </code></pre></div></div>
 
 <h3 id="subset-shapefiles">Subset Shapefiles</h3>
-<p>We can use the <code class="highlighter-rouge">filter()</code> function from <code class="highlighter-rouge">dplyr</code> that we worked with in <a href="https://datacarpentry.org/r-intro-geospatial/06-dplyr">an earlier lesson</a> to select a subset of features
+<p>We can use the <code class="highlighter-rouge">filter()</code> function from <code class="highlighter-rouge">dplyr</code> to select a subset of features
 from a spatial object in R, just like with data frames.</p>
 
-<p>For example, we might be interested only in features that are of <code class="highlighter-rouge">MGMTUNIT</code> “footpath”. Once we subset out this data, we can use it as input to other code so that that code only operates on the footpath lines.</p>
+<p>For example, we might be interested only in features that are of <code class="highlighter-rouge">MGMTUNIT</code> “MU5”. Once we subset out this data, we can use it as input to other code so  that code only operates on the MU5 management zones.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zone_1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
-  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"MU1"</span><span class="p">)</span><span class="w">
-</span><span class="n">nrow</span><span class="p">(</span><span class="n">zone_1</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zone_5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"MU5"</span><span class="p">)</span><span class="w">
+</span><span class="n">nrow</span><span class="p">(</span><span class="n">zone_5</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 3
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 2
 </code></pre></div></div>
 
 <p>Our subsetting operation reduces the <code class="highlighter-rouge">features</code> count to 2. This means
-that only two feature lines in our spatial object have the attribute
-<code class="highlighter-rouge">MGMTUNIT == footpath</code>. We can plot only the footpath lines:</p>
+that only two feature polygons in our spatial object have the attribute
+<code class="highlighter-rouge">MGMTUNIT == MU5</code>. We can plot only these polygons:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 5"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-plot-subset-shapefile-1.png" title="plot of chunk plot-subset-shapefile" alt="plot of chunk plot-subset-shapefile" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-plot-subset-shapefile-1.png" title="plot of chunk plot-subset-shapefile" alt="plot of chunk plot-subset-shapefile" width="612" style="display: block; margin: auto;" /></p>
 
-<p>There are two features in our footpaths subset. Why does the plot look like
+<p>There are two features in our subset. Why does the plot look like
 there is only one feature? Let’s adjust the colors used in our plot. If we have
 2 features in our vector object, we can plot each using a unique color by
 assigning a column name to the color aesthetic (<code class="highlighter-rouge">color =</code>). We use the syntax
@@ -494,45 +491,45 @@ Note that size is placed outside of the <code class="highlighter-rouge">aes()</c
 connecting line thickness to a data variable.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_1</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">OBJECTID</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_5</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">OBJECTID</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Polygon ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Zone 5"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-plot-subset-shapefile-unique-colors-1.png" title="plot of chunk plot-subset-shapefile-unique-colors" alt="plot of chunk plot-subset-shapefile-unique-colors" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-plot-subset-shapefile-unique-colors-1.png" title="plot of chunk plot-subset-shapefile-unique-colors" alt="plot of chunk plot-subset-shapefile-unique-colors" width="612" style="display: block; margin: auto;" /></p>
 
 <p>Now, we see that there are in fact two features in our plot!</p>
 
 <blockquote class="challenge">
-  <h2 id="challenge-subset-spatial-line-objects-part-1">Challenge: Subset Spatial Line Objects Part 1</h2>
+  <h2 id="challenge-subset-spatial-objects-part-1">Challenge: Subset Spatial Objects Part 1</h2>
 
-  <p>Subset out all <code class="highlighter-rouge">boardwalk</code> from the lines layer and plot it.</p>
+  <p>Subset out all <code class="highlighter-rouge">erie_zones</code> that have an area greater than 3000 square kilometers and plot it.</p>
 
   <blockquote class="solution">
     <h2 id="answers-1">Answers</h2>
 
-    <p>First we will save an object with only the boardwalk lines:</p>
+    <p>First we will filter our object by the SQ_KM attribute:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boardwalk_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
-  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"boardwalk"</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones_big</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="n">SQ_KM</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">3000</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
     <p>Let’s check how many features there are in this subset:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nrow</span><span class="p">(</span><span class="n">boardwalk_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nrow</span><span class="p">(</span><span class="n">erie_zones_big</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 3
 </code></pre></div>    </div>
     <p>Now let’s plot that data:</p>
 
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">boardwalk_HARV</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Boardwalks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones_big</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Big Management Zones"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <p><img src="../fig/rmd-07-harv-boardwalk-map-1.png" title="plot of chunk harv-boardwalk-map" alt="plot of chunk harv-boardwalk-map" width="612" style="display: block; margin: auto;" /></p>
+    <p><img src="../fig/rmd-02-harv-boardwalk-map-1.png" title="plot of chunk harv-boardwalk-map" alt="plot of chunk harv-boardwalk-map" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 
@@ -563,7 +560,7 @@ and check the number of features:</p>
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <p><img src="../fig/rmd-07-harv-stone-wall-map-1.png" title="plot of chunk harv-stone-wall-map" alt="plot of chunk harv-stone-wall-map" width="612" style="display: block; margin: auto;" /></p>
+    <p><img src="../fig/rmd-02-harv-stone-wall-map-1.png" title="plot of chunk harv-stone-wall-map" alt="plot of chunk harv-stone-wall-map" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 
@@ -594,26 +591,26 @@ feature. To create this vector we can use the following syntax:</p>
 <p>Then we can create a pallet of four colors, one for each
 feature in our vector object.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">road_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zone_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>We can tell <code class="highlighter-rouge">ggplot</code> to use these colors when we plot the data.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Unit ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"colored by zone"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-harv-paths-map-1.png" title="plot of chunk harv-paths-map" alt="plot of chunk harv-paths-map" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-harv-paths-map-1.png" title="plot of chunk harv-paths-map" alt="plot of chunk harv-paths-map" width="612" style="display: block; margin: auto;" /></p>
 
 <h3 id="adjust-line-width">Adjust Line Width</h3>
 <p>We adjusted line width universally earlier. If we want a unique line width for each factor level or attribute category
 in our spatial object, we can use the same syntax that we used for colors, above.</p>
 
-<p>We already know that we have four different <code class="highlighter-rouge">MGMTUNIT</code> levels in the erie_zones object, so we will set four different line widths.</p>
+<p>We already know that we have five different <code class="highlighter-rouge">MGMTUNIT</code> levels in the erie_zones object, so we will set five different line widths.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">line_widths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
@@ -622,33 +619,32 @@ in our spatial object, we can use the same syntax that we used for colors, above
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Unit ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">scale_size_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line_widths</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Line width varies"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"line width varies by zone"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-harv-paths-map-wide-1.png" title="plot of chunk harv-paths-map-wide" alt="plot of chunk harv-paths-map-wide" width="612" style="display: block; margin: auto;" /></p>
-
-<p>Note that we could also use <code class="highlighter-rouge">aes(size = MGMTUNIT)</code> to tie the line thickness to the MGMTUNIT variable, so long as we had been careful to set factor levels appropriately. ggplot prints a warning when you do this, because it is not considered a good practice to plot non-spatial data this way.</p>
+<p><img src="../fig/rmd-02-harv-paths-map-wide-1.png" title="plot of chunk harv-paths-map-wide" alt="plot of chunk harv-paths-map-wide" width="612" style="display: block; margin: auto;" /></p>
 
 <blockquote class="challenge">
   <h2 id="challenge-plot-line-width-by-attribute">Challenge: Plot Line Width by Attribute</h2>
 
   <p>In the example above, we set the line widths to be 1, 2, 3, and 4.
 Because R orders factor levels alphabetically by default,
-this gave us a plot where woods roads (the last factor level)
-were the thickest and boardwalks were the thinnest.</p>
+this gave us a plot where zone 5 (the last factor level)
+was the thickest and zone 1 was the thinnest.</p>
 
   <p>Let’s create another plot where we show the different line types
 with the following thicknesses:</p>
 
   <ol>
-    <li>woods road size = 6</li>
-    <li>boardwalks size = 1</li>
-    <li>footpath size = 3</li>
-    <li>stone wall size = 2</li>
+    <li>zone 1 = 6</li>
+    <li>zone 2 = 1</li>
+    <li>zone 3 = 3</li>
+    <li>zone 4 = 2</li>
+    <li>zone 5 = 1</li>
   </ol>
 
   <blockquote class="solution">
@@ -666,7 +662,7 @@ what order the road types are in:</p>
     <p>We then can create our <code class="highlighter-rouge">line_width</code> vector setting each of the
 levels to the desired thickness.</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">line_width</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">line_width</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
     <p>Now we can create our plot.</p>
@@ -674,14 +670,11 @@ levels to the desired thickness.</p>
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">scale_size_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line_width</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Line width varies"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"line width varies by zone manually"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Insufficient values in manual scale. 5 needed but only 4 provided.
-</code></pre></div>    </div>
-
-    <p><img src="../fig/rmd-07-harv-path-line-types-1.png" title="plot of chunk harv-path-line-types" alt="plot of chunk harv-path-line-types" width="612" style="display: block; margin: auto;" /></p>
+    <p><img src="../fig/rmd-02-harv-path-line-types-1.png" title="plot of chunk harv-path-line-types" alt="plot of chunk harv-path-line-types" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 
@@ -700,20 +693,19 @@ the levels boardwalk, footpath, etc).</li>
 the default set of colors that R applies to all plots.</li>
 </ul>
 
-<p>Let’s add a legend to our plot. We will use the <code class="highlighter-rouge">road_colors</code> object
+<p>Let’s add a legend to our plot. We will use the <code class="highlighter-rouge">zone_colors</code> object
 that we created above to color the legend. We can customize the
 appearance of our legend by manually setting different parameters.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
-          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Default Legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"default legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" /></p>
 
 <p>We can change the appearance of our legend by manually setting different parameters.</p>
 
@@ -724,31 +716,29 @@ appearance of our legend by manually setting different parameters.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">road_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
         </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
-          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Modified Legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"modified legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-modify-legend-plot-1.png" title="plot of chunk modify-legend-plot" alt="plot of chunk modify-legend-plot" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-modify-legend-plot-1.png" title="plot of chunk modify-legend-plot" alt="plot of chunk modify-legend-plot" width="612" style="display: block; margin: auto;" /></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w"> </span><span class="s2">"rosybrown"</span><span class="p">)</span><span class="w">
 
 </span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Road Type'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
         </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> 
-          </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads &amp; Trails - Pretty Colors"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"pretty colors"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-07-plot-different-colors-1.png" title="plot of chunk plot-different-colors" alt="plot of chunk plot-different-colors" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-02-plot-different-colors-1.png" title="plot of chunk plot-different-colors" alt="plot of chunk plot-different-colors" width="612" style="display: block; margin: auto;" /></p>
 
 <blockquote class="callout">
   <h2 id="data-tip">Data Tip</h2>
@@ -809,7 +799,7 @@ factor level is thicker than the others.</p>
     <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in FUN(X[[i]], ...): object 'BicyclesHo' not found
 </code></pre></div>    </div>
 
-    <p><img src="../fig/rmd-07-harv-paths-bike-horses-1.png" title="plot of chunk harv-paths-bike-horses" alt="plot of chunk harv-paths-bike-horses" width="612" style="display: block; margin: auto;" /></p>
+    <p><img src="../fig/rmd-02-harv-paths-bike-horses-1.png" title="plot of chunk harv-paths-bike-horses" alt="plot of chunk harv-paths-bike-horses" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 

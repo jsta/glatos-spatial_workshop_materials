@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-01-14 15:49:42 -0500">
+    <meta http-equiv="last-modified" content="2020-01-29 09:25:07 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -266,9 +266,6 @@
 
 </blockquote>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Loading required package: sp
-</code></pre></div></div>
-
 <blockquote class="prereq">
   <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
   <p>See the <a href="">lesson homepage</a> for detailed information about the software,
@@ -285,7 +282,7 @@ together and combine them into a single plot.</p>
 
 <p>We will use the <code class="highlighter-rouge">sf</code> package to work with vector data in R. Notice that the
 <code class="highlighter-rouge">rgdal</code> package automatically loads when <code class="highlighter-rouge">sf</code> is loaded. We will also use the
-<code class="highlighter-rouge">raster</code> package, which has been loaded in previous episodes, so we can explore raster and vector spatial metadata using similar commands. Make sure you have the <code class="highlighter-rouge">sf</code> library loaded.</p>
+<code class="highlighter-rouge">raster</code> package, which we will work with in more detail in later episodes, so we can explore raster and vector spatial metadata using similar commands. Make sure you have the <code class="highlighter-rouge">sf</code> library loaded.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
@@ -318,8 +315,8 @@ proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
 
 <h2 id="shapefile-metadata--attributes">Shapefile Metadata &amp; Attributes</h2>
 
-<p>When we import the <code class="highlighter-rouge">HarClip_UTMZ18</code> shapefile layer into R (as our
-<code class="highlighter-rouge">aoi_boundary_HARV</code> object), the <code class="highlighter-rouge">st_read()</code> function automatically stores
+<p>When we import the <code class="highlighter-rouge">Lake_Erie_Shoreline</code> shapefile layer into R (as our
+<code class="highlighter-rouge">erie_outline</code> object), the <code class="highlighter-rouge">st_read()</code> function automatically stores
 information about the data. We are particularly interested in the geospatial
 metadata, describing the format, CRS, extent, and other components of
 the vector data, and the attributes which describe properties associated
@@ -327,7 +324,7 @@ with each individual vector object.</p>
 
 <blockquote class="callout">
   <h2 id="data-tip">Data Tip</h2>
-  <p>The <a href="/07-vector-shapefile-attributes-in-r/">Explore and Plot by Shapefile Attributes</a>
+  <p>The <a href="/02-vector-shapefile-attributes-in-r/">Explore and Plot by Shapefile Attributes</a>
 episode provides more information on both metadata and attributes
 and using attributes to subset and plot data.</p>
 </blockquote>
@@ -343,8 +340,9 @@ the shapefile. Note that the spatial extent for a shapefile represents the combi
 extent for all spatial objects in the shapefile.</li>
 </ol>
 
-<p>We can view shapefile metadata using the <code class="highlighter-rouge">st_geometry_type()</code>, <code class="highlighter-rouge">st_crs()</code> and <code class="highlighter-rouge">st_bbox()</code> functions. First, let’s view the
-geometry type for our AOI shapefile:</p>
+<p>We can view shapefile metadata using the <code class="highlighter-rouge">st_geometry_type()</code>, <code class="highlighter-rouge">st_crs()</code> and 
+<code class="highlighter-rouge">st_bbox()</code> functions. First, let’s view the geometry type for our outline 
+shapefile:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_geometry_type</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
@@ -353,7 +351,7 @@ geometry type for our AOI shapefile:</p>
 18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE
 </code></pre></div></div>
 
-<p>Our <code class="highlighter-rouge">aoi_boundary_HARV</code> is a polygon object. The 18 levels shown below
+<p>Our <code class="highlighter-rouge">erie_outline</code> is a polygon object. The 18 levels shown below
 our output list the possible categories of the geometry type. 
 Now let’s check what CRS this file data is in:</p>
 
@@ -367,7 +365,7 @@ Now let’s check what CRS this file data is in:</p>
 
 <p>Our data in the CRS <strong>UTM zone 17N</strong>. The CRS is critical to 
 interpreting the object’s extent values as it specifies units. To find
-the extent of our AOI, we can use the <code class="highlighter-rouge">st_bbox()</code> function:</p>
+the extent of our outline, we can use the <code class="highlighter-rouge">st_bbox()</code> function:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_outline</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
@@ -376,9 +374,10 @@ the extent of our AOI, we can use the <code class="highlighter-rouge">st_bbox()<
  285728.3 4580281.1  682178.4 4752964.4 
 </code></pre></div></div>
 
-<p>The spatial extent of a shapefile or R spatial object represents the geographic “edge” or location that is the furthest north, south east and west. Thus is represents the overall geographic coverage of the spatial object. Image Source: National Ecological Observatory Network (NEON).</p>
+<p>The spatial extent of a shapefile or R spatial object represents the geographic “edge” or location that is the furthest north, south east and west. Thus is represents the overall geographic coverage of the spatial object.</p>
 
-<p><img src="../images/dc-spatial-vector/spatial_extent.png" alt="Extent image" /></p>
+<p><img src="../images/dc-spatial-vector/spatial_extent.png" alt="Extent image" />
+Image Source: National Ecological Observatory Network (NEON).</p>
 
 <p>Lastly, we can view all of the metadata and attributes for this shapefile object
 by printing it to the screen:</p>
@@ -399,48 +398,49 @@ proj4string:    +proj=utm +zone=17 +ellps=GRS80 +units=m +no_defs
 </code></pre></div></div>
 
 <h2 id="spatial-data-attributes">Spatial Data Attributes</h2>
-<p>We introduced the idea of spatial data attributes in <a href="https://datacarpentry.org/organization-geospatial/02-intro-vector-data">an earlier lesson</a>. Now we will explore
-how to use spatial data attributes stored in our data to plot
-different features.</p>
+<p>Now we will explore how to use spatial data attributes stored in our data to 
+plot different features.</p>
 
 <h2 id="plot-a-shapefile">Plot a Shapefile</h2>
 
-<p>Next, let’s visualize the data in our <code class="highlighter-rouge">sf</code> object using the <code class="highlighter-rouge">ggplot</code>
-package. Unlike with raster data, we do not need to convert vector
-data to a dataframe before plotting with <code class="highlighter-rouge">ggplot</code>.</p>
+<p>Let’s visualize the data in our <code class="highlighter-rouge">sf</code> object using the <code class="highlighter-rouge">ggplot</code> package. Unlike 
+with raster data, we do not need to convert vector data to a dataframe before 
+plotting with <code class="highlighter-rouge">ggplot</code>.</p>
 
-<p>We’re going to customize our boundary plot by setting the 
-size, color, and fill for our plot. When plotting <code class="highlighter-rouge">sf</code> objects with <code class="highlighter-rouge">ggplot2</code>, you need to use the <code class="highlighter-rouge">coord_sf()</code> coordinate system.</p>
+<p>We’re going to customize our boundary plot by setting the size, color, and fill 
+for our plot. When plotting <code class="highlighter-rouge">sf</code> objects with <code class="highlighter-rouge">ggplot2</code>, you do not need to use 
+the <code class="highlighter-rouge">coord_sf()</code> coordinate system.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"cyan1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_outline</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"cyan1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Lake Erie Outline"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-06-plot-shapefile-1.png" title="plot of chunk plot-shapefile" alt="plot of chunk plot-shapefile" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-01-plot-shapefile-1.png" title="plot of chunk plot-shapefile" alt="plot of chunk plot-shapefile" width="612" style="display: block; margin: auto;" /></p>
 
 <blockquote class="challenge">
   <h2 id="challenge-import-line-and-point-shapefiles">Challenge: Import Line and Point Shapefiles</h2>
 
-  <p>Using the steps above, import the HARV_roads and HARVtower_UTM18N layers into
-R. Call the HARV_roads object <code class="highlighter-rouge">lines_HARV</code> and the HARVtower_UTM18N
-<code class="highlighter-rouge">point_HARV</code>.</p>
+  <p>Using the steps above, import the bathymetry_lake_erie layer into
+R. Call the object <code class="highlighter-rouge">erie_bathy</code>.</p>
 
   <p>Answer the following questions:</p>
 
   <ol>
     <li>
-      <p>What type of R spatial object is created when you import each layer?</p>
+      <p>What type of R spatial object is created when you import the layer?</p>
     </li>
     <li>
-      <p>What is the CRS and extent for each object?</p>
+      <p>What is the CRS and extent of the object?</p>
     </li>
     <li>
-      <p>Do the files contain points, lines, or polygons?</p>
+      <p>Does the file contain points, lines, or polygons?</p>
     </li>
     <li>
-      <p>How many spatial objects are in each file?</p>
+      <p>How many spatial objects are in the file?</p>
     </li>
   </ol>
 
@@ -449,58 +449,43 @@ R. Call the HARV_roads object <code class="highlighter-rouge">lines_HARV</code> 
 
     <p>First we import the data:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lines_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp"</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_bathy</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/Lake_Erie_bathymetric_contours/bathymetry_lake_erie.shp"</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Cannot open "data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp"; The file doesn't seem to exist.
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">point_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp"</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Cannot open "data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp"; The file doesn't seem to exist.
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `bathymetry_lake_erie' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_bathymetric_contours/bathymetry_lake_erie.shp' using driver `ESRI Shapefile'
+Simple feature collection with 8764 features and 3 fields
+geometry type:  LINESTRING
+dimension:      XY
+bbox:           xmin: -83.57167 ymin: 41.36359 xmax: -78.7695 ymax: 42.9103
+epsg (SRID):    4326
+proj4string:    +proj=longlat +datum=WGS84 +no_defs
 </code></pre></div>    </div>
 
     <p>Then we check its class:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">class</span><span class="p">(</span><span class="n">lines_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">class</span><span class="p">(</span><span class="n">erie_bathy</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'lines_HARV' not found
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "sf"         "data.frame"
 </code></pre></div>    </div>
+    <p>We also check the CRS and extent of the object:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">class</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_crs</span><span class="p">(</span><span class="n">erie_bathy</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'point_HARV' not found
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Coordinate Reference System:
+  EPSG: 4326 
+  proj4string: "+proj=longlat +datum=WGS84 +no_defs"
 </code></pre></div>    </div>
-    <p>We also check the CRS and extent of each object:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_crs</span><span class="p">(</span><span class="n">lines_HARV</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">erie_bathy</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_crs(lines_HARV): object 'lines_HARV' not found
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     xmin      ymin      xmax      ymax 
+-83.57167  41.36359 -78.76950  42.91030 
 </code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">lines_HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_bbox(lines_HARV): object 'lines_HARV' not found
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_crs</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_crs(point_HARV): object 'point_HARV' not found
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_bbox</span><span class="p">(</span><span class="n">point_HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_bbox(point_HARV): object 'point_HARV' not found
-</code></pre></div>    </div>
-    <p>To see the number of objects in each file, we can look at the output from when we read these objects into R. 
-<code class="highlighter-rouge">lines_HARV</code> contains 13 features (all lines) and <code class="highlighter-rouge">point_HARV</code> contains only one point.</p>
+    <p>To see the number of objects in the file, we can look at the output from when we read these objects into R. 
+<code class="highlighter-rouge">erie_bathy</code> contains 8764 features (all lines).</p>
   </blockquote>
 </blockquote>
 

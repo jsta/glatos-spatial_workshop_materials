@@ -77,19 +77,19 @@ data before we read that data into R. It is ideal to do this before importing
 your data.
 
 ```{r view-attributes-gdal}
-GDALinfo("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+GDALinfo("data/erie_bathy.tif")
 ```
 
 If you wish to store this information in R, you can do the following:
 
 ```{r 'capout'}
-erie_lld_agg_info <- capture.output(
-  GDALinfo("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+erie_bathy_info <- capture.output(
+  GDALinfo("data/erie_bathy.tif")
 )
 ```
 
 Each line of text that was printed to the console is now stored as an element of
-the character vector `erie_lld_agg_info`. We will be exploring this data throughout this 
+the character vector `erie_bathy_info`. We will be exploring this data throughout this 
 episode. By the end of this episode, you will be able to explain and understand the output above.
 
 ## Open a Raster in R
@@ -108,10 +108,9 @@ function to open a raster in R.
 First we will load our raster file into R and view the data structure.
 
 ```{r}
-erie_lld_agg <- 
-  raster("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+erie_bathy <- raster("data/erie_bathy.tif")
 
-erie_lld_agg
+erie_bathy
 ```
 
 The information above includes a report of min and max values, but no other data
@@ -119,7 +118,7 @@ range statistics. Similar to other R data structures like vectors and data frame
 columns, descriptive statistics for raster data can be retrieved like
 
 ```{r 'rast_struct'}
-summary(erie_lld_agg)
+summary(erie_bathy)
 ```
 
 but note the warning - unless you force R to calculate these statistics using
@@ -128,7 +127,7 @@ calculate from that instead. To force calculation on more, or even all values,
 you can use the parameter `maxsamp`:
 
 ```{r }
-summary(erie_lld_agg, maxsamp = ncell(erie_lld_agg))
+summary(erie_bathy, maxsamp = ncell(erie_bathy))
 ```
 
 You may not see major differences in summary stats as `maxsamp` increases,
@@ -140,14 +139,14 @@ lesson](https://datacarpentry.org/r-intro-geospatial/04-data-structures-part2/in
 The `raster` package has an built-in function for conversion to a plotable dataframe.
 
 ```{r}
-erie_lld_agg_df <- as.data.frame(erie_lld_agg, xy = TRUE)
+erie_bathy_df <- as.data.frame(erie_bathy, xy = TRUE)
 ```
 
 Now when we view the structure of our data, we will see a standard
 dataframe format.
 
 ```{r}
-str(erie_lld_agg_df)
+str(erie_bathy_df)
 ```
 
 We can use `ggplot()` to plot this data. We will set the color scale to `scale_fill_viridis_c`
@@ -156,9 +155,8 @@ which is a color-blindness friendly color scale. We will also use the `coord_qui
 ```{r ggplot-raster, fig.cap="Raster plot with ggplot2 using the viridis color scale"}
 
 ggplot() +
-    geom_raster(data = erie_lld_agg_df , aes(x = x, y = y, fill = erie_lld_agg)) +
-    scale_fill_viridis_c() +
-    coord_quickmap()
+    geom_raster(data = erie_bathy_df , aes(x = x, y = y, fill = erie_bathy)) +
+    scale_fill_viridis_c()
 ```
 > ## Plotting Tip
 >
@@ -171,7 +169,7 @@ ggplot() +
 > > ## Show plot
 > >  See `?plot` for more arguments to customize the plot
 > > ```{r, eval = TRUE}
-> > plot(erie_lld_agg)
+> > plot(erie_bathy)
 > > ```
 > {: .solution}
 {: .callout}
@@ -192,7 +190,7 @@ We can view the CRS string associated with our R object using the`crs()`
 function.
 
 ```{r view-resolution-units}
-crs(erie_lld_agg)
+crs(erie_bathy)
 ```
 
 > ## Challenge
@@ -212,7 +210,7 @@ each `+` we see the CRS element being defined. For example projection (`proj=`)
 and zone (`zone=`).
 
 ### UTM Proj4 String
-Our projection string for `erie_lld_agg` specifies the UTM projection as follows:
+Our projection string for `erie_bathy` specifies the UTM projection as follows:
 
 `+proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs`
 
@@ -238,9 +236,9 @@ Raster statistics are often calculated and embedded in a GeoTIFF for us. We
 can view these values:
 
 ```{r view-min-max }
-minValue(erie_lld_agg)
+minValue(erie_bathy)
 
-maxValue(erie_lld_agg)
+maxValue(erie_bathy)
 ```
 
 > ## Data Tip - Set min and max values
@@ -249,15 +247,15 @@ maxValue(erie_lld_agg)
 > `setMinMax()` function.
 >
 > ```{r, eval = FALSE}
-> erie_lld_agg <- setMinMax(erie_lld_agg)
+> erie_bathy <- setMinMax(erie_bathy)
 > ```
 {: .callout}
 
-We can see that the elevation at our site ranges from `r minValue(erie_lld_agg)`m to
-`r maxValue(erie_lld_agg)`m.
+We can see that the elevation at our site ranges from `r minValue(erie_bathy)`m to
+`r maxValue(erie_bathy)`m.
 
 ## Raster Bands
-The Digital Surface Model object (`erie_lld_agg`) that we've been working with is a
+The Digital Surface Model object (`erie_bathy`) that we've been working with is a
 single band raster. This means that there is only one dataset stored in the
 raster: surface elevation in meters for one time period.
 
@@ -268,7 +266,7 @@ function to import one single band from a single or multi-band raster. We can
 view the number of bands in a raster using the `nlayers()` function.
 
 ```{r view-raster-bands }
-nlayers(erie_lld_agg)
+nlayers(erie_bathy)
 ```
 
 However, raster data can also be multi-band, meaning that one raster file
@@ -294,7 +292,7 @@ did not collect data in these areas.
 ```{r demonstrate-no-data-black-ggplot, echo=FALSE }
 # no data demonstration code - not being taught
 # Use stack function to read in all bands
-RGB_stack <- erie_lld_agg
+RGB_stack <- erie_bathy
 
 # aggregate cells from 0.25m to 2m for plotting to speed up the lesson and 
 # save memory
@@ -305,11 +303,10 @@ RGB_2m_df  <- as.data.frame(RGB_2m, xy = TRUE)
 # make colnames easy to ref
 
 ggplot() +
- geom_raster(data = RGB_2m_df , aes(x = x, y = y, fill = erie_lld_agg),
+ geom_raster(data = RGB_2m_df , aes(x = x, y = y, fill = erie_bathy),
              show.legend = FALSE) +
   scale_fill_gradient(low = 'black', high = "red") +
-  ggtitle("Lake Erie", subtitle = 'Bathymetry') +
-  coord_quickmap()
+  ggtitle("Lake Erie", subtitle = 'Bathymetry')
 ```
 
 In the next image, the black edges have been assigned `NoDataValue`. R doesn't
@@ -324,11 +321,9 @@ spaces where there is no data.
 RGB_2m_df_nd <- RGB_2m_df
 
 ggplot() +
-  geom_raster(data = RGB_2m_df_nd, aes(x = x, y = y, fill = erie_lld_agg)) +
+  geom_raster(data = RGB_2m_df_nd, aes(x = x, y = y, fill = erie_bathy)) +
   scale_fill_identity() +
-  ggtitle("Lake Erie", subtitle = "Missing data") +
-  coord_quickmap()
-
+  ggtitle("Lake Erie", subtitle = "Missing data")
 ```
 
 If your raster already has `NA` values set correctly but you aren't sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset's coverage. For instance, sometimes data can be missing where a sensor could not 'see' its target data, and you may wish to locate that missing data and fill it in.
@@ -341,10 +336,9 @@ To highlight `NA` values in ggplot, alter the `scale_fill_*()` layer to contain 
 RGB_2m_nas <- RGB_2m_df_nd
 
 ggplot() +
-  geom_raster(data = RGB_2m_nas, aes(x = x, y = y, fill = erie_lld_agg)) + 
+  geom_raster(data = RGB_2m_nas, aes(x = x, y = y, fill = erie_bathy)) + 
   scale_fill_gradient(low = 'grey90', high = 'blue', na.value = 'deeppink') +
-  ggtitle("Orthographic Imagery", subtitle = "Blue band, with NA highlighted") +
-  coord_quickmap()
+  ggtitle("Orthographic Imagery", subtitle = "Blue band, with NA highlighted")
 
 # memory saving
 rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas)
@@ -370,12 +364,12 @@ opens up the raster, it will assign each instance of the value to `NA`. Values
 of `NA` will be ignored by R as demonstrated above.
 
 > ## Challenge
-> Use the output from the `GDALinfo()` function to find out what `NoDataValue` is used for our `erie_lld_agg` dataset.
+> Use the output from the `GDALinfo()` function to find out what `NoDataValue` is used for our `erie_bathy` dataset.
 >
 > > ## Answers
 > >
 > > ```{r}
-> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_lld_agg.tif")
+> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_bathy.tif")
 > > ```
 > >
 > > `NoDataValue` are encoded as -9999.
@@ -409,18 +403,17 @@ elevation values over 400m with a contrasting colour.
 
 ```{r demo-bad-data-highlighting, echo = FALSE, message = FALSE, warning = FALSE}
 # reclassify raster to ok/not ok
-DSM_highvals <- reclassify(erie_lld_agg, rcl = c(0, 400, NA_integer_, 400, 420, 1L),
+DSM_highvals <- reclassify(erie_bathy, rcl = c(0, 400, NA_integer_, 400, 420, 1L),
                            include.lowest = TRUE)
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
-DSM_highvals <- DSM_highvals[!is.na(DSM_highvals$erie_lld_agg), ]
+DSM_highvals <- DSM_highvals[!is.na(DSM_highvals$erie_bathy), ]
 
 ggplot() +
-  geom_raster(data = erie_lld_agg_df, aes(x = x, y = y, fill = erie_lld_agg)) + 
+  geom_raster(data = erie_bathy_df, aes(x = x, y = y, fill = erie_bathy)) + 
   scale_fill_viridis_c() + 
   # use reclassified raster data as an annotation
-  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$erie_lld_agg)) +
-  ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
-  coord_quickmap()
+  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$erie_bathy)) +
+  ggtitle("Elevation Data", subtitle = "Highlighting values > 400m")
 
 # memory saving
 rm(DSM_highvals)
@@ -435,7 +428,7 @@ useful in identifying outliers and bad data values in our raster data.
 ```{r view-raster-histogram }
 
 ggplot() +
-    geom_histogram(data = erie_lld_agg_df, aes(erie_lld_agg))
+    geom_histogram(data = erie_bathy_df, aes(erie_bathy))
 
 ```
 
@@ -450,7 +443,7 @@ by using the `bins` value in the `geom_histogram()` function.
 
 ``` {r view-raster-histogram2}
 ggplot() +
-    geom_histogram(data = erie_lld_agg_df, aes(erie_lld_agg), bins = 40)
+    geom_histogram(data = erie_bathy_df, aes(erie_bathy), bins = 40)
 
 ```
 
@@ -463,7 +456,7 @@ no bad data values in this particular raster.
 >
 > Use `GDALinfo()` to determine the following about the `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif` file:
 >
-> 1. Does this file have the same CRS as `erie_lld_agg`?
+> 1. Does this file have the same CRS as `erie_bathy`?
 > 2. What is the `NoDataValue`?
 > 3. What is resolution of the raster data?
 > 4. How large would a 5x5 pixel area be on the Earth's surface?
@@ -477,7 +470,7 @@ no bad data values in this particular raster.
 > > ``` {r challenge-code-attributes}
 GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 > > ```
-> > 1. If this file has the same CRS as erie_lld_agg?  Yes: UTM Zone 18, WGS84, meters.
+> > 1. If this file has the same CRS as erie_bathy?  Yes: UTM Zone 18, WGS84, meters.
 > > 2. What format `NoDataValues` take?  -9999
 > > 3. The resolution of the raster data? 1x1
 > > 4. How large a 5x5 pixel area would be? 5mx5m How? We are given resolution of 1x1 and units in meters, therefore resolution of 5x5 means 5x5m.

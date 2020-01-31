@@ -25,6 +25,27 @@ source: Rmd
 
 
 
+~~~
+## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .local(.Object, ...) :
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+~~~
+{: .error}
+
+
+
 
 
 > ## Things You’ll Need To Complete This Episode
@@ -36,14 +57,14 @@ This episode will review how to import spatial points stored in `.csv` (Comma Se
 
 ## Spatial Data in Text Format
 
-The `Two_Interpolated_Fish_Tracks_utm.csv` file contains `x, y` (point) locations from a fish tracking study in Lake Erie.
+The `fish_tracks.csv` file contains `x, y` (point) locations from a fish tracking study in Lake Erie.
 
 We would like to:
 
-* Create a map of these plot locations.
+* Create a map of fish tracking locations.
 * Export the data in a `shapefile` format to share with our colleagues. This
 shapefile can be imported into any GIS software.
-* Create a map showing vegetation height with plot locations layered on top.
+* Create a map showing fish management zones with tracking positions layered on top.
 
 Spatial data are sometimes stored in a text file format (`.txt` or `.csv`). If
 the text file has an associated `x` and `y` location column, then we can
@@ -51,17 +72,17 @@ convert it into an `sf` spatial object. The `sf` object allows us to store both 
 of each point and the associated attribute data - or columns describing each
 feature in the spatial object.
 
-We will continue using the `sf` and `raster` packages in this episode.
+We will continue using the `sf` package in this episode.
 
 ## Import .csv
 To begin let's import a `.csv` file that contains fish tracking coordinate `x, y`
-locations in Lake Erie (`Two_Interpolated_Fish_Tracks_utm.csv`) and look at the
+locations in Lake Erie (`fish_tracks.csv`) and look at the
 structure of that new object:
 
 
 ~~~
 fish_tracks <-
-  read.csv("data/Two_Interpolated_Fish_Tracks_utm.csv")
+  read.csv("data/fish_tracks.csv")
 
 str(fish_tracks)
 ~~~
@@ -147,10 +168,9 @@ data.
 file header or somewhere in the data columns.
 
 It is not typical to store CRS information in a column. But this particular
-file contains CRS information this way. The `geodeticDa` and `utmZone` columns
+file contains CRS information this way. The `utmZone` column
 contain the information that helps us determine the CRS:
 
-* `geodeticDa`: WGS84  -- this is geodetic datum WGS84
 * `utmZone`: 17
 
 In
@@ -158,8 +178,8 @@ In
 we learned about the components of a `proj4` string. We have everything we need
 to assign a CRS to our data frame.
 
-To create the `proj4` associated with UTM Zone 18 WGS84 we can look up the
-projection on the [Spatial Reference website](http://www.spatialreference.org/ref/epsg/wgs-84-utm-zone-18n/), which contains a list of CRS formats for each projection. From here, we can extract the [proj4 string for UTM Zone 18N WGS84](http://www.spatialreference.org/ref/epsg/wgs-84-utm-zone-18n/proj4/).
+To create the `proj4` associated with UTM Zone 17 WGS84 we can look up the
+projection on the [Spatial Reference website](http://www.spatialreference.org/ref/epsg/wgs-84-utm-zone-17n/), which contains a list of CRS formats for each projection. From here, we can extract the [proj4 string for UTM Zone 17N WGS84](http://www.spatialreference.org/ref/epsg/wgs-84-utm-zone-17n/proj4/).
 
 However, if we have other data in the UTM Zone 17N projection, it's much
 easier to use the `st_crs()` function to extract the CRS in `proj4` format from
@@ -262,15 +282,14 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-plot-data-points-1.png" title="plot of chunk plot-data-points" alt="plot of chunk plot-data-points" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-plot-data-points-1.png" title="plot of chunk plot-data-points" alt="plot of chunk plot-data-points" width="612" style="display: block; margin: auto;" />
 
 ## Plot Extent
 
-In
-[Open and Plot Shapefiles in R]({{site.baseurl}}/06-vector-open-shapefile-in-r/)
+In [Open and Plot Shapefiles in R]({{site.baseurl}}/01-vector-open-shapefile-in-r/)
 we learned about spatial object extent. When we plot several spatial layers in
 R using `ggplot`, all of the layers of the plot are considered in setting the boundaries
-of the plot. To show this, let's plot our `erie_outline` object with our vegetation plots.
+of the plot. To show this, let's plot our `erie_outline` object with fish tracking point layer.
 
 
 ~~~
@@ -281,7 +300,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-plot-data-1.png" title="plot of chunk plot-data" alt="plot of chunk plot-data" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-plot-data-1.png" title="plot of chunk plot-data" alt="plot of chunk plot-data" width="612" style="display: block; margin: auto;" />
 
 When we plot the two layers together, `ggplot` sets the plot boundaries
 so that they are large enough to include all of the data included in all of the layers.

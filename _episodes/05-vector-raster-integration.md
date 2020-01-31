@@ -24,6 +24,27 @@ source: Rmd
 
 
 
+~~~
+## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .local(.Object, ...) :
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+~~~
+{: .error}
+
+
+
 
 
 
@@ -54,7 +75,7 @@ we have worked with in this workshop:
 * Area of interest (AOI) -- blue
 * Roads and trails -- purple
 * Vegetation plot locations (marked with white dots)-- black
-* A canopy height model (CHM) in GeoTIFF format -- green
+* A Bathymetry model (CHM) in GeoTIFF format -- green
 
 
 
@@ -74,12 +95,12 @@ spatial object. To do this, we need to specify the raster to be cropped and the
 spatial object that will be used to crop the raster. R will use the `extent` of
 the spatial object as the cropping boundary.
 
-To illustrate this, we will crop the Canopy Height Model (CHM) to only include the area of interest (AOI). Let's start by plotting the full extent of the CHM data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use `fill = NA` to make the area transparent.
+To illustrate this, we will crop the Bathymetry Model (CHM) to only include the area of interest (AOI). Let's start by plotting the full extent of the CHM data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use `fill = NA` to make the area transparent.
 
 
 ~~~
 ggplot() +
-  geom_raster(data = erie_lld_agg_df, aes(x = x, y = y, fill = erie_lld_agg)) + 
+  geom_raster(data = erie_bathy_df, aes(x = x, y = y, fill = erie_bathy)) + 
   scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) +
   geom_sf(data = erie_outline, color = "blue", fill = NA) +
   coord_sf()
@@ -88,51 +109,51 @@ ggplot() +
 
 <img src="../fig/rmd-11-crop-by-vector-extent-1.png" title="plot of chunk crop-by-vector-extent" alt="plot of chunk crop-by-vector-extent" width="612" style="display: block; margin: auto;" />
 
-Now that we have visualized the area of the CHM we want to subset, we can
+Now that we have visualized the area of the Lake Erie we want to subset, we can
 perform the cropping operation. We are going to create a new object with only
-the portion of the CHM data that falls within the boundaries of the AOI. The function `crop()` is from the raster package and doesn't know how to deal with `sf` objects. Therefore, we first need to convert `erie_outline` from a `sf` object to "Spatial" object.
+the portion of the Lake Erie data that falls within the boundaries of the AOI. The function `crop()` is from the raster package and doesn't know how to deal with `sf` objects. Therefore, we first need to convert `erie_outline` from a `sf` object to "Spatial" object.
 
 
 ~~~
-erie_lld_agg_Cropped <- crop(x = erie_lld_agg, y = as(erie_outline, "Spatial"))
+erie_bathy_Cropped <- crop(x = erie_bathy, y = as(erie_outline, "Spatial"))
 ~~~
 {: .language-r}
 
-Now we can plot the cropped CHM data, along with a boundary box showing the full
-CHM extent. However, remember, since this is raster data, we need to convert to
-a data frame in order to plot using `ggplot`. To get the boundary box from CHM,
+Now we can plot the cropped Lake Erie data, along with a boundary box showing the full
+Lake Erie extent. However, remember, since this is raster data, we need to convert to
+a data frame in order to plot using `ggplot`. To get the boundary box from Lake Erie,
 the `st_bbox()` will extract the 4 corners of the rectangle that encompass all
 the features contained in this object. The `st_as_sfc()` converts these 4
 coordinates into a polygon that we can plot:
 
 
 ~~~
-erie_lld_agg_Cropped_df <- as.data.frame(erie_lld_agg_Cropped, xy = TRUE)
+erie_bathy_Cropped_df <- as.data.frame(erie_bathy_Cropped, xy = TRUE)
 
 ggplot() +
-  geom_sf(data = st_as_sfc(st_bbox(erie_lld_agg)), fill = "green",
+  geom_sf(data = st_as_sfc(st_bbox(erie_bathy)), fill = "green",
           color = "green", alpha = .2) +  
-  geom_raster(data = erie_lld_agg_Cropped_df,
-              aes(x = x, y = y, fill = erie_lld_agg)) + 
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
+  geom_raster(data = erie_bathy_Cropped_df,
+              aes(x = x, y = y, fill = erie_bathy)) + 
+  scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) + 
   coord_sf()
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-11-show-cropped-area-1.png" title="plot of chunk show-cropped-area" alt="plot of chunk show-cropped-area" width="612" style="display: block; margin: auto;" />
 
-The plot above shows that the full CHM extent (plotted in green) is much larger
-than the resulting cropped raster. Our new cropped CHM now has the same extent
+The plot above shows that the full Lake Erie extent (plotted in green) is much larger
+than the resulting cropped raster. Our new cropped Lake Erie now has the same extent
 as the `erie_outline` object that was used as a crop extent (blue border
 below).
 
 
 ~~~
 ggplot() +
-  geom_raster(data = erie_lld_agg_Cropped_df,
-              aes(x = x, y = y, fill = erie_lld_agg)) + 
+  geom_raster(data = erie_bathy_Cropped_df,
+              aes(x = x, y = y, fill = erie_bathy)) + 
   geom_sf(data = erie_outline, color = "blue", fill = NA) + 
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
+  scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) + 
   coord_sf()
 ~~~
 {: .language-r}
@@ -143,7 +164,7 @@ We can look at the extent of all of our other objects for this field site.
 
 
 ~~~
-st_bbox(erie_lld_agg)
+st_bbox(erie_bathy)
 ~~~
 {: .language-r}
 
@@ -158,7 +179,7 @@ st_bbox(erie_lld_agg)
 
 
 ~~~
-st_bbox(erie_lld_agg_Cropped)
+st_bbox(erie_bathy_Cropped)
 ~~~
 {: .language-r}
 
@@ -202,24 +223,24 @@ st_bbox(fish_locations)
 
 Our plot location extent is not the largest but is larger than the AOI Boundary.
 It would be nice to see our vegetation plot locations plotted on top of the
-Canopy Height Model information.
+Bathymetry Model information.
 
 > ## Challenge: Crop to Vector Points Extent
 > 
-> 1. Crop the Canopy Height Model to the extent of the study plot locations.
-> 2. Plot the vegetation plot location points on top of the Canopy Height Model.
+> 1. Crop the Bathymetry Model to the extent of the study plot locations.
+> 2. Plot the vegetation plot location points on top of the Bathymetry Model.
 > 
 > > ## Answers
 > > 
 > > 
 > > ~~~
-> > CHM_plots_HARVcrop <- crop(x = erie_lld_agg, y = as(fish_locations, "Spatial"))
+> > CHM_plots_HARVcrop <- crop(x = erie_bathy, y = as(fish_locations, "Spatial"))
 > > 
 > > CHM_plots_HARVcrop_df <- as.data.frame(CHM_plots_HARVcrop, xy = TRUE)
 > > 
 > > ggplot() + 
 > >   geom_raster(data = CHM_plots_HARVcrop_df, aes(x = x, y = y, fill = HARV_chmCrop)) + 
-> >   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
+> >   scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) + 
 > >   geom_sf(data = fish_locations) + 
 > >   coord_sf()
 > > ~~~
@@ -237,7 +258,7 @@ Canopy Height Model information.
 {: .challenge}
 
 In the plot above, created in the challenge, all the vegetation plot locations
-(black dots) appear on the Canopy Height Model raster layer except for one. One is
+(black dots) appear on the Bathymetry Model raster layer except for one. One is
 situated on the blank space to the left of the map. Why?
 
 A modification of the first figure in this episode is below, showing the
@@ -286,7 +307,7 @@ our raster to this extent object.
 
 
 ~~~
-erie_lld_agg_manual_cropped <- crop(x = erie_lld_agg, y = new_extent)
+erie_bathy_manual_cropped <- crop(x = erie_bathy, y = new_extent)
 ~~~
 {: .language-r}
 
@@ -294,7 +315,7 @@ To plot this data using `ggplot()` we need to convert it to a dataframe.
 
 
 ~~~
-erie_lld_agg_manual_cropped_df <- as.data.frame(erie_lld_agg_manual_cropped, 
+erie_bathy_manual_cropped_df <- as.data.frame(erie_bathy_manual_cropped, 
                                                 xy = TRUE)
 ~~~
 {: .language-r}
@@ -304,9 +325,9 @@ Now we can plot this cropped data. We will show the AOI boundary on the same plo
 
 ~~~
 ggplot() + 
-  geom_raster(data = erie_lld_agg_manual_cropped_df,
-              aes(x = x, y = y, fill = erie_lld_agg)) + 
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
+  geom_raster(data = erie_bathy_manual_cropped_df,
+              aes(x = x, y = y, fill = erie_bathy)) + 
+  scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) + 
   geom_sf(data = erie_outline, color = "blue", fill = NA) +
   coord_sf()
 ~~~
@@ -335,7 +356,7 @@ We will begin by extracting all bathymetry pixel values located within our
 
 
 ~~~
-erie_bathy <- extract(x = erie_lld_agg,
+erie_bathy <- extract(x = erie_bathy,
                        y = as(erie_outline, "Spatial"),
                        df = TRUE)
 
@@ -347,8 +368,8 @@ str(erie_bathy)
 
 ~~~
 'data.frame':	253082 obs. of  2 variables:
- $ ID          : num  1 1 1 1 1 1 1 1 1 1 ...
- $ erie_lld_agg: num  -1.933 -2.968 -2.79 -3.23 0.333 ...
+ $ ID        : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ erie_bathy: num  -1.933 -2.968 -2.79 -3.23 0.333 ...
 ~~~
 {: .output}
 
@@ -357,17 +378,17 @@ within the boundary of the polygon being used to perform the extraction - in
 this case the `erie_outline` object (a single polygon). Here, the
 function extracted values from 18,450 pixels.
 
-We can create a histogram of tree height values within the boundary to better
+We can create a histogram of depth values within the boundary to better
 understand the structure or height distribution of trees at our site. We will
 use the column `layer` from our data frame as our x values, as this column
-represents the tree heights for each pixel.
+represents the depths for each pixel.
 
 
 ~~~
 ggplot() + 
-  geom_histogram(data = erie_bathy, aes(x = erie_lld_agg)) +
+  geom_histogram(data = erie_bathy, aes(x = erie_bathy)) +
   ggtitle("Histogram of CHM Height Values (m)") +
-  xlab("Tree Height") + 
+  xlab("Depth") + 
   ylab("Frequency of Pixels")
 ~~~
 {: .language-r}
@@ -388,7 +409,7 @@ site.
 
 
 ~~~
-summary(erie_bathy$erie_lld_agg)
+summary(erie_bathy$erie_bathy)
 ~~~
 {: .language-r}
 
@@ -409,10 +430,22 @@ not use the `df = TRUE` argument.
 
 
 ~~~
-mean_erie_bathy_AOI <- extract(x = erie_lld_agg,
+mean_erie_bathy_AOI <- extract(x = erie_bathy,
                               y = as(erie_outline, "Spatial"),
                               fun = mean)
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'extract' for signature '"data.frame", "SpatialPolygonsDataFrame"'
+~~~
+{: .error}
+
+
+
+~~~
 mean_erie_bathy_AOI
 ~~~
 {: .language-r}
@@ -420,13 +453,12 @@ mean_erie_bathy_AOI
 
 
 ~~~
-          [,1]
-[1,] -17.93646
+Error in eval(expr, envir, enclos): object 'mean_erie_bathy_AOI' not found
 ~~~
-{: .output}
+{: .error}
 
 It appears that the mean height value, extracted from our LiDAR data derived
-canopy height model is 22.43 meters.
+Bathymetry model is 22.43 meters.
 
 ## Extract Data using x,y Locations
 
@@ -440,16 +472,28 @@ buffer are the same units as the data's CRS. All pixels that are touched by the 
 
 Source: National Ecological Observatory Network (NEON).
 
-Let's put this into practice by figuring out the mean tree height in the
+Let's put this into practice by figuring out the mean depth in the
 20m around the tower location (`point_HARV`). Because we are extracting only a single number, we
 will not use the `df = TRUE` argument. 
 
 
 ~~~
-mean_erie_zone1 <- extract(x = erie_lld_agg,
+mean_erie_zone1 <- extract(x = erie_bathy,
                            y = as(erie_zones[1,], "Spatial"),
                            fun = mean)
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'extract' for signature '"data.frame", "SpatialPolygonsDataFrame"'
+~~~
+{: .error}
+
+
+
+~~~
 mean_erie_zone1
 ~~~
 {: .language-r}
@@ -457,27 +501,26 @@ mean_erie_zone1
 
 
 ~~~
-          [,1]
-[1,] -3.633091
+Error in eval(expr, envir, enclos): object 'mean_erie_zone1' not found
 ~~~
-{: .output}
+{: .error}
 
 > ## Challenge: Extract Raster Height Values For Plot Locations
 > 
 > 1) Use the plot locations object (`fish_locations`)
-> to extract an average tree height for the
+> to extract an average depth for the
 > area within 20m of each vegetation plot location in the study area. Because there are 
 > multiple plot locations, there will be multiple averages returned, so the `df = TRUE` 
 > argument should be used.
 > 
-> 2) Create a plot showing the mean tree height of each area. 
+> 2) Create a plot showing the mean depth of each area. 
 > 
 > > ## Answers
 > > 
 > > 
 > > ~~~
 > > # extract data at each plot location
-> > # mean_erie_bathy_plots_HARV <- extract(x = erie_lld_agg,
+> > # mean_erie_bathy_plots_HARV <- extract(x = erie_bathy,
 > > #                                y = as(fish_locations, "Spatial"),
 > > #                               buffer=20,
 > > #                               fun = mean,
@@ -489,9 +532,9 @@ mean_erie_zone1
 > > # plot data
 > > # ggplot(data = mean_erie_bathy_plots_HARV, aes(ID, HARV_chmCrop)) + 
 > > #  geom_col() + 
-> > #  ggtitle("Mean Tree Height at each Plot") + 
+> > #  ggtitle("Mean Depth at each Plot") + 
 > > #  xlab("Plot ID") + 
-> > #  ylab("Tree Height (m)")
+> > #  ylab("Depth (m)")
 > > ~~~
 > > {: .language-r}
 > {: .solution}

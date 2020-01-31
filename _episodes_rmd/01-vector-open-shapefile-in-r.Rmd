@@ -63,7 +63,7 @@ Let's import our outline:
 
 ```{r Import-Shapefile}
 erie_outline <- st_read(
-  "data/Lake_Erie_Shoreline/Lake_Erie_Shoreline_utm.shp")
+  "data/erie_outline.shp")
 ```
 
 ## Shapefile Metadata & Attributes
@@ -151,8 +151,8 @@ ggplot() +
 
 > ## Challenge: Import Line and Point Shapefiles
 > 
-> Using the steps above, import the bathymetry_lake_erie layer into
-> R. Call the object `erie_bathy`.
+> Using the steps above, import the erie_contours layer into
+> R. Call the object `erie_contours`.
 > 
 > Answer the following questions:
 > 
@@ -167,21 +167,21 @@ ggplot() +
 > > ## Answers
 > > 
 > > First we import the data: 
-> > ```{r import-bathy, echo=TRUE}
-> > erie_bathy <- st_read("data/Lake_Erie_bathymetric_contours/bathymetry_lake_erie.shp")
+> > ```{r import-contours, echo=TRUE}
+> > erie_contours <- st_read("data/erie_contours.shp")
 > > ```
 > > 
 > > Then we check its class: 
 > > ```{r}
-> > class(erie_bathy)
+> > class(erie_contours)
 > > ```
 > > We also check the CRS and extent of the object: 
 > > ```{r}
-> > st_crs(erie_bathy)
-> > st_bbox(erie_bathy)
+> > st_crs(erie_contours)
+> > st_bbox(erie_contours)
 > > ```
 > > To see the number of objects in the file, we can look at the output from when we read these objects into R. 
-> > `erie_bathy` contains 8764 features (all lines). 
+> > `erie_contours` contains 8764 features (all lines). 
 > {: .solution}
 {: .challenge}
 

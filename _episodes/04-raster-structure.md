@@ -30,6 +30,27 @@ source: Rmd
 
 
 
+~~~
+## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .local(.Object, ...) :
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+~~~
+{: .error}
+
+
+
 > ## Things You'll Need To Complete This Episode
 >
 > See the [lesson homepage]({{ site.baseurl }}) for detailed information about the software,
@@ -76,33 +97,33 @@ your data.
 
 
 ~~~
-GDALinfo("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+GDALinfo("data/erie_bathy.tif")
 ~~~
 {: .language-r}
 
 
 
 ~~~
-rows        1235 
-columns     3672 
+rows        623 
+columns     1843 
 bands       1 
-lower left origin.x        246673.3 
-lower left origin.y        4537683 
-res.x       138 
-res.y       185 
+lower left origin.x        245701 
+lower left origin.y        4536578 
+res.x       276 
+res.y       370 
 ysign       -1 
 oblique.x   0 
 oblique.y   0 
 driver      GTiff 
 projection  +proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m
 +no_defs 
-file        data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif 
+file        data/erie_bathy.tif 
 apparent band summary:
    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
-1 Float32           TRUE    -3.4e+38          1       3672
+1 Float32           TRUE    -3.4e+38          1       1843
 apparent band statistics:
-     Bmin     Bmax    Bmean      Bsd
-1 -62.477 601.3646 118.5133 143.4052
+       Bmin     Bmax Bmean Bsd
+1 -62.47671 598.1871   NaN NaN
 Metadata:
 AREA_OR_POINT=Area 
 ~~~
@@ -112,14 +133,14 @@ If you wish to store this information in R, you can do the following:
 
 
 ~~~
-erie_lld_agg_info <- capture.output(
-  GDALinfo("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+erie_bathy_info <- capture.output(
+  GDALinfo("data/erie_bathy.tif")
 )
 ~~~
 {: .language-r}
 
 Each line of text that was printed to the console is now stored as an element of
-the character vector `erie_lld_agg_info`. We will be exploring this data throughout this 
+the character vector `erie_bathy_info`. We will be exploring this data throughout this 
 episode. By the end of this episode, you will be able to explain and understand the output above.
 
 ## Open a Raster in R
@@ -139,10 +160,9 @@ First we will load our raster file into R and view the data structure.
 
 
 ~~~
-erie_lld_agg <- 
-  raster("data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif")
+erie_bathy <- raster("data/erie_bathy.tif")
 
-erie_lld_agg
+erie_bathy
 ~~~
 {: .language-r}
 
@@ -150,13 +170,13 @@ erie_lld_agg
 
 ~~~
 class      : RasterLayer 
-dimensions : 1235, 3672, 4534920  (nrow, ncol, ncell)
-resolution : 138, 185  (x, y)
-extent     : 246673.3, 753409.3, 4537683, 4766158  (xmin, xmax, ymin, ymax)
+dimensions : 623, 1843, 1148189  (nrow, ncol, ncell)
+resolution : 276, 370  (x, y)
+extent     : 245701, 754369, 4536578, 4767088  (xmin, xmax, ymin, ymax)
 crs        : +proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-source     : /home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_bathymetry (raster)/erie_lld_agg.tif 
-names      : erie_lld_agg 
-values     : -62.477, 601.3646  (min, max)
+source     : /home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_bathy.tif 
+names      : erie_bathy 
+values     : -62.47671, 598.1871  (min, max)
 ~~~
 {: .output}
 
@@ -166,27 +186,27 @@ columns, descriptive statistics for raster data can be retrieved like
 
 
 ~~~
-summary(erie_lld_agg)
+summary(erie_bathy)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (2.21% of all cells)
+Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (8.71% of all cells)
 ~~~
 {: .error}
 
 
 
 ~~~
-        erie_lld_agg
-Min.      -62.476700
-1st Qu.     1.477238
-Median     62.943062
-3rd Qu.   218.665642
-Max.      581.702820
-NA's        0.000000
+        erie_bathy
+Min.    -62.476700
+1st Qu.   1.498602
+Median   63.448095
+3rd Qu. 219.466492
+Max.    567.194458
+NA's      0.000000
 ~~~
 {: .output}
 
@@ -197,20 +217,20 @@ you can use the parameter `maxsamp`:
 
 
 ~~~
-summary(erie_lld_agg, maxsamp = ncell(erie_lld_agg))
+summary(erie_bathy, maxsamp = ncell(erie_bathy))
 ~~~
 {: .language-r}
 
 
 
 ~~~
-         erie_lld_agg
-Min.       -62.476997
-1st Qu.      1.490005
-Median      63.009876
-3rd Qu.    219.743454
-Max.       601.364563
-NA's    206043.000000
+         erie_bathy
+Min.      -62.47671
+1st Qu.     1.49860
+Median     63.22672
+3rd Qu.   220.23468
+Max.      598.18713
+NA's    64779.00000
 ~~~
 {: .output}
 
@@ -224,7 +244,7 @@ The `raster` package has an built-in function for conversion to a plotable dataf
 
 
 ~~~
-erie_lld_agg_df <- as.data.frame(erie_lld_agg, xy = TRUE)
+erie_bathy_df <- as.data.frame(erie_bathy, xy = TRUE)
 ~~~
 {: .language-r}
 
@@ -233,17 +253,17 @@ dataframe format.
 
 
 ~~~
-str(erie_lld_agg_df)
+str(erie_bathy_df)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-'data.frame':	4534920 obs. of  3 variables:
- $ x           : num  246742 246880 247018 247156 247294 ...
- $ y           : num  4766065 4766065 4766065 4766065 4766065 ...
- $ erie_lld_agg: num  NA NA NA NA NA NA NA NA NA NA ...
+'data.frame':	1148189 obs. of  3 variables:
+ $ x         : num  245839 246115 246391 246667 246943 ...
+ $ y         : num  4766903 4766903 4766903 4766903 4766903 ...
+ $ erie_bathy: num  NA NA NA NA NA NA NA NA NA NA ...
 ~~~
 {: .output}
 
@@ -253,9 +273,8 @@ which is a color-blindness friendly color scale. We will also use the `coord_qui
 
 ~~~
 ggplot() +
-    geom_raster(data = erie_lld_agg_df , aes(x = x, y = y, fill = erie_lld_agg)) +
-    scale_fill_viridis_c() +
-    coord_quickmap()
+    geom_raster(data = erie_bathy_df , aes(x = x, y = y, fill = erie_bathy)) +
+    scale_fill_viridis_c()
 ~~~
 {: .language-r}
 
@@ -272,7 +291,7 @@ ggplot() +
 > >  See `?plot` for more arguments to customize the plot
 > > 
 > > ~~~
-> > plot(erie_lld_agg)
+> > plot(erie_bathy)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -297,7 +316,7 @@ function.
 
 
 ~~~
-crs(erie_lld_agg)
+crs(erie_bathy)
 ~~~
 {: .language-r}
 
@@ -327,7 +346,7 @@ each `+` we see the CRS element being defined. For example projection (`proj=`)
 and zone (`zone=`).
 
 ### UTM Proj4 String
-Our projection string for `erie_lld_agg` specifies the UTM projection as follows:
+Our projection string for `erie_bathy` specifies the UTM projection as follows:
 
 `+proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs`
 
@@ -354,28 +373,28 @@ can view these values:
 
 
 ~~~
-minValue(erie_lld_agg)
+minValue(erie_bathy)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[1] -62.477
+[1] -62.47671
 ~~~
 {: .output}
 
 
 
 ~~~
-maxValue(erie_lld_agg)
+maxValue(erie_bathy)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[1] 601.3646
+[1] 598.1871
 ~~~
 {: .output}
 
@@ -386,16 +405,16 @@ maxValue(erie_lld_agg)
 >
 > 
 > ~~~
-> erie_lld_agg <- setMinMax(erie_lld_agg)
+> erie_bathy <- setMinMax(erie_bathy)
 > ~~~
 > {: .language-r}
 {: .callout}
 
-We can see that the elevation at our site ranges from -62.4769971m to
-601.3645613m.
+We can see that the elevation at our site ranges from -62.4767075m to
+598.1871338m.
 
 ## Raster Bands
-The Digital Surface Model object (`erie_lld_agg`) that we've been working with is a
+The Digital Surface Model object (`erie_bathy`) that we've been working with is a
 single band raster. This means that there is only one dataset stored in the
 raster: surface elevation in meters for one time period.
 
@@ -407,7 +426,7 @@ view the number of bands in a raster using the `nlayers()` function.
 
 
 ~~~
-nlayers(erie_lld_agg)
+nlayers(erie_bathy)
 ~~~
 {: .language-r}
 
@@ -447,6 +466,12 @@ with the `NoDataValue` as `NA`.
 The difference here shows up as ragged edges on the plot, rather than black
 spaces where there is no data.
 
+
+~~~
+Error: colours encodes as numbers must be positive
+~~~
+{: .error}
+
 <img src="../fig/rmd-01-demonstrate-no-data-ggplot-1.png" title="plot of chunk demonstrate-no-data-ggplot" alt="plot of chunk demonstrate-no-data-ggplot" width="612" style="display: block; margin: auto;" />
 
 If your raster already has `NA` values set correctly but you aren't sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset's coverage. For instance, sometimes data can be missing where a sensor could not 'see' its target data, and you may wish to locate that missing data and fill it in.
@@ -475,13 +500,13 @@ opens up the raster, it will assign each instance of the value to `NA`. Values
 of `NA` will be ignored by R as demonstrated above.
 
 > ## Challenge
-> Use the output from the `GDALinfo()` function to find out what `NoDataValue` is used for our `erie_lld_agg` dataset.
+> Use the output from the `GDALinfo()` function to find out what `NoDataValue` is used for our `erie_bathy` dataset.
 >
 > > ## Answers
 > >
 > > 
 > > ~~~
-> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_lld_agg.tif")
+> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_bathy.tif")
 > > ~~~
 > > {: .language-r}
 > > 
@@ -532,7 +557,7 @@ useful in identifying outliers and bad data values in our raster data.
 
 ~~~
 ggplot() +
-    geom_histogram(data = erie_lld_agg_df, aes(erie_lld_agg))
+    geom_histogram(data = erie_bathy_df, aes(erie_bathy))
 ~~~
 {: .language-r}
 
@@ -546,7 +571,7 @@ ggplot() +
 
 
 ~~~
-Warning: Removed 206043 rows containing non-finite values (stat_bin).
+Warning: Removed 64779 rows containing non-finite values (stat_bin).
 ~~~
 {: .error}
 
@@ -564,14 +589,14 @@ by using the `bins` value in the `geom_histogram()` function.
 
 ~~~
 ggplot() +
-    geom_histogram(data = erie_lld_agg_df, aes(erie_lld_agg), bins = 40)
+    geom_histogram(data = erie_bathy_df, aes(erie_bathy), bins = 40)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Warning: Removed 206043 rows containing non-finite values (stat_bin).
+Warning: Removed 64779 rows containing non-finite values (stat_bin).
 ~~~
 {: .error}
 
@@ -586,7 +611,7 @@ no bad data values in this particular raster.
 >
 > Use `GDALinfo()` to determine the following about the `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif` file:
 >
-> 1. Does this file have the same CRS as `erie_lld_agg`?
+> 1. Does this file have the same CRS as `erie_bathy`?
 > 2. What is the `NoDataValue`?
 > 3. What is resolution of the raster data?
 > 4. How large would a 5x5 pixel area be on the Earth's surface?
@@ -609,7 +634,7 @@ no bad data values in this particular raster.
 > > Error in .local(.Object, ...): 
 > > ~~~
 > > {: .error}
-> > 1. If this file has the same CRS as erie_lld_agg?  Yes: UTM Zone 18, WGS84, meters.
+> > 1. If this file has the same CRS as erie_bathy?  Yes: UTM Zone 18, WGS84, meters.
 > > 2. What format `NoDataValues` take?  -9999
 > > 3. The resolution of the raster data? 1x1
 > > 4. How large a 5x5 pixel area would be? 5mx5m How? We are given resolution of 1x1 and units in meters, therefore resolution of 5x5 means 5x5m.

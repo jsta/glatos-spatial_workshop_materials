@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-01-29 10:05:16 -0500">
+    <meta http-equiv="last-modified" content="2020-01-31 10:30:09 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -46,7 +46,7 @@
     <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="../assets/favicons/dc/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="Data Carpentry - Introduction to Geospatial Raster and Vector Data with R"/>
+    <meta name="application-name" content="Data Carpentry - Working with Geospatial Data"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="../assets/favicons/dc/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="../assets/favicons/dc/mstile-70x70.png" />
@@ -61,7 +61,7 @@
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-    <title>Introduction to Geospatial Raster and Vector Data with R: Explore and Plot by Shapefile Attributes</title>
+    <title>Working with Geospatial Data: Explore and Plot by Shapefile Attributes</title>
   </head>
   <body>
 
@@ -200,7 +200,7 @@
   </div>
   <div class="col-xs-10">
     
-    <h3 class="maintitle"><a href="../">Introduction to Geospatial Raster and Vector Data with R</a></h3>
+    <h3 class="maintitle"><a href="../">Working with Geospatial Data</a></h3>
     
   </div>
   <div class="col-xs-1">
@@ -266,6 +266,12 @@
 
 </blockquote>
 
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Error in .local(.Object, ...) :
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+</code></pre></div></div>
+
 <blockquote class="prereq">
   <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
   <p>See the <a href="">lesson homepage</a> for detailed information about the software,
@@ -299,11 +305,10 @@ of the object.</li>
 
 <p>We started to explore our <code class="highlighter-rouge">erie_outline</code> object in the previous episode. Here, we will look at a more complex object representing Lake Erie management zones.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="w">
-  </span><span class="s2">"data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp"</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_zones</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/erie_zones.shp"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `Lake_Erie_Walleye_Management_Units_utm' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp' using driver `ESRI Shapefile'
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `erie_zones' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_zones.shp' using driver `ESRI Shapefile'
 Simple feature collection with 11 features and 8 fields
 geometry type:  POLYGON
 dimension:      XY
@@ -533,37 +538,6 @@ connecting line thickness to a data variable.</p>
   </blockquote>
 </blockquote>
 
-<blockquote class="challenge">
-  <h2 id="challenge-subset-spatial-line-objects-part-2">Challenge: Subset Spatial Line Objects Part 2</h2>
-
-  <p>Subset out all <code class="highlighter-rouge">stone wall</code> features from the lines layer and plot it. For each plot, color each feature using a unique color.</p>
-
-  <blockquote class="solution">
-    <h2 id="answer">Answer</h2>
-
-    <p>First we will save an object with only the stone wall lines
-and check the number of features:</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stoneWall_HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
-  </span><span class="n">filter</span><span class="p">(</span><span class="n">MGMTUNIT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"stone wall"</span><span class="p">)</span><span class="w">
-</span><span class="n">nrow</span><span class="p">(</span><span class="n">stoneWall_HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0
-</code></pre></div>    </div>
-    <p>Now we can plot the data:</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stoneWall_HARV</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">OBJECTID</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wall ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Stonewalls"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <p><img src="../fig/rmd-02-harv-stone-wall-map-1.png" title="plot of chunk harv-stone-wall-map" alt="plot of chunk harv-stone-wall-map" width="612" style="display: block; margin: auto;" /></p>
-  </blockquote>
-</blockquote>
-
 <h2 id="customize-plots">Customize Plots</h2>
 
 <p>In the examples above, <code class="highlighter-rouge">ggplot()</code> automatically selected colors for
@@ -707,33 +681,12 @@ appearance of our legend by manually setting different parameters.</p>
 
 <p><img src="../fig/rmd-02-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" /></p>
 
-<p>We can change the appearance of our legend by manually setting different parameters.</p>
-
-<ul>
-  <li><code class="highlighter-rouge">legend.text</code>: change the font size</li>
-  <li><code class="highlighter-rouge">legend.box.background</code>: add an outline box</li>
-</ul>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
-        </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"modified legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
-  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
-
-<p><img src="../fig/rmd-02-modify-legend-plot-1.png" title="plot of chunk modify-legend-plot" alt="plot of chunk modify-legend-plot" width="612" style="display: block; margin: auto;" /></p>
-
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w"> </span><span class="s2">"rosybrown"</span><span class="p">)</span><span class="w">
 
 </span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> 
-        </span><span class="n">legend.box.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"pretty colors"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
@@ -751,98 +704,33 @@ using the palette method. For example <code class="highlighter-rouge">palette(ra
 <blockquote class="challenge">
   <h2 id="challenge-plot-lines-by-attribute">Challenge: Plot Lines by Attribute</h2>
 
-  <p>Create a plot that emphasizes only roads where bicycles and horses are allowed.
-To emphasize this, make the lines where bicycles are not allowed THINNER than
-the roads where bicycles are allowed.
-NOTE: this attribute information is located in the <code class="highlighter-rouge">erie_zones$BicyclesHo</code>
-attribute.</p>
-
-  <p>Be sure to add a title and legend to your map. You might consider a color
-palette that has all bike/horse-friendly roads displayed in a bright color. All
-other lines can be black.</p>
-
-  <blockquote class="solution">
-    <h2 id="answers-3">Answers</h2>
-
-    <p>First we need to make sure that the <code class="highlighter-rouge">BicyclesHo</code> attribute is a
-factor and check how many levels it has.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">class</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "NULL"
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NULL
-</code></pre></div>    </div>
-
-    <p>Next, we will create a new object <code class="highlighter-rouge">lines_removeNA</code> that removes missing values.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lines_removeNA</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">[</span><span class="n">na.omit</span><span class="p">(</span><span class="n">erie_zones</span><span class="o">$</span><span class="n">BicyclesHo</span><span class="p">),]</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <p>In our plot, we will set colors so that only the allowed roads
-are magenta, and we will set line width so that the first
-factor level is thicker than the others.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines_removeNA</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BicyclesHo</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"NEON Harvard Forest Field Site"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Roads Where Bikes and Horses Are Allowed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in FUN(X[[i]], ...): object 'BicyclesHo' not found
-</code></pre></div>    </div>
-
-    <p><img src="../fig/rmd-02-harv-paths-bike-horses-1.png" title="plot of chunk harv-paths-bike-horses" alt="plot of chunk harv-paths-bike-horses" width="612" style="display: block; margin: auto;" /></p>
-  </blockquote>
-</blockquote>
-
-<blockquote class="challenge">
-  <h2 id="challenge-plot-polygon-by-attribute">Challenge: Plot Polygon by Attribute</h2>
-
   <ol>
-    <li>Create a map of the state boundaries in the United States using the data
-located in your downloaded data folder: <code class="highlighter-rouge">NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014</code>.
-Apply a fill color to each state using its <code class="highlighter-rouge">region</code> value. Add a legend.</li>
+    <li>Create a map of Lake Erie bathymetry contours using the data located in your downloaded data folder: <code class="highlighter-rouge">erie_contours.shp</code>.
+Apply a color to contour using its <code class="highlighter-rouge">depth_m</code> value. Add a legend.</li>
   </ol>
 
   <blockquote class="solution">
-    <h2 id="answers-4">Answers</h2>
-    <p>First we read in the data and check how many levels there are
-in the <code class="highlighter-rouge">region</code> column:</p>
+    <h2 id="answers-3">Answers</h2>
+    <p>First we read in the data:</p>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state_boundary_US</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
-</span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp"</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_contours</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/erie_contours.shp"</span><span class="p">)</span><span class="w"> 
+
+</span><span class="n">Now</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">plot</span><span class="o">:</span><span class="w"> 
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Cannot open "data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp"; The file doesn't seem to exist.
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: &lt;text&gt;:3:5: unexpected symbol
+2: 
+3: Now we
+       ^
 </code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">levels</span><span class="p">(</span><span class="n">state_boundary_US</span><span class="o">$</span><span class="n">region</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in levels(state_boundary_US$region): object 'state_boundary_US' not found
-</code></pre></div>    </div>
-    <p>Next we set a color vector with that many items:</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"purple"</span><span class="p">,</span><span class="w"> </span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"yellow"</span><span class="p">,</span><span class="w"> </span><span class="s2">"brown"</span><span class="p">,</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-    <p>Now we can create our plot:</p>
 
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state_boundary_US</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">region</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Contiguous U.S. State Boundaries"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_contours</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">depth_m</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Lake Erie Bathymetry"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'state_boundary_US' not found
+    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'erie_contours' not found
 </code></pre></div>    </div>
   </blockquote>
 </blockquote>

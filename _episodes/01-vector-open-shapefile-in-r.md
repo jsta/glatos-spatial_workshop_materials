@@ -18,6 +18,17 @@ source: Rmd
 ---
 
 
+~~~
+## Error in .local(.Object, ...) :
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+~~~
+{: .error}
 
 
 
@@ -58,14 +69,14 @@ Let's import our outline:
 
 ~~~
 erie_outline <- st_read(
-  "data/Lake_Erie_Shoreline/Lake_Erie_Shoreline_utm.shp")
+  "data/erie_outline.shp")
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Reading layer `Lake_Erie_Shoreline_utm' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_Shoreline/Lake_Erie_Shoreline_utm.shp' using driver `ESRI Shapefile'
+Reading layer `erie_outline' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_outline.shp' using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 7 fields
 geometry type:  POLYGON
 dimension:      XY
@@ -213,8 +224,8 @@ ggplot() +
 
 > ## Challenge: Import Line and Point Shapefiles
 > 
-> Using the steps above, import the bathymetry_lake_erie layer into
-> R. Call the object `erie_bathy`.
+> Using the steps above, import the erie_contours layer into
+> R. Call the object `erie_contours`.
 > 
 > Answer the following questions:
 > 
@@ -231,14 +242,14 @@ ggplot() +
 > > First we import the data: 
 > > 
 > > ~~~
-> > erie_bathy <- st_read("data/Lake_Erie_bathymetric_contours/bathymetry_lake_erie.shp")
+> > erie_contours <- st_read("data/erie_contours.shp")
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > Reading layer `bathymetry_lake_erie' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_bathymetric_contours/bathymetry_lake_erie.shp' using driver `ESRI Shapefile'
+> > Reading layer `erie_contours' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_contours.shp' using driver `ESRI Shapefile'
 > > Simple feature collection with 8764 features and 3 fields
 > > geometry type:  LINESTRING
 > > dimension:      XY
@@ -251,7 +262,7 @@ ggplot() +
 > > Then we check its class: 
 > > 
 > > ~~~
-> > class(erie_bathy)
+> > class(erie_contours)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -264,7 +275,7 @@ ggplot() +
 > > We also check the CRS and extent of the object: 
 > > 
 > > ~~~
-> > st_crs(erie_bathy)
+> > st_crs(erie_contours)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -280,7 +291,7 @@ ggplot() +
 > > 
 > > 
 > > ~~~
-> > st_bbox(erie_bathy)
+> > st_bbox(erie_contours)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -292,7 +303,7 @@ ggplot() +
 > > ~~~
 > > {: .output}
 > > To see the number of objects in the file, we can look at the output from when we read these objects into R. 
-> > `erie_bathy` contains 8764 features (all lines). 
+> > `erie_contours` contains 8764 features (all lines). 
 > {: .solution}
 {: .challenge}
 

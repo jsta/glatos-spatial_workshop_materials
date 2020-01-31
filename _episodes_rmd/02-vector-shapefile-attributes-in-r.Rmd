@@ -30,10 +30,8 @@ library(sf)
 
 ```{r load-data, echo=FALSE, results='hide'}
 # learners will have this data loaded from previous episodes
-erie_zones <- st_read(
-  "data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp")
-erie_outline <- st_read(
-  "data/Lake_Erie_Shoreline/Lake_Erie_Shoreline_utm.shp")
+erie_zones   <- st_read("data/erie_zones.shp")
+erie_outline <- st_read("data/erie_outline.shp")
 ```
 
 > ## Things You’ll Need To Complete This Episode
@@ -67,8 +65,7 @@ of the object.
 We started to explore our `erie_outline` object in the previous episode. Here, we will look at a more complex object representing Lake Erie management zones.
 
 ```{r Import-Shapefile}
-erie_zones <- st_read(
-  "data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp")
+erie_zones <- st_read("data/erie_zones.shp")
 ```
 
 To see a summary of all of the metadata associated with our `erie_zones` object, we can view the object with `View(erie_zones)` or print a summary of the object itself to the console.
@@ -208,30 +205,6 @@ Now, we see that there are in fact two features in our plot!
 > {: .solution}
 {: .challenge}
 
-> ## Challenge: Subset Spatial Line Objects Part 2
->
-> Subset out all `stone wall` features from the lines layer and plot it. For each plot, color each feature using a unique color.
->
-> > ## Answer
-> >
-> > First we will save an object with only the stone wall lines
-> > and check the number of features: 
-> > ```{r}
-> > stoneWall_HARV <- erie_zones %>% 
-> >   filter(MGMTUNIT == "stone wall")
-> > nrow(stoneWall_HARV)
-> > ```
-> > Now we can plot the data: 
-> > ```{r harv-stone-wall-map}
-> > ggplot() +
-> >   geom_sf(data = stoneWall_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
-> >   labs(color = 'Wall ID') +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Stonewalls") + 
-> >   coord_sf()
-> > ```
-> {: .solution}
-{: .challenge}
-
 ## Customize Plots
 
 In the examples above, `ggplot()` automatically selected colors for
@@ -363,22 +336,6 @@ ggplot() +
   coord_sf()
 ```
 
-We can change the appearance of our legend by manually setting different parameters.
-
-* `legend.text`: change the font size
-* `legend.box.background`: add an outline box
-
-```{r modify-legend-plot }
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = zone_colors) + 
-  labs(color = 'Zone ID') +
-  theme(legend.text = element_text(size = 20), 
-        legend.box.background = element_rect(size = 1)) + 
-  ggtitle("Walleye Management Units", subtitle = "modified legend") +  
-  coord_sf()
-```
-
 ```{r plot-different-colors}
 new_colors <- c("springgreen", "blue", "magenta", "orange", "rosybrown")
 
@@ -386,8 +343,6 @@ ggplot() +
   geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) + 
   scale_color_manual(values = new_colors) +
   labs(color = 'Zone ID') +
-  theme(legend.text = element_text(size = 20), 
-        legend.box.background = element_rect(size = 1)) + 
   ggtitle("Walleye Management Units", subtitle = "pretty colors") +  
   coord_sf()
 ```
@@ -400,77 +355,23 @@ ggplot() +
 {: .callout}
 
 > ## Challenge: Plot Lines by Attribute
-> 
-> Create a plot that emphasizes only roads where bicycles and horses are allowed.
-> To emphasize this, make the lines where bicycles are not allowed THINNER than
-> the roads where bicycles are allowed.
-> NOTE: this attribute information is located in the `erie_zones$BicyclesHo`
-> attribute.
-> 
-> Be sure to add a title and legend to your map. You might consider a color
-> palette that has all bike/horse-friendly roads displayed in a bright color. All
-> other lines can be black.
-> 
-> > ## Answers
-> >
-> > First we need to make sure that the `BicyclesHo` attribute is a
-> > factor and check how many levels it has.
-> >
-> > ```{r}
-> > class(erie_zones$BicyclesHo)
-> > levels(erie_zones$BicyclesHo)
-> > ```
-> >
-> > Next, we will create a new object `lines_removeNA` that removes missing values.
-> >
-> > ```{r}
-> > lines_removeNA <- erie_zones[na.omit(erie_zones$BicyclesHo),]
-> > ```
-> >
-> > In our plot, we will set colors so that only the allowed roads
-> > are magenta, and we will set line width so that the first
-> > factor level is thicker than the others.
-> >
-> > ```{r harv-paths-bike-horses}
-> > ggplot() + 
-> >   geom_sf(data = erie_zones) + 
-> >   geom_sf(data = lines_removeNA, aes(color = BicyclesHo), size = 2) + 
-> >   scale_color_manual(values = "magenta") +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads Where Bikes and Horses Are Allowed") + 
-> >   coord_sf()
-> > ```
-> {: .solution}
-{: .challenge}
-
-> ## Challenge: Plot Polygon by Attribute
 >
-> 1. Create a map of the state boundaries in the United States using the data
-> located in your downloaded data folder: `NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014`.
-> Apply a fill color to each state using its `region` value. Add a legend.
+> 1. Create a map of Lake Erie bathymetry contours using the data located in your downloaded data folder: `erie_contours.shp`.
+> Apply a color to contour using its `depth_m` value. Add a legend.
 >
 > > ## Answers
-> > First we read in the data and check how many levels there are
-> > in the `region` column:
+> > First we read in the data:
 > > ``` {r}
-> > state_boundary_US <- 
-> > st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp")
+> > erie_contours <- st_read("data/erie_contours.shp") 
 > > 
-> > levels(state_boundary_US$region)
-> > ```
-> > Next we set a color vector with that many items: 
-> > ```{r}
-> > colors <- c("purple", "springgreen", "yellow", "brown", "navy")
-> > ```
 > > Now we can create our plot: 
 > > ```{r colored-state-boundaries}
 > > ggplot() +
-> >   geom_sf(data = state_boundary_US, aes(color = region), size = 1) +
-> >   scale_color_manual(values = colors) +
-> >   ggtitle("Contiguous U.S. State Boundaries") + 
+> >   geom_sf(data = erie_contours, aes(color = depth_m), size = 1) +
+> >   ggtitle("Lake Erie Bathymetry") + 
 > >   coord_sf()
 > > ```
 > {: .solution}
 {: .challenge}
 
 {% include links.md %}
-

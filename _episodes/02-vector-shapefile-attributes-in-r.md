@@ -17,6 +17,17 @@ source: Rmd
 ---
 
 
+~~~
+## Error in .local(.Object, ...) :
+~~~
+{: .output}
+
+
+
+~~~
+## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
+~~~
+{: .error}
 
 
 
@@ -54,15 +65,14 @@ We started to explore our `erie_outline` object in the previous episode. Here, w
 
 
 ~~~
-erie_zones <- st_read(
-  "data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp")
+erie_zones <- st_read("data/erie_zones.shp")
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Reading layer `Lake_Erie_Walleye_Management_Units_utm' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/Lake_Erie_Walleye_Management_Units/Lake_Erie_Walleye_Management_Units_utm.shp' using driver `ESRI Shapefile'
+Reading layer `erie_zones' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_zones.shp' using driver `ESRI Shapefile'
 Simple feature collection with 11 features and 8 fields
 geometry type:  POLYGON
 dimension:      XY
@@ -363,43 +373,6 @@ Now, we see that there are in fact two features in our plot!
 > {: .solution}
 {: .challenge}
 
-> ## Challenge: Subset Spatial Line Objects Part 2
->
-> Subset out all `stone wall` features from the lines layer and plot it. For each plot, color each feature using a unique color.
->
-> > ## Answer
-> >
-> > First we will save an object with only the stone wall lines
-> > and check the number of features: 
-> > 
-> > ~~~
-> > stoneWall_HARV <- erie_zones %>% 
-> >   filter(MGMTUNIT == "stone wall")
-> > nrow(stoneWall_HARV)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > [1] 0
-> > ~~~
-> > {: .output}
-> > Now we can plot the data: 
-> > 
-> > ~~~
-> > ggplot() +
-> >   geom_sf(data = stoneWall_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
-> >   labs(color = 'Wall ID') +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Stonewalls") + 
-> >   coord_sf()
-> > ~~~
-> > {: .language-r}
-> > 
-> > <img src="../fig/rmd-02-harv-stone-wall-map-1.png" title="plot of chunk harv-stone-wall-map" alt="plot of chunk harv-stone-wall-map" width="612" style="display: block; margin: auto;" />
-> {: .solution}
-{: .challenge}
-
 ## Customize Plots
 
 In the examples above, `ggplot()` automatically selected colors for
@@ -571,26 +544,6 @@ ggplot() +
 
 <img src="../fig/rmd-02-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" />
 
-We can change the appearance of our legend by manually setting different parameters.
-
-* `legend.text`: change the font size
-* `legend.box.background`: add an outline box
-
-
-~~~
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = zone_colors) + 
-  labs(color = 'Zone ID') +
-  theme(legend.text = element_text(size = 20), 
-        legend.box.background = element_rect(size = 1)) + 
-  ggtitle("Walleye Management Units", subtitle = "modified legend") +  
-  coord_sf()
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-modify-legend-plot-1.png" title="plot of chunk modify-legend-plot" alt="plot of chunk modify-legend-plot" width="612" style="display: block; margin: auto;" />
-
 
 ~~~
 new_colors <- c("springgreen", "blue", "magenta", "orange", "rosybrown")
@@ -599,8 +552,6 @@ ggplot() +
   geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) + 
   scale_color_manual(values = new_colors) +
   labs(color = 'Zone ID') +
-  theme(legend.text = element_text(size = 20), 
-        legend.box.background = element_rect(size = 1)) + 
   ggtitle("Walleye Management Units", subtitle = "pretty colors") +  
   coord_sf()
 ~~~
@@ -616,132 +567,34 @@ ggplot() +
 {: .callout}
 
 > ## Challenge: Plot Lines by Attribute
-> 
-> Create a plot that emphasizes only roads where bicycles and horses are allowed.
-> To emphasize this, make the lines where bicycles are not allowed THINNER than
-> the roads where bicycles are allowed.
-> NOTE: this attribute information is located in the `erie_zones$BicyclesHo`
-> attribute.
-> 
-> Be sure to add a title and legend to your map. You might consider a color
-> palette that has all bike/horse-friendly roads displayed in a bright color. All
-> other lines can be black.
-> 
-> > ## Answers
-> >
-> > First we need to make sure that the `BicyclesHo` attribute is a
-> > factor and check how many levels it has.
-> >
-> > 
-> > ~~~
-> > class(erie_zones$BicyclesHo)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > [1] "NULL"
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > levels(erie_zones$BicyclesHo)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > NULL
-> > ~~~
-> > {: .output}
-> >
-> > Next, we will create a new object `lines_removeNA` that removes missing values.
-> >
-> > 
-> > ~~~
-> > lines_removeNA <- erie_zones[na.omit(erie_zones$BicyclesHo),]
-> > ~~~
-> > {: .language-r}
-> >
-> > In our plot, we will set colors so that only the allowed roads
-> > are magenta, and we will set line width so that the first
-> > factor level is thicker than the others.
-> >
-> > 
-> > ~~~
-> > ggplot() + 
-> >   geom_sf(data = erie_zones) + 
-> >   geom_sf(data = lines_removeNA, aes(color = BicyclesHo), size = 2) + 
-> >   scale_color_manual(values = "magenta") +
-> >   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads Where Bikes and Horses Are Allowed") + 
-> >   coord_sf()
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in FUN(X[[i]], ...): object 'BicyclesHo' not found
-> > ~~~
-> > {: .error}
-> > 
-> > <img src="../fig/rmd-02-harv-paths-bike-horses-1.png" title="plot of chunk harv-paths-bike-horses" alt="plot of chunk harv-paths-bike-horses" width="612" style="display: block; margin: auto;" />
-> {: .solution}
-{: .challenge}
-
-> ## Challenge: Plot Polygon by Attribute
 >
-> 1. Create a map of the state boundaries in the United States using the data
-> located in your downloaded data folder: `NEON-DS-Site-Layout-Files/US-Boundary-Layers\US-State-Boundaries-Census-2014`.
-> Apply a fill color to each state using its `region` value. Add a legend.
+> 1. Create a map of Lake Erie bathymetry contours using the data located in your downloaded data folder: `erie_contours.shp`.
+> Apply a color to contour using its `depth_m` value. Add a legend.
 >
 > > ## Answers
-> > First we read in the data and check how many levels there are
-> > in the `region` column:
+> > First we read in the data:
 > > 
 > > ~~~
-> > state_boundary_US <- 
-> > st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp")
-> > ~~~
-> > {: .language-r}
+> > erie_contours <- st_read("data/erie_contours.shp") 
 > > 
-> > 
-> > 
-> > ~~~
-> > Error: Cannot open "data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp"; The file doesn't seem to exist.
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
-> > levels(state_boundary_US$region)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in levels(state_boundary_US$region): object 'state_boundary_US' not found
-> > ~~~
-> > {: .error}
-> > Next we set a color vector with that many items: 
-> > 
-> > ~~~
-> > colors <- c("purple", "springgreen", "yellow", "brown", "navy")
-> > ~~~
-> > {: .language-r}
 > > Now we can create our plot: 
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error: <text>:3:5: unexpected symbol
+> > 2: 
+> > 3: Now we
+> >        ^
+> > ~~~
+> > {: .error}
 > > 
 > > ~~~
 > > ggplot() +
-> >   geom_sf(data = state_boundary_US, aes(color = region), size = 1) +
-> >   scale_color_manual(values = colors) +
-> >   ggtitle("Contiguous U.S. State Boundaries") + 
+> >   geom_sf(data = erie_contours, aes(color = depth_m), size = 1) +
+> >   ggtitle("Lake Erie Bathymetry") + 
 > >   coord_sf()
 > > ~~~
 > > {: .language-r}
@@ -749,11 +602,10 @@ ggplot() +
 > > 
 > > 
 > > ~~~
-> > Error in fortify(data): object 'state_boundary_US' not found
+> > Error in fortify(data): object 'erie_contours' not found
 > > ~~~
 > > {: .error}
 > {: .solution}
 {: .challenge}
 
 {% include links.md %}
-

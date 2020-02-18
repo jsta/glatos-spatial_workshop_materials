@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-02-18 15:18:35 -0500">
+    <meta http-equiv="last-modified" content="2020-02-18 15:57:56 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -401,11 +401,11 @@ columns, descriptive statistics for raster data can be retrieved like</p>
 </code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        erie_bathy
-Min.    -62.475956
-1st Qu.   1.499023
-Median   63.130966
-3rd Qu. 219.889240
-Max.    589.709839
+Min.    -62.476700
+1st Qu.   1.658575
+Median   64.375511
+3rd Qu. 220.712543
+Max.    596.867676
 NA's      0.000000
 </code></pre></div></div>
 
@@ -458,6 +458,7 @@ which is a color-blindness friendly color scale. We will also use the <code clas
 </span></code></pre></div></div>
 
 <p><img src="../fig/rmd-04-ggplot-raster-1.png" title="Raster plot with ggplot2 using the viridis color scale" alt="Raster plot with ggplot2 using the viridis color scale" width="612" style="display: block; margin: auto;" /></p>
+
 <blockquote class="callout">
   <h2 id="plotting-tip">Plotting Tip</h2>
 
@@ -479,9 +480,9 @@ which is a color-blindness friendly color scale. We will also use the <code clas
   </blockquote>
 </blockquote>
 
-<p>This map shows the elevation of our study site in Lake Erie. From the
-legend, we can see that the maximum elevation is ~400, but we can’t tell whether
-this is 400 feet or 400 meters because the legend doesn’t show us the units. We
+<p>This map shows the elevation of our Lake Erie study area. From the
+legend, we can see that the maximum elevation is ~600, but we can’t tell whether
+this is 600 feet or 600 meters because the legend doesn’t show us the units. We
 can look at the metadata of our object to see what the units are. Much of the
 metadata that we’re interested in is part of the CRS. We introduced the
 concept of a CRS in <a href="https://datacarpentry.org/organization-geospatial/03-crs">an earlier
@@ -604,31 +605,38 @@ assigned to pixels where data is missing or no data were collected.</p>
 
 <p>By default the shape of a raster is always rectangular. So if we have  a dataset
 that has a shape that isn’t rectangular, some pixels at the edge of the raster
-will have <code class="highlighter-rouge">NoDataValue</code>s. This often happens when the data were collected by an
+will have <code class="highlighter-rouge">NoDataValue</code>s. This can happen if the data were collected by an
 airplane which only flew over some part of a defined region.</p>
 
-<p>In the image below, the pixels that are black have <code class="highlighter-rouge">NoDataValue</code>s. The camera
-did not collect data in these areas.</p>
+<p>In the image below, no pixels are black meaning we have data for every raster “cell”.</p>
 
 <p><img src="../fig/rmd-04-demonstrate-no-data-black-ggplot-1.png" title="plot of chunk demonstrate-no-data-black-ggplot" alt="plot of chunk demonstrate-no-data-black-ggplot" width="612" style="display: block; margin: auto;" /></p>
 
-<p>In the next image, the black edges have been assigned <code class="highlighter-rouge">NoDataValue</code>. R doesn’t
-render pixels that contain a specified <code class="highlighter-rouge">NoDataValue</code>. R assigns missing data
-with the <code class="highlighter-rouge">NoDataValue</code> as <code class="highlighter-rouge">NA</code>.</p>
-
-<p>The difference here shows up as ragged edges on the plot, rather than black
-spaces where there is no data.</p>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: colours encodes as numbers must be positive
-</code></pre></div></div>
-
-<p><img src="../fig/rmd-04-demonstrate-no-data-ggplot-1.png" title="plot of chunk demonstrate-no-data-ggplot" alt="plot of chunk demonstrate-no-data-ggplot" width="612" style="display: block; margin: auto;" /></p>
-
-<p>If your raster already has <code class="highlighter-rouge">NA</code> values set correctly but you aren’t sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset’s coverage. For instance, sometimes data can be missing where a sensor could not ‘see’ its target data, and you may wish to locate that missing data and fill it in.</p>
+<p>If your raster has <code class="highlighter-rouge">NA</code> values but you aren’t sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset’s coverage. For instance, sometimes data can be missing where a sensor could not ‘see’ its target data, and you may wish to locate that missing data and fill it in.</p>
 
 <p>To highlight <code class="highlighter-rouge">NA</code> values in ggplot, alter the <code class="highlighter-rouge">scale_fill_*()</code> layer to contain a colour instruction for <code class="highlighter-rouge">NA</code> values, like <code class="highlighter-rouge">scale_fill_viridis_c(na.value = 'deeppink')</code></p>
 
-<p><img src="../fig/rmd-04-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" /></p>
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'RGB_2m_df_nd' not found
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'RGB_2m_nas' not found
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m' not found
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_stack' not found
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m_df_nd' not found
+</code></pre></div></div>
+
+<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m_nas' not found
+</code></pre></div></div>
 
 <p>The value that is conventionally used to take note of missing data (the
 <code class="highlighter-rouge">NoDataValue</code> value) varies by the raster data type. For floating-point rasters,
@@ -656,13 +664,34 @@ of <code class="highlighter-rouge">NA</code> will be ignored by R as demonstrate
   <blockquote class="solution">
     <h2 id="answers-1">Answers</h2>
 
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GDALinfo</span><span class="p">(</span><span class="s2">"data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_bathy.tif"</span><span class="p">)</span><span class="w">
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GDALinfo</span><span class="p">(</span><span class="s2">"data//erie_bathy.tif"</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in .local(.Object, ...): 
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rows        623 
+columns     1843 
+bands       1 
+lower left origin.x        245701 
+lower left origin.y        4536578 
+res.x       276 
+res.y       370 
+ysign       -1 
+oblique.x   0 
+oblique.y   0 
+driver      GTiff 
+projection  +proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m
++no_defs 
+file        data//erie_bathy.tif 
+apparent band summary:
+   GDType hasNoDataValue NoDataValue blockSize1 blockSize2
+1 Float32           TRUE    -3.4e+38          1       1843
+apparent band statistics:
+       Bmin     Bmax Bmean Bsd
+1 -62.47671 598.1871   NaN NaN
+Metadata:
+AREA_OR_POINT=Area 
 </code></pre></div>    </div>
 
-    <p><code class="highlighter-rouge">NoDataValue</code> are encoded as -9999.</p>
+    <p><code class="highlighter-rouge">NoDataValue</code> are encoded as -3.4e+38.</p>
   </blockquote>
 </blockquote>
 
@@ -691,7 +720,7 @@ identify questionable values.</p>
 
 <p>Plotting data with appropriate highlighting can help reveal patterns in bad
 values and may suggest a solution. Below, reclassification is used to highlight
-elevation values over 400m with a contrasting colour.</p>
+elevation values less than 0m with a contrasting colour.</p>
 
 <p><img src="../fig/rmd-04-demo-bad-data-highlighting-1.png" title="plot of chunk demo-bad-data-highlighting" alt="plot of chunk demo-bad-data-highlighting" width="612" style="display: block; margin: auto;" /></p>
 
@@ -732,42 +761,8 @@ by using the <code class="highlighter-rouge">bins</code> value in the <code clas
 
 <p>Note that the shape of this histogram looks similar to the previous one that
 was created using the default of 30 bins. The distribution of elevation values
-for our <code class="highlighter-rouge">Digital Surface Model (DSM)</code> looks reasonable. It is likely there are
+for our Bathymetry data looks reasonable. It is likely there are
 no bad data values in this particular raster.</p>
-
-<blockquote class="challenge">
-  <h2 id="challenge-explore-raster-metadata">Challenge: Explore Raster Metadata</h2>
-
-  <p>Use <code class="highlighter-rouge">GDALinfo()</code> to determine the following about the <code class="highlighter-rouge">NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif</code> file:</p>
-
-  <ol>
-    <li>Does this file have the same CRS as <code class="highlighter-rouge">erie_bathy</code>?</li>
-    <li>What is the <code class="highlighter-rouge">NoDataValue</code>?</li>
-    <li>What is resolution of the raster data?</li>
-    <li>How large would a 5x5 pixel area be on the Earth’s surface?</li>
-    <li>Is the file a multi- or single-band raster?</li>
-  </ol>
-
-  <p>Notice: this file is a hillshade. We will learn about hillshades in the <a href="/05-raster-multi-band-in-r/">Working with
-Multi-band Rasters in R</a>  episode.</p>
-  <blockquote class="solution">
-
-    <h2 id="answers-2">Answers</h2>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GDALinfo</span><span class="p">(</span><span class="s2">"data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in .local(.Object, ...): 
-</code></pre></div>    </div>
-    <ol>
-      <li>If this file has the same CRS as erie_bathy?  Yes: UTM Zone 18, WGS84, meters.</li>
-      <li>What format <code class="highlighter-rouge">NoDataValues</code> take?  -9999</li>
-      <li>The resolution of the raster data? 1x1</li>
-      <li>How large a 5x5 pixel area would be? 5mx5m How? We are given resolution of 1x1 and units in meters, therefore resolution of 5x5 means 5x5m.</li>
-      <li>Is the file a multi- or single-band raster?  Single.</li>
-    </ol>
-  </blockquote>
-</blockquote>
 
 <blockquote class="callout">
   <h2 id="more-resources">More Resources</h2>

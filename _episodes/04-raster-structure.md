@@ -176,11 +176,11 @@ Warning in .local(object, ...): summary is an estimate based on a sample of 1e+0
 
 ~~~
         erie_bathy
-Min.    -62.475956
-1st Qu.   1.499023
-Median   63.130966
-3rd Qu. 219.889240
-Max.    589.709839
+Min.    -62.476700
+1st Qu.   1.658575
+Median   64.375511
+3rd Qu. 220.712543
+Max.    596.867676
 NA's      0.000000
 ~~~
 {: .output}
@@ -254,6 +254,7 @@ ggplot() +
 {: .language-r}
 
 <img src="../fig/rmd-04-ggplot-raster-1.png" title="Raster plot with ggplot2 using the viridis color scale" alt="Raster plot with ggplot2 using the viridis color scale" width="612" style="display: block; margin: auto;" />
+
 > ## Plotting Tip
 >
 > More information about the Viridis palette used above at
@@ -274,9 +275,9 @@ ggplot() +
 > {: .solution}
 {: .callout}
 
-This map shows the elevation of our study site in Lake Erie. From the
-legend, we can see that the maximum elevation is ~400, but we can't tell whether
-this is 400 feet or 400 meters because the legend doesn't show us the units. We
+This map shows the elevation of our Lake Erie study area. From the
+legend, we can see that the maximum elevation is ~600, but we can't tell whether
+this is 600 feet or 600 meters because the legend doesn't show us the units. We
 can look at the metadata of our object to see what the units are. Much of the
 metadata that we're interested in is part of the CRS. We introduced the
 concept of a CRS in [an earlier
@@ -426,34 +427,61 @@ assigned to pixels where data is missing or no data were collected.
 
 By default the shape of a raster is always rectangular. So if we have  a dataset
 that has a shape that isn't rectangular, some pixels at the edge of the raster
-will have `NoDataValue`s. This often happens when the data were collected by an
+will have `NoDataValue`s. This can happen if the data were collected by an
 airplane which only flew over some part of a defined region.
 
-In the image below, the pixels that are black have `NoDataValue`s. The camera
-did not collect data in these areas.
+In the image below, no pixels are black meaning we have data for every raster "cell".
 
 <img src="../fig/rmd-04-demonstrate-no-data-black-ggplot-1.png" title="plot of chunk demonstrate-no-data-black-ggplot" alt="plot of chunk demonstrate-no-data-black-ggplot" width="612" style="display: block; margin: auto;" />
 
-In the next image, the black edges have been assigned `NoDataValue`. R doesn't
-render pixels that contain a specified `NoDataValue`. R assigns missing data
-with the `NoDataValue` as `NA`.
-
-The difference here shows up as ragged edges on the plot, rather than black
-spaces where there is no data.
-
-
-~~~
-Error: colours encodes as numbers must be positive
-~~~
-{: .error}
-
-<img src="../fig/rmd-04-demonstrate-no-data-ggplot-1.png" title="plot of chunk demonstrate-no-data-ggplot" alt="plot of chunk demonstrate-no-data-ggplot" width="612" style="display: block; margin: auto;" />
-
-If your raster already has `NA` values set correctly but you aren't sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset's coverage. For instance, sometimes data can be missing where a sensor could not 'see' its target data, and you may wish to locate that missing data and fill it in.
+If your raster has `NA` values but you aren't sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset's coverage. For instance, sometimes data can be missing where a sensor could not 'see' its target data, and you may wish to locate that missing data and fill it in.
 
 To highlight `NA` values in ggplot, alter the `scale_fill_*()` layer to contain a colour instruction for `NA` values, like `scale_fill_viridis_c(na.value = 'deeppink')`
 
-<img src="../fig/rmd-04-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" />
+
+~~~
+Error in eval(expr, envir, enclos): object 'RGB_2m_df_nd' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in fortify(data): object 'RGB_2m_nas' not found
+~~~
+{: .error}
+
+
+
+~~~
+Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m' not found
+~~~
+{: .error}
+
+
+
+~~~
+Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_stack' not found
+~~~
+{: .error}
+
+
+
+~~~
+Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m_df_nd' not found
+~~~
+{: .error}
+
+
+
+~~~
+Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
+'RGB_2m_nas' not found
+~~~
+{: .error}
 
 The value that is conventionally used to take note of missing data (the
 `NoDataValue` value) varies by the raster data type. For floating-point rasters,
@@ -481,18 +509,39 @@ of `NA` will be ignored by R as demonstrated above.
 > >
 > > 
 > > ~~~
-> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/erie_bathy.tif")
+> > GDALinfo("data//erie_bathy.tif")
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > Error in .local(.Object, ...): 
+> > rows        623 
+> > columns     1843 
+> > bands       1 
+> > lower left origin.x        245701 
+> > lower left origin.y        4536578 
+> > res.x       276 
+> > res.y       370 
+> > ysign       -1 
+> > oblique.x   0 
+> > oblique.y   0 
+> > driver      GTiff 
+> > projection  +proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m
+> > +no_defs 
+> > file        data//erie_bathy.tif 
+> > apparent band summary:
+> >    GDType hasNoDataValue NoDataValue blockSize1 blockSize2
+> > 1 Float32           TRUE    -3.4e+38          1       1843
+> > apparent band statistics:
+> >        Bmin     Bmax Bmean Bsd
+> > 1 -62.47671 598.1871   NaN NaN
+> > Metadata:
+> > AREA_OR_POINT=Area 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > >
-> > `NoDataValue` are encoded as -9999.
+> > `NoDataValue` are encoded as -3.4e+38.
 > {: .solution}
 {: .callout}
 
@@ -519,7 +568,7 @@ identify questionable values.
 
 Plotting data with appropriate highlighting can help reveal patterns in bad
 values and may suggest a solution. Below, reclassification is used to highlight
-elevation values over 400m with a contrasting colour.
+elevation values less than 0m with a contrasting colour.
 
 <img src="../fig/rmd-04-demo-bad-data-highlighting-1.png" title="plot of chunk demo-bad-data-highlighting" alt="plot of chunk demo-bad-data-highlighting" width="612" style="display: block; margin: auto;" />
 
@@ -579,43 +628,8 @@ Warning: Removed 64779 rows containing non-finite values (stat_bin).
 
 Note that the shape of this histogram looks similar to the previous one that
 was created using the default of 30 bins. The distribution of elevation values
-for our `Digital Surface Model (DSM)` looks reasonable. It is likely there are
+for our Bathymetry data looks reasonable. It is likely there are
 no bad data values in this particular raster.
-
-> ## Challenge: Explore Raster Metadata
->
-> Use `GDALinfo()` to determine the following about the `NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif` file:
->
-> 1. Does this file have the same CRS as `erie_bathy`?
-> 2. What is the `NoDataValue`?
-> 3. What is resolution of the raster data?
-> 4. How large would a 5x5 pixel area be on the Earth's surface?
-> 5. Is the file a multi- or single-band raster?
->
-> Notice: this file is a hillshade. We will learn about hillshades in the [Working with
-> Multi-band Rasters in R]({{ site.baseurl }}/05-raster-multi-band-in-r/)  episode.
-> >
-> > ## Answers
-> >
-> > 
-> > ~~~
-> > GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in .local(.Object, ...): 
-> > ~~~
-> > {: .error}
-> > 1. If this file has the same CRS as erie_bathy?  Yes: UTM Zone 18, WGS84, meters.
-> > 2. What format `NoDataValues` take?  -9999
-> > 3. The resolution of the raster data? 1x1
-> > 4. How large a 5x5 pixel area would be? 5mx5m How? We are given resolution of 1x1 and units in meters, therefore resolution of 5x5 means 5x5m.
-> > 5. Is the file a multi- or single-band raster?  Single.
-> {: .solution}
-{: .challenge}
 
 > ## More Resources
 > * [Read more about the `raster` package in R.](http://cran.r-project.org/package=raster)

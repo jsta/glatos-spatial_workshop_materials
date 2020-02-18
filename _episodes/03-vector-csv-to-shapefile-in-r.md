@@ -18,31 +18,6 @@ source: Rmd
 ---
 
 
-~~~
-## Loading required package: sp
-~~~
-{: .output}
-
-
-
-~~~
-## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
-~~~
-{: .output}
-
-
-
-~~~
-## Error in .local(.Object, ...) :
-~~~
-{: .output}
-
-
-
-~~~
-## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-~~~
-{: .error}
 
 
 

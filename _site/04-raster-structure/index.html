@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-01-31 10:30:09 -0500">
+    <meta http-equiv="last-modified" content="2020-02-18 15:18:35 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -278,18 +278,6 @@
 
 </blockquote>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Loading required package: sp
-</code></pre></div></div>
-
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
-</code></pre></div></div>
-
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Error in .local(.Object, ...) :
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-</code></pre></div></div>
-
 <blockquote class="prereq">
   <h2 id="things-youll-need-to-complete-this-episode">Things You’ll Need To Complete This Episode</h2>
 
@@ -413,11 +401,11 @@ columns, descriptive statistics for raster data can be retrieved like</p>
 </code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        erie_bathy
-Min.    -62.476700
-1st Qu.   1.498602
-Median   63.448095
-3rd Qu. 219.466492
-Max.    567.194458
+Min.    -62.475956
+1st Qu.   1.499023
+Median   63.130966
+3rd Qu. 219.889240
+Max.    589.709839
 NA's      0.000000
 </code></pre></div></div>
 
@@ -469,7 +457,7 @@ which is a color-blindness friendly color scale. We will also use the <code clas
     </span><span class="n">scale_fill_viridis_c</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../fig/rmd-01-ggplot-raster-1.png" title="Raster plot with ggplot2 using the viridis color scale" alt="Raster plot with ggplot2 using the viridis color scale" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-ggplot-raster-1.png" title="Raster plot with ggplot2 using the viridis color scale" alt="Raster plot with ggplot2 using the viridis color scale" width="612" style="display: block; margin: auto;" /></p>
 <blockquote class="callout">
   <h2 id="plotting-tip">Plotting Tip</h2>
 
@@ -487,7 +475,7 @@ which is a color-blindness friendly color scale. We will also use the <code clas
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">erie_bathy</span><span class="p">)</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <p><img src="../fig/rmd-01-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" /></p>
+    <p><img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 
@@ -622,7 +610,7 @@ airplane which only flew over some part of a defined region.</p>
 <p>In the image below, the pixels that are black have <code class="highlighter-rouge">NoDataValue</code>s. The camera
 did not collect data in these areas.</p>
 
-<p><img src="../fig/rmd-01-demonstrate-no-data-black-ggplot-1.png" title="plot of chunk demonstrate-no-data-black-ggplot" alt="plot of chunk demonstrate-no-data-black-ggplot" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-demonstrate-no-data-black-ggplot-1.png" title="plot of chunk demonstrate-no-data-black-ggplot" alt="plot of chunk demonstrate-no-data-black-ggplot" width="612" style="display: block; margin: auto;" /></p>
 
 <p>In the next image, the black edges have been assigned <code class="highlighter-rouge">NoDataValue</code>. R doesn’t
 render pixels that contain a specified <code class="highlighter-rouge">NoDataValue</code>. R assigns missing data
@@ -634,13 +622,13 @@ spaces where there is no data.</p>
 <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: colours encodes as numbers must be positive
 </code></pre></div></div>
 
-<p><img src="../fig/rmd-01-demonstrate-no-data-ggplot-1.png" title="plot of chunk demonstrate-no-data-ggplot" alt="plot of chunk demonstrate-no-data-ggplot" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-demonstrate-no-data-ggplot-1.png" title="plot of chunk demonstrate-no-data-ggplot" alt="plot of chunk demonstrate-no-data-ggplot" width="612" style="display: block; margin: auto;" /></p>
 
 <p>If your raster already has <code class="highlighter-rouge">NA</code> values set correctly but you aren’t sure where they are, you can deliberately plot them in a particular colour. This can be useful when checking a dataset’s coverage. For instance, sometimes data can be missing where a sensor could not ‘see’ its target data, and you may wish to locate that missing data and fill it in.</p>
 
 <p>To highlight <code class="highlighter-rouge">NA</code> values in ggplot, alter the <code class="highlighter-rouge">scale_fill_*()</code> layer to contain a colour instruction for <code class="highlighter-rouge">NA</code> values, like <code class="highlighter-rouge">scale_fill_viridis_c(na.value = 'deeppink')</code></p>
 
-<p><img src="../fig/rmd-01-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" /></p>
 
 <p>The value that is conventionally used to take note of missing data (the
 <code class="highlighter-rouge">NoDataValue</code> value) varies by the raster data type. For floating-point rasters,
@@ -705,7 +693,7 @@ identify questionable values.</p>
 values and may suggest a solution. Below, reclassification is used to highlight
 elevation values over 400m with a contrasting colour.</p>
 
-<p><img src="../fig/rmd-01-demo-bad-data-highlighting-1.png" title="plot of chunk demo-bad-data-highlighting" alt="plot of chunk demo-bad-data-highlighting" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-demo-bad-data-highlighting-1.png" title="plot of chunk demo-bad-data-highlighting" alt="plot of chunk demo-bad-data-highlighting" width="612" style="display: block; margin: auto;" /></p>
 
 <h2 id="create-a-histogram-of-raster-values">Create A Histogram of Raster Values</h2>
 
@@ -723,7 +711,7 @@ useful in identifying outliers and bad data values in our raster data.</p>
 <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Removed 64779 rows containing non-finite values (stat_bin).
 </code></pre></div></div>
 
-<p><img src="../fig/rmd-01-view-raster-histogram-1.png" title="plot of chunk view-raster-histogram" alt="plot of chunk view-raster-histogram" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-view-raster-histogram-1.png" title="plot of chunk view-raster-histogram" alt="plot of chunk view-raster-histogram" width="612" style="display: block; margin: auto;" /></p>
 
 <p>Notice that a warning message is thrown when R creates the histogram.</p>
 
@@ -740,7 +728,7 @@ by using the <code class="highlighter-rouge">bins</code> value in the <code clas
 <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Removed 64779 rows containing non-finite values (stat_bin).
 </code></pre></div></div>
 
-<p><img src="../fig/rmd-01-view-raster-histogram2-1.png" title="plot of chunk view-raster-histogram2" alt="plot of chunk view-raster-histogram2" width="612" style="display: block; margin: auto;" /></p>
+<p><img src="../fig/rmd-04-view-raster-histogram2-1.png" title="plot of chunk view-raster-histogram2" alt="plot of chunk view-raster-histogram2" width="612" style="display: block; margin: auto;" /></p>
 
 <p>Note that the shape of this histogram looks similar to the previous one that
 was created using the default of 30 bins. The distribution of elevation values

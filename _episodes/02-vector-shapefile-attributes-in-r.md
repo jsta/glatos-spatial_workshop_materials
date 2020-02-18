@@ -17,17 +17,6 @@ source: Rmd
 ---
 
 
-~~~
-## Error in .local(.Object, ...) :
-~~~
-{: .output}
-
-
-
-~~~
-## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-~~~
-{: .error}
 
 
 

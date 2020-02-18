@@ -17,31 +17,6 @@ source: Rmd
 ---
 
 
-~~~
-## Loading required package: sp
-~~~
-{: .output}
-
-
-
-~~~
-## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
-~~~
-{: .output}
-
-
-
-~~~
-## Error in .local(.Object, ...) :
-~~~
-{: .output}
-
-
-
-~~~
-## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-~~~
-{: .error}
 
 
 
@@ -72,14 +47,14 @@ Ecological Observatory Network (NEON)
 The graphic below illustrates the extent of several of the spatial layers that
 we have worked with in this workshop:
 
-* Area of interest (AOI) -- blue
-* Roads and trails -- purple
-* Vegetation plot locations (marked with white dots)-- black
-* A Bathymetry model (CHM) in GeoTIFF format -- green
+* Lake erie outline (AOI) -- blue
+* Fish tracking locations (marked with white dots)-- black
+* An elevation surface in GeoTIFF format -- green
+* Walleye management zones -- rainbow
 
 
 
-<img src="../fig/rmd-11-compare-data-extents-1.png" title="plot of chunk compare-data-extents" alt="plot of chunk compare-data-extents" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-compare-data-extents-1.png" title="plot of chunk compare-data-extents" alt="plot of chunk compare-data-extents" width="612" style="display: block; margin: auto;" />
 
 Frequent use cases of cropping a raster file include reducing file size and
 creating maps. Sometimes we have a raster file that is much larger than our
@@ -95,7 +70,7 @@ spatial object. To do this, we need to specify the raster to be cropped and the
 spatial object that will be used to crop the raster. R will use the `extent` of
 the spatial object as the cropping boundary.
 
-To illustrate this, we will crop the Bathymetry Model (CHM) to only include the area of interest (AOI). Let's start by plotting the full extent of the CHM data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use `fill = NA` to make the area transparent.
+To illustrate this, we will crop the elevation surface to only include the area of interest (AOI). Let's start by plotting the full extent of the elevation data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use `fill = NA` to make the area transparent.
 
 
 ~~~
@@ -107,24 +82,24 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-11-crop-by-vector-extent-1.png" title="plot of chunk crop-by-vector-extent" alt="plot of chunk crop-by-vector-extent" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-crop-by-vector-extent-1.png" title="plot of chunk crop-by-vector-extent" alt="plot of chunk crop-by-vector-extent" width="612" style="display: block; margin: auto;" />
 
-Now that we have visualized the area of the Lake Erie we want to subset, we can
+Now that we have visualized the area of the elevation data we want to subset, we can
 perform the cropping operation. We are going to create a new object with only
-the portion of the Lake Erie data that falls within the boundaries of the AOI. The function `crop()` is from the raster package and doesn't know how to deal with `sf` objects. Therefore, we first need to convert `erie_outline` from a `sf` object to "Spatial" object.
+the portion of the elevation data that falls within the boundaries of the AOI. The function `crop()` is from the raster package and doesn't know how to deal with `sf` objects. Therefore, we first need to convert `erie_outline` from a `sf` object to "Spatial" object.
 
 
 ~~~
-erie_bathy_Cropped <- crop(x = erie_bathy, y = as(erie_outline, "Spatial"))
+erie_bathy_Cropped <- crop(x = erie_bathy, y = as_Spatial(erie_outline))
 ~~~
 {: .language-r}
 
-Now we can plot the cropped Lake Erie data, along with a boundary box showing the full
-Lake Erie extent. However, remember, since this is raster data, we need to convert to
-a data frame in order to plot using `ggplot`. To get the boundary box from Lake Erie,
-the `st_bbox()` will extract the 4 corners of the rectangle that encompass all
-the features contained in this object. The `st_as_sfc()` converts these 4
-coordinates into a polygon that we can plot:
+Now we can plot the cropped Lake Erie data, along with a boundary box showing 
+the full elevation data extent. However, remember, since this is raster data, we
+need to convert to a data frame in order to plot using `ggplot`. To get the 
+boundary box from Lake Erie, the `st_bbox()` will extract the 4 corners of the
+rectangle that encompass all the features contained in this object. The
+`st_as_sfc()` function converts these 4 coordinates into a polygon that we can plot:
 
 
 ~~~
@@ -140,7 +115,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-11-show-cropped-area-1.png" title="plot of chunk show-cropped-area" alt="plot of chunk show-cropped-area" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-show-cropped-area-1.png" title="plot of chunk show-cropped-area" alt="plot of chunk show-cropped-area" width="612" style="display: block; margin: auto;" />
 
 The plot above shows that the full Lake Erie extent (plotted in green) is much larger
 than the resulting cropped raster. Our new cropped Lake Erie now has the same extent
@@ -158,9 +133,9 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-11-view-crop-extent-1.png" title="plot of chunk view-crop-extent" alt="plot of chunk view-crop-extent" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-view-crop-extent-1.png" title="plot of chunk view-crop-extent" alt="plot of chunk view-crop-extent" width="612" style="display: block; margin: auto;" />
 
-We can look at the extent of all of our other objects for this field site.
+We can look at the extent of all of our other objects we have to work with here.
 
 
 ~~~
@@ -221,55 +196,33 @@ st_bbox(fish_locations)
 ~~~
 {: .output}
 
-Our plot location extent is not the largest but is larger than the AOI Boundary.
-It would be nice to see our vegetation plot locations plotted on top of the
-Bathymetry Model information.
+It would be nice to see our fishing tracking locations plotted on top of the
+Bathymetry information.
 
 > ## Challenge: Crop to Vector Points Extent
 > 
-> 1. Crop the Bathymetry Model to the extent of the study plot locations.
-> 2. Plot the vegetation plot location points on top of the Bathymetry Model.
+> 1. Crop the Bathymetry surface to the extent of the fish tracking locations.
+> 2. Plot the fish tracking location points on top of the Bathymetry surface.
 > 
 > > ## Answers
 > > 
 > > 
 > > ~~~
-> > CHM_plots_HARVcrop <- crop(x = erie_bathy, y = as(fish_locations, "Spatial"))
+> > erie_bathy_crop <- crop(x = erie_bathy, y = as(fish_locations, "Spatial"))
 > > 
-> > CHM_plots_HARVcrop_df <- as.data.frame(CHM_plots_HARVcrop, xy = TRUE)
+> > erie_bathy_crop_df <- as.data.frame(erie_bathy_crop, xy = TRUE)
 > > 
 > > ggplot() + 
-> >   geom_raster(data = CHM_plots_HARVcrop_df, aes(x = x, y = y, fill = HARV_chmCrop)) + 
+> >   geom_raster(data = erie_bathy_crop_df, aes(x = x, y = y, fill = erie_bathy)) + 
 > >   scale_fill_gradientn(name = "Bathymetry", colors = terrain.colors(10)) + 
 > >   geom_sf(data = fish_locations) + 
 > >   coord_sf()
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in FUN(X[[i]], ...): object 'HARV_chmCrop' not found
-> > ~~~
-> > {: .error}
-> > 
-> > <img src="../fig/rmd-11-challenge-code-crop-raster-points-1.png" title="plot of chunk challenge-code-crop-raster-points" alt="plot of chunk challenge-code-crop-raster-points" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-challenge-code-crop-raster-points-1.png" title="plot of chunk challenge-code-crop-raster-points" alt="plot of chunk challenge-code-crop-raster-points" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
-
-In the plot above, created in the challenge, all the vegetation plot locations
-(black dots) appear on the Bathymetry Model raster layer except for one. One is
-situated on the blank space to the left of the map. Why?
-
-A modification of the first figure in this episode is below, showing the
-relative extents of all the spatial objects. Notice that the extent for our
-vegetation plot layer (black) extends further west than the extent of our CHM
-raster (bright green). The `crop()` function will make a raster extent smaller, it
-will not expand the extent in areas where there are no data. Thus, the extent of our
-vegetation plot layer will still extend further west than the extent of our
-(cropped) raster data (dark green).
-
-<img src="../fig/rmd-11-repeat-compare-data-extents-1.png" title="plot of chunk repeat-compare-data-extents" alt="plot of chunk repeat-compare-data-extents" width="612" style="display: block; margin: auto;" />
 
 ## Define an Extent
 
@@ -333,12 +286,12 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-11-show-manual-crop-area-1.png" title="plot of chunk show-manual-crop-area" alt="plot of chunk show-manual-crop-area" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-show-manual-crop-area-1.png" title="plot of chunk show-manual-crop-area" alt="plot of chunk show-manual-crop-area" width="612" style="display: block; margin: auto;" />
 
 ## Extract Raster Pixels Values Using Vector Polygons
 
 Often we want to extract values from a raster layer for particular locations -
-for example, Lake Erie management zones that we are sampling. We can extract all pixel values within 20m of our x,y point of interest. These can then be summarized into some value of interest (e.g. mean, maximum, total).
+for example, our fish tracking locations that we are sampling. We can extract all pixel values within 20m of our x,y point of interest. These can then be summarized into some value of interest (e.g. mean, maximum, total).
 
 ![Extract raster information using a polygon boundary. From https://www.neonscience.org/sites/default/files/images/spatialData/BufferSquare.png](../images//BufferSquare.png)
 
@@ -351,43 +304,42 @@ boundaries,
 * we can tell it to store the output values in a data frame using
 `df = TRUE`. (This is optional, the default is to return a list, NOT a data frame.) .
 
-We will begin by extracting all bathymetry pixel values located within our
-`erie_outline` polygon.
+We will begin by extracting all bathymetry pixel values for our fish tracking locations.
 
 
 ~~~
-erie_bathy <- extract(x = erie_bathy,
-                       y = as(erie_outline, "Spatial"),
+fish_tracks_bathy <- extract(x = erie_bathy,
+                       y = as(fish_locations, "Spatial"),
                        df = TRUE)
 
-str(erie_bathy)
+str(fish_tracks_bathy)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-'data.frame':	253082 obs. of  2 variables:
- $ ID        : num  1 1 1 1 1 1 1 1 1 1 ...
- $ erie_bathy: num  -1.933 -2.968 -2.79 -3.23 0.333 ...
+'data.frame':	1366 obs. of  2 variables:
+ $ ID        : num  1 2 3 4 5 6 7 8 9 10 ...
+ $ erie_bathy: num  -5.84 -4.42 -5.84 -4.83 -5.84 ...
 ~~~
 {: .output}
 
 When we use the `extract()` function, R extracts the value for each pixel located
 within the boundary of the polygon being used to perform the extraction - in
-this case the `erie_outline` object (a single polygon). Here, the
-function extracted values from 18,450 pixels.
+this case the `fish_locations` object (a point layer). Here, the
+function extracted values from 1,366 pixels.
 
 We can create a histogram of depth values within the boundary to better
-understand the structure or height distribution of trees at our site. We will
-use the column `layer` from our data frame as our x values, as this column
+understand the structure or depth distribution at our fish tracking locations. We 
+will use the column `erie_bathy` from our data frame as our x values, as this column
 represents the depths for each pixel.
 
 
 ~~~
 ggplot() + 
-  geom_histogram(data = erie_bathy, aes(x = erie_bathy)) +
-  ggtitle("Histogram of CHM Height Values (m)") +
+  geom_histogram(data = fish_tracks_bathy, aes(x = erie_bathy)) +
+  ggtitle("Histogram of Bathymetry Values (m)") +
   xlab("Depth") + 
   ylab("Frequency of Pixels")
 ~~~
@@ -400,16 +352,15 @@ ggplot() +
 ~~~
 {: .output}
 
-<img src="../fig/rmd-11-view-extract-histogram-1.png" title="plot of chunk view-extract-histogram" alt="plot of chunk view-extract-histogram" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-view-extract-histogram-1.png" title="plot of chunk view-extract-histogram" alt="plot of chunk view-extract-histogram" width="612" style="display: block; margin: auto;" />
 
  We can also use the
 `summary()` function to view descriptive statistics including min, max, and mean
-height values. These values help us better understand vegetation at our field
-site.
+height values. These values help us better the depth at our fishing tracking locations.
 
 
 ~~~
-summary(erie_bathy$erie_bathy)
+summary(fish_tracks_bathy$erie_bathy)
 ~~~
 {: .language-r}
 
@@ -417,7 +368,7 @@ summary(erie_bathy$erie_bathy)
 
 ~~~
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- -62.48  -21.50  -18.62  -17.94  -11.58   37.32 
+-21.508 -13.786  -9.509 -10.177  -7.281   2.322 
 ~~~
 {: .output}
 
@@ -425,27 +376,15 @@ summary(erie_bathy$erie_bathy)
 
 We often want to extract summary values from a raster. We can tell R the type
 of summary statistic we are interested in using the `fun =` argument. Let's extract
-a mean height value for our AOI. Because we are extracting only a single number, we will
-not use the `df = TRUE` argument. 
+a mean height value for our AOI. Because we are extracting only a single number, 
+we will not use the `df = TRUE` argument. 
 
 
 ~~~
-mean_erie_bathy_AOI <- extract(x = erie_bathy,
+mean_erie_bathy_AOI <- raster::extract(x = erie_bathy,
                               y = as(erie_outline, "Spatial"),
                               fun = mean)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'extract' for signature '"data.frame", "SpatialPolygonsDataFrame"'
-~~~
-{: .error}
-
-
-
-~~~
 mean_erie_bathy_AOI
 ~~~
 {: .language-r}
@@ -453,64 +392,52 @@ mean_erie_bathy_AOI
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'mean_erie_bathy_AOI' not found
+          [,1]
+[1,] -17.93646
 ~~~
-{: .error}
+{: .output}
 
-It appears that the mean height value, extracted from our LiDAR data derived
-Bathymetry model is 22.43 meters.
+It appears that the mean depth value, extracted from our bathymetry model is -17.9364625 meters.
 
 ## Extract Data using x,y Locations
 
 We can also extract pixel values from a raster by defining a buffer or area
 surrounding individual point locations using the `extract()` function. To do this
-we define the summary argument (`fun = mean`) and the buffer distance (`buffer = 20`)
-which represents the radius of a circular region around each point. By default, the units of the
-buffer are the same units as the data's CRS. All pixels that are touched by the buffer region are included in the extract.
+we define the summary argument (`fun = mean`) and the buffer distance 
+(`buffer = 20`) which represents the radius of a circular region around each point.
+By default, the units of the buffer are the same units as the data's CRS. All pixels
+that are touched by the buffer region are included in the extract.
 
 ![Extract raster information using a buffer region. From: https://www.neonscience.org/sites/default/files/images/spatialData/BufferCircular.png](../images/BufferCircular.png)
 
 Source: National Ecological Observatory Network (NEON).
 
 Let's put this into practice by figuring out the mean depth in the
-20m around the tower location (`point_HARV`). Because we are extracting only a single number, we
-will not use the `df = TRUE` argument. 
+20m around the first fish tracking location (`fish_locations`). Because we are extracting
+from a single location, we will not use the `df = TRUE` argument. 
 
 
 ~~~
-mean_erie_zone1 <- extract(x = erie_bathy,
-                           y = as(erie_zones[1,], "Spatial"),
-                           fun = mean)
-~~~
-{: .language-r}
+mean_erie_fish <- extract(x = erie_bathy,
+                           y = as(fish_locations[1,], "Spatial"),
+                           fun = mean, buffer = 20)
 
-
-
-~~~
-Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'extract' for signature '"data.frame", "SpatialPolygonsDataFrame"'
-~~~
-{: .error}
-
-
-
-~~~
-mean_erie_zone1
+mean_erie_fish
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'mean_erie_zone1' not found
+[1] -5.841959
 ~~~
-{: .error}
+{: .output}
 
-> ## Challenge: Extract Raster Height Values For Plot Locations
+> ## Challenge: Extract buffered bathymetry values for fish tracking location
 > 
-> 1) Use the plot locations object (`fish_locations`)
-> to extract an average depth for the
-> area within 20m of each vegetation plot location in the study area. Because there are 
-> multiple plot locations, there will be multiple averages returned, so the `df = TRUE` 
+> 1) Use the fish tracking object (`fish_locations`) to extract an average depth for the
+> area within 20m of each point location. Because there are 
+> multiple fish tracking locations, there will be multiple averages returned, so the `df = TRUE` 
 > argument should be used.
 > 
 > 2) Create a plot showing the mean depth of each area. 
@@ -519,21 +446,21 @@ Error in eval(expr, envir, enclos): object 'mean_erie_zone1' not found
 > > 
 > > 
 > > ~~~
-> > # extract data at each plot location
-> > # mean_erie_bathy_plots_HARV <- extract(x = erie_bathy,
+> > # extract data at each fish tracking location
+> > # mean_erie_fish_all <- extract(x = erie_bathy,
 > > #                                y = as(fish_locations, "Spatial"),
-> > #                               buffer=20,
+> > #                               buffer = 20,
 > > #                               fun = mean,
 > > #                               df = TRUE)
 > > 
 > > # view data
-> > # mean_erie_bathy_plots_HARV
+> > # mean_erie_fish_all
 > > 
 > > # plot data
-> > # ggplot(data = mean_erie_bathy_plots_HARV, aes(ID, HARV_chmCrop)) + 
+> > # ggplot(data = mean_erie_fish_all, aes(ID, erie_bathy)) + 
 > > #  geom_col() + 
-> > #  ggtitle("Mean Depth at each Plot") + 
-> > #  xlab("Plot ID") + 
+> > #  ggtitle("Mean Depth around each location") + 
+> > #  xlab("ID") + 
 > > #  ylab("Depth (m)")
 > > ~~~
 > > {: .language-r}

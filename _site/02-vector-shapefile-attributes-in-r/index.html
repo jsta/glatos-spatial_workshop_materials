@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-02-18 18:07:58 -0500">
+    <meta http-equiv="last-modified" content="2020-02-18 18:18:21 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -646,47 +646,6 @@ levels to the desired thickness.</p>
   </blockquote>
 </blockquote>
 
-<h3 id="add-plot-legend">Add Plot Legend</h3>
-
-<p>We can add a legend to our plot too. When we add a legend, we use the following
-elements to specify labels and colors:</p>
-
-<ul>
-  <li><code class="highlighter-rouge">bottomright</code>: We specify the location of our legend by using a default
-keyword. We could also use <code class="highlighter-rouge">top</code>, <code class="highlighter-rouge">topright</code>, etc.</li>
-  <li><code class="highlighter-rouge">levels(objectName$attributeName)</code>: Label the legend elements using the
-categories of levels in an attribute (e.g., levels(erie_zones$MGMTUNIT) means use
-the levels boardwalk, footpath, etc).</li>
-  <li><code class="highlighter-rouge">fill =</code>: apply unique colors to the boxes in our legend. <code class="highlighter-rouge">palette()</code> is
-the default set of colors that R applies to all plots.</li>
-</ul>
-
-<p>Let’s add a legend to our plot. We will use the <code class="highlighter-rouge">zone_colors</code> object
-that we created above to color the legend. We can customize the
-appearance of our legend by manually setting different parameters.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"default legend"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
-  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
-
-<p><img src="../fig/rmd-02-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" /></p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"springgreen"</span><span class="p">,</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"magenta"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w"> </span><span class="s2">"rosybrown"</span><span class="p">)</span><span class="w">
-
-</span><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_zones</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGMTUNIT</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_colors</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Zone ID'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Walleye Management Units"</span><span class="p">,</span><span class="w"> </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"pretty colors"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
-  </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
-
-<p><img src="../fig/rmd-02-plot-different-colors-1.png" title="plot of chunk plot-different-colors" alt="plot of chunk plot-different-colors" width="612" style="display: block; margin: auto;" /></p>
-
 <blockquote class="callout">
   <h2 id="data-tip">Data Tip</h2>
   <p>You can modify the default R color palette
@@ -708,15 +667,18 @@ Apply a color to contour using its <code class="highlighter-rouge">depth_m</code
     <p>First we read in the data:</p>
 
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">erie_contours</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/erie_contours.shp"</span><span class="p">)</span><span class="w"> 
-
-</span><span class="n">Now</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">plot</span><span class="o">:</span><span class="w"> 
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: &lt;text&gt;:3:5: unexpected symbol
-2: 
-3: Now we
-       ^
+    <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `erie_contours' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_contours.shp' using driver `ESRI Shapefile'
+Simple feature collection with 8764 features and 3 fields
+geometry type:  LINESTRING
+dimension:      XY
+bbox:           xmin: -83.57167 ymin: 41.36359 xmax: -78.7695 ymax: 42.9103
+epsg (SRID):    4326
+proj4string:    +proj=longlat +datum=WGS84 +no_defs
 </code></pre></div>    </div>
+
+    <p>Now we can create our plot:</p>
 
     <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">erie_contours</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">depth_m</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
@@ -724,8 +686,7 @@ Apply a color to contour using its <code class="highlighter-rouge">depth_m</code
   </span><span class="n">coord_sf</span><span class="p">()</span><span class="w">
 </span></code></pre></div>    </div>
 
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'erie_contours' not found
-</code></pre></div>    </div>
+    <p><img src="../fig/rmd-02-colored-state-boundaries-1.png" title="plot of chunk colored-state-boundaries" alt="plot of chunk colored-state-boundaries" width="612" style="display: block; margin: auto;" /></p>
   </blockquote>
 </blockquote>
 

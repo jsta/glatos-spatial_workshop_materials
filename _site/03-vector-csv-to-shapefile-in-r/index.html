@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-02-18 18:07:58 -0500">
+    <meta http-equiv="last-modified" content="2020-02-18 18:18:21 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -468,100 +468,6 @@ of the plot. To show this, let’s plot our <code class="highlighter-rouge">erie
 so that they are large enough to include all of the data included in all of the layers.
 That’s really handy!</p>
 
-<blockquote class="challenge">
-  <h2 id="challenge---import--plot-additional-points">Challenge - Import &amp; Plot Additional Points</h2>
-
-  <p>We want to add two phenology plots to our existing map of vegetation plot
-locations.</p>
-
-  <p>Import the .csv: <code class="highlighter-rouge">HARV/HARV_2NewPhenPlots.csv</code> into R and do the following:</p>
-
-  <ol>
-    <li>Find the X and Y coordinate locations. Which value is X and which value is Y?</li>
-    <li>These data were collected in a geographic coordinate system (WGS84). Convert
-the dataframe into an <code class="highlighter-rouge">sf</code> object.</li>
-    <li>Plot the new points with the plot location points from above. Be sure to add
-a legend. Use a different symbol for the 2 new points!</li>
-  </ol>
-
-  <p>If you have extra time, feel free to add roads and other layers to your map!</p>
-
-  <blockquote class="solution">
-    <h2 id="answers">Answers</h2>
-
-    <p>1)
-First we will read in the new csv file and look at the
-data structure.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">newfish_tracks</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">
-  </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"data/NEON-DS-Site-Layout-Files/HARV/HARV_2NewPhenPlots.csv"</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in file(file, "rt"): cannot open file 'data/NEON-DS-Site-Layout-Files/
-HARV/HARV_2NewPhenPlots.csv': No such file or directory
-</code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in file(file, "rt"): cannot open the connection
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">str</span><span class="p">(</span><span class="n">newfish_tracks</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in str(newfish_tracks): object 'newfish_tracks' not found
-</code></pre></div>    </div>
-
-    <p>2)
-The US boundary data we worked with previously is in a geographic
-WGS84 CRS. We can use that data to establish a CRS for this data. First
-we will extract the CRS from the <code class="highlighter-rouge">country_boundary_US</code> object and
-confirm that it is WGS84.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">geogCRS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_crs</span><span class="p">(</span><span class="n">country_boundary_US</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_crs(country_boundary_US): object 'country_boundary_US' not found
-</code></pre></div>    </div>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">geogCRS</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'geogCRS' not found
-</code></pre></div>    </div>
-
-    <p>Then we will convert our new data to a spatial dataframe, using
-the <code class="highlighter-rouge">geogCRS</code> object as our CRS.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">newPlot.Sp.HARV</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_as_sf</span><span class="p">(</span><span class="n">newfish_tracks</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"decimalLon"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decimalLat"</span><span class="p">),</span><span class="w"> </span><span class="n">crs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">geogCRS</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_as_sf(newfish_tracks, coords = c("decimalLon", "decimalLat"), : object 'newfish_tracks' not found
-</code></pre></div>    </div>
-
-    <p>Next we’ll confirm that the CRS for our new object is correct.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st_crs</span><span class="p">(</span><span class="n">newPlot.Sp.HARV</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in st_crs(newPlot.Sp.HARV): object 'newPlot.Sp.HARV' not found
-</code></pre></div>    </div>
-
-    <p>We will be adding these new data points to the plot we
-created before. The data for the earlier plot was in UTM.
-Since we’re using <code class="highlighter-rouge">ggplot</code>, it will reproject the data for us.</p>
-
-    <p>3) Now we can create our plot.</p>
-
-    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fish_locations</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newPlot.Sp.HARV</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lightblue"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Map of All Plot Locations"</span><span class="p">)</span><span class="w">
-</span></code></pre></div>    </div>
-
-    <div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'newPlot.Sp.HARV' not found
-</code></pre></div>    </div>
-  </blockquote>
-</blockquote>
-
 <h2 id="export-a-shapefile">Export a Shapefile</h2>
 
 <p>We can write an R spatial object to a shapefile using the <code class="highlighter-rouge">st_write</code> function
@@ -569,9 +475,8 @@ in <code class="highlighter-rouge">sf</code>. To do this we need the following a
 
 <ul>
   <li>the name of the spatial object (<code class="highlighter-rouge">fish_locations</code>)</li>
-  <li>the directory where we want to save our shapefile
+  <li>the directory and file name where we want to save our shapefile
          (to use <code class="highlighter-rouge">current = getwd()</code> or you can specify a different path)</li>
-  <li>the name of the new shapefile  (<code class="highlighter-rouge">PlotLocations_HARV</code>)</li>
   <li>the driver which specifies the file format (ESRI Shapefile)</li>
 </ul>
 

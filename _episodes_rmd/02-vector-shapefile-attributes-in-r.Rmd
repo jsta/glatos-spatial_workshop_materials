@@ -309,44 +309,6 @@ ggplot() +
 > {: .solution}
 {: .challenge}
 
-
-### Add Plot Legend
-
-We can add a legend to our plot too. When we add a legend, we use the following
-elements to specify labels and colors:
-
-* `bottomright`: We specify the location of our legend by using a default
-keyword. We could also use `top`, `topright`, etc.
-* `levels(objectName$attributeName)`: Label the legend elements using the
-categories of levels in an attribute (e.g., levels(erie_zones$MGMTUNIT) means use
-the levels boardwalk, footpath, etc).
-* `fill =`: apply unique colors to the boxes in our legend. `palette()` is
-the default set of colors that R applies to all plots.
-
-Let's add a legend to our plot. We will use the `zone_colors` object
-that we created above to color the legend. We can customize the
-appearance of our legend by manually setting different parameters.
-
-```{r add-legend-to-plot }
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = zone_colors) +
-  labs(color = 'Zone ID') + 
-  ggtitle("Walleye Management Units", subtitle = "default legend") +  
-  coord_sf()
-```
-
-```{r plot-different-colors}
-new_colors <- c("springgreen", "blue", "magenta", "orange", "rosybrown")
-
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) + 
-  scale_color_manual(values = new_colors) +
-  labs(color = 'Zone ID') +
-  ggtitle("Walleye Management Units", subtitle = "pretty colors") +  
-  coord_sf()
-```
-
 > ## Data Tip
 > You can modify the default R color palette
 > using the palette method. For example `palette(rainbow(6))` or
@@ -361,10 +323,12 @@ ggplot() +
 >
 > > ## Answers
 > > First we read in the data:
-> > ``` {r}
+> > ```{r}
 > > erie_contours <- st_read("data/erie_contours.shp") 
+> > ```
 > > 
 > > Now we can create our plot: 
+> > 
 > > ```{r colored-state-boundaries}
 > > ggplot() +
 > >   geom_sf(data = erie_contours, aes(color = depth_m), size = 1) +

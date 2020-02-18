@@ -502,52 +502,6 @@ ggplot() +
 > {: .solution}
 {: .challenge}
 
-
-### Add Plot Legend
-
-We can add a legend to our plot too. When we add a legend, we use the following
-elements to specify labels and colors:
-
-* `bottomright`: We specify the location of our legend by using a default
-keyword. We could also use `top`, `topright`, etc.
-* `levels(objectName$attributeName)`: Label the legend elements using the
-categories of levels in an attribute (e.g., levels(erie_zones$MGMTUNIT) means use
-the levels boardwalk, footpath, etc).
-* `fill =`: apply unique colors to the boxes in our legend. `palette()` is
-the default set of colors that R applies to all plots.
-
-Let's add a legend to our plot. We will use the `zone_colors` object
-that we created above to color the legend. We can customize the
-appearance of our legend by manually setting different parameters.
-
-
-~~~
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) +
-  scale_color_manual(values = zone_colors) +
-  labs(color = 'Zone ID') + 
-  ggtitle("Walleye Management Units", subtitle = "default legend") +  
-  coord_sf()
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-add-legend-to-plot-1.png" title="plot of chunk add-legend-to-plot" alt="plot of chunk add-legend-to-plot" width="612" style="display: block; margin: auto;" />
-
-
-~~~
-new_colors <- c("springgreen", "blue", "magenta", "orange", "rosybrown")
-
-ggplot() + 
-  geom_sf(data = erie_zones, aes(color = MGMTUNIT), size = 1.5) + 
-  scale_color_manual(values = new_colors) +
-  labs(color = 'Zone ID') +
-  ggtitle("Walleye Management Units", subtitle = "pretty colors") +  
-  coord_sf()
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-plot-different-colors-1.png" title="plot of chunk plot-different-colors" alt="plot of chunk plot-different-colors" width="612" style="display: block; margin: auto;" />
-
 > ## Data Tip
 > You can modify the default R color palette
 > using the palette method. For example `palette(rainbow(6))` or
@@ -565,20 +519,24 @@ ggplot() +
 > > 
 > > ~~~
 > > erie_contours <- st_read("data/erie_contours.shp") 
-> > 
-> > Now we can create our plot: 
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > Error: <text>:3:5: unexpected symbol
-> > 2: 
-> > 3: Now we
-> >        ^
+> > Reading layer `erie_contours' from data source `/home/jose/Documents/Science/Workshops/2020-02_glatos/glatos-spatial_workshop_materials/_episodes_rmd/data/erie_contours.shp' using driver `ESRI Shapefile'
+> > Simple feature collection with 8764 features and 3 fields
+> > geometry type:  LINESTRING
+> > dimension:      XY
+> > bbox:           xmin: -83.57167 ymin: 41.36359 xmax: -78.7695 ymax: 42.9103
+> > epsg (SRID):    4326
+> > proj4string:    +proj=longlat +datum=WGS84 +no_defs
 > > ~~~
-> > {: .error}
+> > {: .output}
+> > 
+> > Now we can create our plot: 
+> > 
 > > 
 > > ~~~
 > > ggplot() +
@@ -588,12 +546,7 @@ ggplot() +
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in fortify(data): object 'erie_contours' not found
-> > ~~~
-> > {: .error}
+> > <img src="../fig/rmd-02-colored-state-boundaries-1.png" title="plot of chunk colored-state-boundaries" alt="plot of chunk colored-state-boundaries" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 

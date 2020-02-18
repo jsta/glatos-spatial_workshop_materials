@@ -22,8 +22,8 @@ source: Rmd
 
 ```{r setup, echo=FALSE}
 source("../bin/chunk-options.R")
-source("../setup.R") # NB downloads ~180 MB
-knitr_fig_path("01-")
+# source("../setup.R") # NB downloads ~180 MB
+knitr_fig_path("04-")
 knitr::opts_chunk$set(fig.height = 6)
 ```
 

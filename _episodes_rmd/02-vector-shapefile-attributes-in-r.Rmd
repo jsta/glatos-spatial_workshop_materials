@@ -16,7 +16,7 @@ source: Rmd
 
 ```{r setup, echo=FALSE, message=FALSE}
 source("../bin/chunk-options.R")
-source("../setup.R")
+# source("../setup.R")
 knitr_fig_path("02-")
 ```
 

@@ -176,10 +176,10 @@ Warning in .local(object, ...): summary is an estimate based on a sample of 1e+0
 
 ~~~
         erie_bathy
-Min.    -62.476700
-1st Qu.   1.658575
-Median   64.375511
-3rd Qu. 220.712543
+Min.    -62.473782
+1st Qu.   1.575743
+Median   63.313280
+3rd Qu. 219.961578
 Max.    596.867676
 NA's      0.000000
 ~~~
@@ -438,50 +438,7 @@ If your raster has `NA` values but you aren't sure where they are, you can delib
 
 To highlight `NA` values in ggplot, alter the `scale_fill_*()` layer to contain a colour instruction for `NA` values, like `scale_fill_viridis_c(na.value = 'deeppink')`
 
-
-~~~
-Error in eval(expr, envir, enclos): object 'RGB_2m_df_nd' not found
-~~~
-{: .error}
-
-
-
-~~~
-Error in fortify(data): object 'RGB_2m_nas' not found
-~~~
-{: .error}
-
-
-
-~~~
-Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m' not found
-~~~
-{: .error}
-
-
-
-~~~
-Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_stack' not found
-~~~
-{: .error}
-
-
-
-~~~
-Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m_df_nd' not found
-~~~
-{: .error}
-
-
-
-~~~
-Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m_nas' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" />
 
 The value that is conventionally used to take note of missing data (the
 `NoDataValue` value) varies by the raster data type. For floating-point rasters,

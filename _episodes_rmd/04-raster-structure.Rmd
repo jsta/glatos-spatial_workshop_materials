@@ -310,7 +310,7 @@ To highlight `NA` values in ggplot, alter the `scale_fill_*()` layer to contain 
 ```{r 'napink', echo = FALSE}
 # demonstration code
 # function to replace 0 with NA where all three values are 0 only
-RGB_2m_nas <- RGB_2m_df_nd
+RGB_2m_nas <- RGB_2m_df
 
 ggplot() +
   geom_raster(data = RGB_2m_nas, aes(x = x, y = y, fill = erie_bathy)) + 
@@ -318,7 +318,7 @@ ggplot() +
   ggtitle("Lake Erie", subtitle = "Bathymetry - NA highlighted")
 
 # memory saving
-rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas)
+rm(RGB_2m_df, RGB_2m_nas)
 ```
 
 The value that is conventionally used to take note of missing data (the

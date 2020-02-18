@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2020-02-18 15:57:56 -0500">
+    <meta http-equiv="last-modified" content="2020-02-18 18:07:58 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -401,10 +401,10 @@ columns, descriptive statistics for raster data can be retrieved like</p>
 </code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        erie_bathy
-Min.    -62.476700
-1st Qu.   1.658575
-Median   64.375511
-3rd Qu. 220.712543
+Min.    -62.473782
+1st Qu.   1.575743
+Median   63.313280
+3rd Qu. 219.961578
 Max.    596.867676
 NA's      0.000000
 </code></pre></div></div>
@@ -616,27 +616,7 @@ airplane which only flew over some part of a defined region.</p>
 
 <p>To highlight <code class="highlighter-rouge">NA</code> values in ggplot, alter the <code class="highlighter-rouge">scale_fill_*()</code> layer to contain a colour instruction for <code class="highlighter-rouge">NA</code> values, like <code class="highlighter-rouge">scale_fill_viridis_c(na.value = 'deeppink')</code></p>
 
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in eval(expr, envir, enclos): object 'RGB_2m_df_nd' not found
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in fortify(data): object 'RGB_2m_nas' not found
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m' not found
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_stack' not found
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m_df_nd' not found
-</code></pre></div></div>
-
-<div class="error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas): object
-'RGB_2m_nas' not found
-</code></pre></div></div>
+<p><img src="../fig/rmd-04-napink-1.png" title="plot of chunk napink" alt="plot of chunk napink" width="612" style="display: block; margin: auto;" /></p>
 
 <p>The value that is conventionally used to take note of missing data (the
 <code class="highlighter-rouge">NoDataValue</code> value) varies by the raster data type. For floating-point rasters,

@@ -323,12 +323,12 @@ that are touched by the buffer region are included in the extract.
 Source: National Ecological Observatory Network (NEON).
 
 Let's put this into practice by figuring out the mean depth in the
-20m around the fish tracking locations (`fish_locations`). Because we are extracting
-only a single number, we will not use the `df = TRUE` argument. 
+20m around the first fish tracking location (`fish_locations`). Because we are extracting
+from a single location, we will not use the `df = TRUE` argument. 
 
 ```{r extract-point-to-buffer }
 mean_erie_fish <- extract(x = erie_bathy,
-                           y = as(fish_locations, "Spatial"),
+                           y = as(fish_locations[1,], "Spatial"),
                            fun = mean, buffer = 20)
 
 mean_erie_fish

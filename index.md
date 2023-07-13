@@ -3,10 +3,10 @@ layout: lesson
 root: .
 
 maintainers:
-- Joseph Stachelek
+- Jemma Stachelek
 ---
 
-**Lesson Authors:** Joseph Stachelek
+**Lesson Authors:** Jemma Stachelek
 
 **Lesson Maintainers:** {{ page.maintainers | join: ', ' }}
 
